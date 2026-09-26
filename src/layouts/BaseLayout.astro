@@ -8,12 +8,13 @@ interface Props {
 
 const { title, description = "Shailesh Kumar — Enterprise Architect, AI Strategist & Digital Transformation Executive." } = Astro.props;
 const nav = [
-  { href: '/', label: 'Home' },
   { href: '/journey', label: 'Journey' },
   { href: '/work', label: 'What I Do' },
   { href: '/writing', label: 'Writing' },
   { href: '/contact', label: 'Contact' },
 ];
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath === href || (href !== '/' && currentPath.startsWith(href));
 ---
 <!doctype html>
 <html lang="en">
@@ -53,18 +54,30 @@ const nav = [
         </a>
         <ul class="hidden gap-8 text-sm font-medium text-mist md:flex">
           {nav.map((item) => (
-            <li><a href={item.href} class="transition hover:text-white">{item.label}</a></li>
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} class={`relative pb-1 transition hover:text-white ${isActive(item.href) ? 'text-white' : ''}`}>
+              {item.label}
+              {isActive(item.href) && <span class="absolute -bottom-0.5 left-0 h-px w-full bg-gradient-to-r from-violet-400 to-cyan-400"></span>}
+            </a></li>
           ))}
         </ul>
-        <a href="/writing" class="glow-border rounded-full px-4 py-2 text-sm font-semibold text-white glass">
-          Read the Writing →
-        </a>
+        <div class="flex items-center gap-3">
+          <a href="/writing" class="glow-border hidden rounded-full px-4 py-2 text-sm font-semibold text-white glass sm:inline-flex">
+            Read the Writing →
+          </a>
+          <button id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" class="glass glow-border flex h-10 w-10 items-center justify-center rounded-xl text-white md:hidden">
+            <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
       </nav>
-      <ul class="flex justify-center gap-6 border-t border-white/5 py-2 text-xs font-medium text-mist md:hidden">
-        {nav.map((item) => (
-          <li><a href={item.href} class="hover:text-white">{item.label}</a></li>
-        ))}
-      </ul>
+      <div id="mobile-menu" class="hidden border-t border-white/5 md:hidden">
+        <ul class="flex flex-col gap-1 px-6 py-4 text-sm font-medium text-mist">
+          {nav.map((item) => (
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} class={`block rounded-lg px-3 py-2 transition hover:bg-white/5 hover:text-white ${isActive(item.href) ? 'bg-white/5 text-white' : ''}`}>{item.label}</a></li>
+          ))}
+          <li><a href="/writing" class="mt-2 block rounded-lg bg-white/10 px-3 py-2 text-center font-semibold text-white">Read the Writing →</a></li>
+        </ul>
+      </div>
     </header>
 
     <main>
@@ -89,6 +102,25 @@ const nav = [
     </footer>
 
     <script>
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('menu-icon-open');
+      const iconClose = document.getElementById('menu-icon-close');
+      menuToggle?.addEventListener('click', () => {
+        const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        iconOpen?.classList.toggle('hidden', isOpen);
+        iconClose?.classList.toggle('hidden', !isOpen);
+      });
+      mobileMenu?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          menuToggle?.setAttribute('aria-expanded', 'false');
+          iconOpen?.classList.remove('hidden');
+          iconClose?.classList.add('hidden');
+        });
+      });
+
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
