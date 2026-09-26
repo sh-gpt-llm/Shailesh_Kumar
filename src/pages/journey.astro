@@ -2,7 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import TimelineItem from '../components/TimelineItem.astro';
-import { timeline, education } from '../data/career';
+import { getCollection } from 'astro:content';
+
+const timeline = (await getCollection('timeline')).sort((a, b) => a.data.order - b.data.order).map((e) => e.data);
+const education = (await getCollection('education')).sort((a, b) => a.data.order - b.data.order).map((e) => e.data);
 ---
 <BaseLayout title="Journey" description="From 2007 to 2026 — the full career journey of Shailesh Kumar across telecom, healthcare, and life sciences enterprise architecture.">
   <section class="mx-auto max-w-4xl px-6 pt-20 pb-8 text-center">

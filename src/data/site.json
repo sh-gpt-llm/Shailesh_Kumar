@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "eyebrow": "2007 → 2026 · 18+ Years in the Making",
+    "headline": "I build the architecture behind enterprise AI & digital transformation.",
+    "description": "I'm Shailesh Kumar — Senior Principal Enterprise Architect. I turn emerging technology, generative & agentic AI, and complex ERP/digital-core modernization into production-grade capability for global life sciences, healthcare and telecom enterprises. This is my journey, my thinking, and my work."
+  },
+  "heroStats": [
+    { "label": "Years in Enterprise Tech", "value": "18+" },
+    { "label": "Users Impacted (Telecom Modernization)", "value": "300M+" },
+    { "label": "Faster Financial Consolidation", "value": "35%" },
+    { "label": "Reduction in System Redundancy", "value": "40%" }
+  ],
+  "work": {
+    "eyebrow": "What I Do",
+    "headline": "Turning strategy into production-grade capability",
+    "description": "I work at the intersection of enterprise architecture, AI industrialization, and capital investment governance — helping complex, regulated organizations modernize with discipline and speed."
+  },
+  "contact": {
+    "email": "sh.1810.kr@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/shailesh-18-kr-2561281069",
+    "linkedinLabel": "/in/shailesh-18-kr",
+    "location": "Based in Bengaluru, Karnataka, India · Working with teams globally",
+    "headline": "Open to advisory, speaking & bold collaborations",
+    "description": "Whether it's enterprise architecture governance, an AI operating model, or a digital core modernization program — I'd love to hear about what you're building."
+  }
+}

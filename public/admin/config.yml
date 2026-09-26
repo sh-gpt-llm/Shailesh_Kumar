@@ -35,3 +35,101 @@ collections:
       - { label: "Feature this post on the homepage", name: "featured", widget: "boolean", default: false }
       - { label: "Draft (hide from the live site)", name: "draft", widget: "boolean", default: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "timeline"
+    label: "Career Journey (Timeline)"
+    folder: "src/content/timeline"
+    create: true
+    delete: true
+    slug: "{{order}}-{{fields.org}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Order (1 = most recent, shown first)", name: "order", widget: "number" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Date Range", name: "range", widget: "string" }
+      - { label: "Job Title", name: "title", widget: "string" }
+      - { label: "Organization", name: "org", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Highlights", name: "highlights", widget: "list", default: [] }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+
+  - name: "competencies"
+    label: "Core Competencies"
+    folder: "src/content/competencies"
+    create: true
+    delete: true
+    slug: "{{order}}-{{fields.area}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Order", name: "order", widget: "number" }
+      - { label: "Capability Area", name: "area", widget: "string" }
+      - { label: "Scope & Description", name: "scope", widget: "text" }
+
+  - name: "offerings"
+    label: "Consulting Offerings (Work Page)"
+    folder: "src/content/offerings"
+    create: true
+    delete: true
+    slug: "{{order}}-{{fields.title}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Order", name: "order", widget: "number" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Detail", name: "detail", widget: "text" }
+
+  - name: "education"
+    label: "Executive Education"
+    folder: "src/content/education"
+    create: true
+    delete: true
+    slug: "{{order}}-{{fields.school}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Order", name: "order", widget: "number" }
+      - { label: "Period", name: "period", widget: "string" }
+      - { label: "Programme", name: "program", widget: "string" }
+      - { label: "School", name: "school", widget: "string" }
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "site"
+        label: "Home / Work / Contact Page Text"
+        file: "src/data/site.json"
+        fields:
+          - label: "Home Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow (small text above headline)", name: "eyebrow", widget: "string" }
+              - { label: "Headline", name: "headline", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Home Stats"
+            name: "heroStats"
+            widget: "list"
+            fields:
+              - { label: "Value", name: "value", widget: "string" }
+              - { label: "Label", name: "label", widget: "string" }
+          - label: "Work Page Intro"
+            name: "work"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Headline", name: "headline", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "Contact Page"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "LinkedIn URL", name: "linkedin", widget: "string" }
+              - { label: "LinkedIn Label", name: "linkedinLabel", widget: "string" }
+              - { label: "Location Line", name: "location", widget: "string" }
+              - { label: "Headline", name: "headline", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+

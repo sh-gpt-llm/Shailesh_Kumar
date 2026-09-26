@@ -1,12 +1,11 @@
 ---
-import type { TimelineEntry } from '../data/career';
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  entry: TimelineEntry;
+  entry: CollectionEntry<'timeline'>['data'];
   index: number;
 }
 const { entry, index } = Astro.props;
-const isLast = false;
 ---
 <div class="reveal relative flex gap-6 pb-14 last:pb-0" style={`transition-delay:${Math.min(index * 60, 300)}ms`}>
   <div class="relative flex flex-col items-center">
