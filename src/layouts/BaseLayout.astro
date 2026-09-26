@@ -42,8 +42,14 @@ const nav = [
 
     <header class="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
       <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/" class="font-display text-lg font-semibold tracking-tight text-white">
-          Shailesh<span class="gradient-text">.Kumar</span>
+        <a href="/" class="group flex items-center gap-3">
+          <span class="glow-border relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl transition duration-300 group-hover:scale-105">
+            <span class="absolute inset-0 animate-drift bg-gradient-to-br from-violet-500 via-cyan-400 to-amber-400"></span>
+            <span class="relative font-display text-base font-bold tracking-tight text-ink">SK</span>
+          </span>
+          <span class="hidden font-display text-lg font-semibold tracking-tight text-white sm:inline">
+            Shailesh<span class="gradient-text">.Kumar</span>
+          </span>
         </a>
         <ul class="hidden gap-8 text-sm font-medium text-mist md:flex">
           {nav.map((item) => (
