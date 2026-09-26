@@ -12,9 +12,10 @@ section** you can edit entirely from the browser — no coding required to publi
 - **Writing** (`/writing`) — blog, research, patterns, architecture, and strategy posts. Content lives as
   Markdown files in `src/content/writing/`.
 - **Contact** (`/contact`) — simple, direct contact links.
-- **/admin** — a visual content editor ([Decap CMS](https://decapcms.org)) for writing, editing, and publishing
-  posts with zero code. This is the "editable page" requested — a rich Markdown editor with fields for
-  title, description, category, tags, cover image, and draft/publish toggle.
+- **/admin** — a visual content editor ([Sveltia CMS](https://sveltiacms.app), the actively-maintained
+  successor to Netlify/Decap CMS) for writing, editing, and publishing posts with zero code. This is the
+  "editable page" requested — a rich Markdown editor with fields for title, description, category, tags,
+  cover image, and draft/publish toggle.
 
 ## 🎨 Design
 
@@ -26,9 +27,10 @@ needed, so the site stays extremely fast.
 
 - [Astro](https://astro.build) (static site generator, ships zero JS by default)
 - Tailwind CSS v4 + `@tailwindcss/typography` for the blog post prose
-- [Decap CMS](https://decapcms.org) for no-code content editing (git-based — every published post becomes
-  a real, versioned Markdown file in this repo)
-- Netlify (recommended host — free tier, Identity + Git Gateway power the `/admin` editor, easy custom domain)
+- [Sveltia CMS](https://sveltiacms.app) for no-code content editing (git-based — every published post
+  becomes a real, versioned Markdown file in this repo). Note: Decap CMS's Netlify Identity + Git Gateway
+  backend was discontinued by Netlify, so this project uses Sveltia CMS's GitHub backend instead.
+- Netlify (recommended host — free tier, easy custom domain)
 
 ## 🚀 Local development
 
@@ -41,8 +43,7 @@ Visit `http://localhost:4321`.
 
 ## 📦 Deploying to a public domain (step-by-step)
 
-This site is designed to deploy on **Netlify's free tier**, which is the simplest way to get the no-code
-`/admin` editor working (via Netlify Identity + Git Gateway) and to attach a custom domain.
+This site is designed to deploy on **Netlify's free tier**.
 
 ### 1. Push this project to GitHub
 ```bash
@@ -59,15 +60,20 @@ git push -u origin main
 1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site → Import an existing project**.
 2. Pick your GitHub repo. Build command: `npm run build`. Publish directory: `dist`. (Already configured in `netlify.toml`.)
 3. Deploy — you'll get a free `https://<random-name>.netlify.app` URL immediately.
+4. New Netlify projects are **private by default**. Once you have a successful deploy, click **Make public**
+   in the pre-launch toolbar (or Project configuration → General → Visitor access) so anyone can view it.
 
 ### 3. Enable the no-code editor (`/admin`)
-1. In your Netlify site dashboard: **Site configuration → Identity → Enable Identity**.
-2. Under Identity → **Registration**, set to "Invite only" (so random people can't sign up).
-3. Under Identity → **Services**, enable **Git Gateway**.
-4. Go to **Identity** tab → **Invite users** → invite your own email.
-5. Accept the invite email, set a password.
-6. Visit `https://<your-site>.netlify.app/admin` and log in — you can now create, edit, and delete
-   posts visually. Every save creates a real commit to this GitHub repo and triggers an automatic rebuild.
+`public/admin/config.yml` already points at this repo's GitHub backend. To log in:
+1. On GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
+2. Scope it to this repository only, with **Contents: Read and write** (and **Pull requests: Read and write**
+   if you ever enable the editorial workflow).
+3. Visit `https://<your-site>.netlify.app/admin`, click **Sign In with Token**, and paste the token.
+4. You can now create, edit, and delete posts visually. Every save creates a real commit to this GitHub repo
+   and triggers an automatic Netlify rebuild.
+
+To let someone else edit content too, just invite them to the GitHub repo with write access — no extra
+CMS configuration needed.
 
 ### 4. Add your custom domain
 1. Buy a domain (e.g. via Namecheap, GoDaddy, Google Domains, Cloudflare Registrar — any registrar works).
@@ -107,5 +113,5 @@ src/
   components/           # SectionHeading, TimelineItem, PostCard
   pages/                 # index, journey, work, writing, contact
 public/
-  admin/                 # Decap CMS no-code editor (index.html + config.yml)
+  admin/                 # Sveltia CMS no-code editor (index.html + config.yml)
 ```

@@ -1,10 +1,14 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
 backend:
-  name: git-gateway
+  name: github
+  repo: sh-gpt-llm/Shailesh_Kumar
   branch: main
 
-# After you connect this site to Netlify and enable Identity + Git Gateway,
-# this admin panel will let you create, edit, and delete posts with a rich
-# text / markdown editor — no code required. Go to yoursite.com/admin to use it.
+# Sign in with a GitHub Personal Access Token (Settings > Developer settings >
+# Personal access tokens > Fine-grained tokens, scoped to this repo, Contents:
+# Read and write). Click "Sign In with Token" on the /admin login screen.
+# This admin panel lets you create, edit, and delete posts with a rich
+# markdown editor — no code required.
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
