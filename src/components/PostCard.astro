@@ -1,0 +1,27 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  category: string;
+  date: Date;
+  featured?: boolean;
+}
+const { href, title, description, category, date, featured = false } = Astro.props;
+const formatted = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+---
+<a href={href} class={`reveal glass glow-border group block rounded-2xl p-6 transition hover:-translate-y-1 hover:bg-white/[0.06] sm:p-8 ${featured ? 'sm:col-span-2' : ''}`}>
+  <div class="flex items-center justify-between">
+    <span class="rounded-full bg-gradient-to-r from-violet-500/20 to-cyan-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300">
+      {category}
+    </span>
+    <span class="text-xs text-mist">{formatted}</span>
+  </div>
+  <h3 class="mt-4 font-display text-xl font-semibold text-white transition group-hover:text-transparent group-hover:gradient-text sm:text-2xl">
+    {title}
+  </h3>
+  <p class="mt-3 text-sm leading-relaxed text-mist">{description}</p>
+  <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-white">
+    Read more <span class="transition group-hover:translate-x-1">→</span>
+  </span>
+</a>

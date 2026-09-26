@@ -1,0 +1,33 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# After you connect this site to Netlify and enable Identity + Git Gateway,
+# this admin panel will let you create, edit, and delete posts with a rich
+# text / markdown editor — no code required. Go to yoursite.com/admin to use it.
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "writing"
+    label: "Writing (Blog / Research / Patterns / Architecture / Strategy)"
+    folder: "src/content/writing"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description (short summary shown on cards)", name: "description", widget: "text" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["Blog", "Research", "Pattern", "Architecture", "Strategy", "Consulting"]
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Cover Image", name: "cover", widget: "image", required: false }
+      - { label: "Feature this post on the homepage", name: "featured", widget: "boolean", default: false }
+      - { label: "Draft (hide from the live site)", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }

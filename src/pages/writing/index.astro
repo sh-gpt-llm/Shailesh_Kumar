@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const categories = ['All', ...new Set(allPosts.map((p) => p.data.category))];
+---
+<BaseLayout title="Writing" description="Blogs, research, architecture patterns, and strategy notes by Shailesh Kumar.">
+  <section class="mx-auto max-w-4xl px-6 pt-20 pb-8 text-center">
+    <p class="reveal text-xs font-semibold uppercase tracking-[0.4em] text-cyan-400">Writing</p>
+    <h1 class="reveal mt-6 font-display text-4xl font-semibold text-white sm:text-6xl">
+      Blogs, research &amp; <span class="gradient-text">architecture patterns</span>
+    </h1>
+    <p class="reveal mt-6 text-lg leading-relaxed text-mist">
+      Everything here is published straight from a simple content editor — no code required to write, edit or ship a post.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 py-10">
+    <div class="reveal flex flex-wrap justify-center gap-3">
+      {categories.map((cat) => (
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-mist">{cat}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-28">
+    {allPosts.length === 0 ? (
+      <div class="reveal glass glow-border rounded-2xl p-12 text-center">
+        <p class="text-mist">No posts yet — the first one is on its way. Check back soon.</p>
+      </div>
+    ) : (
+      <div class="grid gap-6 sm:grid-cols-2">
+        {allPosts.map((post) => (
+          <PostCard
+            href={`/writing/${post.id}`}
+            title={post.data.title}
+            description={post.data.description}
+            category={post.data.category}
+            date={post.data.date}
+            featured={post.data.featured}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

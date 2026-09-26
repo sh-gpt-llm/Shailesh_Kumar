@@ -1,0 +1,41 @@
+---
+import type { TimelineEntry } from '../data/career';
+
+interface Props {
+  entry: TimelineEntry;
+  index: number;
+}
+const { entry, index } = Astro.props;
+const isLast = false;
+---
+<div class="reveal relative flex gap-6 pb-14 last:pb-0" style={`transition-delay:${Math.min(index * 60, 300)}ms`}>
+  <div class="relative flex flex-col items-center">
+    <span class="glow-border flex h-14 w-14 shrink-0 items-center justify-center rounded-full glass font-display text-sm font-semibold text-white">
+      {entry.year}
+    </span>
+    <span class="mt-2 w-px flex-1 bg-gradient-to-b from-violet-500/50 via-cyan-500/30 to-transparent"></span>
+  </div>
+  <div class="glass glow-border rounded-2xl p-6 sm:p-8">
+    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-400">{entry.range}</p>
+    <h3 class="mt-2 font-display text-xl font-semibold text-white sm:text-2xl">{entry.title}</h3>
+    <p class="mt-1 text-sm font-medium text-cyan-300">{entry.org} · {entry.location}</p>
+    <p class="mt-4 text-sm leading-relaxed text-mist">{entry.summary}</p>
+    {entry.highlights.length > 0 && (
+      <ul class="mt-4 space-y-2">
+        {entry.highlights.map((h) => (
+          <li class="flex gap-2 text-sm text-slate-300">
+            <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-violet-400 to-cyan-400"></span>
+            <span>{h}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+    {entry.tags.length > 0 && (
+      <div class="mt-5 flex flex-wrap gap-2">
+        {entry.tags.map((tag) => (
+          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-mist">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>

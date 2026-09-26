@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+import { timeline, education } from '../data/career';
+---
+<BaseLayout title="Journey" description="From 2007 to 2026 — the full career journey of Shailesh Kumar across telecom, healthcare, and life sciences enterprise architecture.">
+  <section class="mx-auto max-w-4xl px-6 pt-20 pb-8 text-center">
+    <p class="reveal text-xs font-semibold uppercase tracking-[0.4em] text-cyan-400">The Journey</p>
+    <h1 class="reveal mt-6 font-display text-4xl font-semibold text-white sm:text-6xl">
+      2007 <span class="gradient-text">→</span> 2026
+    </h1>
+    <p class="reveal mt-6 text-lg leading-relaxed text-mist">
+      Nineteen years, four industries, and one continuous thread: turning complex technology into enterprise-scale
+      capability. Here's how it unfolded — role by role, milestone by milestone.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    {timeline.map((entry, i) => <TimelineItem entry={entry} index={i} />)}
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <SectionHeading eyebrow="Foundations" title="Executive Education" align="center" />
+    <div class="mt-10 grid gap-5 sm:grid-cols-3">
+      {education.map((e) => (
+        <div class="reveal glass glow-border rounded-2xl p-6 text-center">
+          <p class="text-xs font-semibold uppercase tracking-wide text-amber-400">{e.period}</p>
+          <h3 class="mt-3 font-display text-base font-semibold text-white">{e.program}</h3>
+          <p class="mt-2 text-sm text-mist">{e.school}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
