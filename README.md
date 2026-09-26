@@ -41,6 +41,19 @@ npm run dev
 
 Visit `http://localhost:4321`.
 
+## 🔁 Deploying changes to the live site
+
+Netlify watches the GitHub `main` branch and auto-builds + publishes on every push — that's
+the only step required. To do it in one command from your local machine:
+
+```bash
+npm run deploy "Describe what changed"
+```
+
+This builds locally first (catching errors before they reach GitHub), commits, pulls/rebases
+any remote changes, and pushes to `main`. Netlify then rebuilds and publishes automatically
+in ~30-60 seconds at https://fastidious-praline-2bbf62.netlify.app/.
+
 ## 📦 Deploying to a public domain (step-by-step)
 
 This site is designed to deploy on **Netlify's free tier**.
