@@ -4,8 +4,8 @@
 @theme {
   --font-display: "Space Grotesk", "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
-  --color-ink: #05060a;
-  --color-ink-soft: #0b0d16;
+  --color-ink: #0b0e17;
+  --color-ink-soft: #121727;
   --color-violet: #7c3aed;
   --color-cyan: #06b6d4;
   --color-amber: #f59e0b;
@@ -18,7 +18,8 @@ html {
 
 body {
   background-color: var(--color-ink);
-  color: #e8eaf3;
+  background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124, 58, 237, 0.14), transparent), linear-gradient(180deg, #0e1220 0%, #0b0e17 40%);
+  color: #eceef5;
   font-family: var(--font-body);
 }
 
