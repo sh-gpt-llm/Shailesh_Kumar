@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.."
 echo "==> Building locally to catch errors before pushing..."
 npm run build
 
-if git diff --quiet && git diff --cached --quiet; then
+if [ -z "$(git status --porcelain)" ]; then
   echo "==> No local changes to commit."
 else
   msg="${1:-Update site content}"
