@@ -73,15 +73,19 @@ function slugify(title) {
 async function researchAndDraft(theme) {
   const systemPrompt = `You are a ghostwriter for Shailesh Kumar, a Senior Principal Enterprise Architect at GSK with 18+ years across telecom, healthcare, and life sciences. You write sharp, evidence-based thought-leadership articles for his personal brand site. Voice: confident, precise, no fluff, grounded in real frameworks and real-world examples. Always research current, real information using web search before writing - cite concrete facts, recent developments, or named frameworks/companies where relevant.`;
 
-  const userPrompt = `Research and write one original, well-grounded article (900-1400 words) on the theme "${theme.name}", specifically about ${theme.angle}.
+  const userPrompt = `Research and write one original, well-grounded article (700-1000 words) on the theme "${theme.name}", specifically about ${theme.angle}. The body must be Markdown with ## headings, no title heading (title is separate), and can include inline markdown links to real sources found via research.`;
 
-Return ONLY valid JSON (no markdown fences) with this exact shape:
-{
-  "title": "string, punchy and specific, under 90 chars",
-  "description": "string, 1-2 sentences, under 200 chars, used as a card preview",
-  "tags": ["3 to 5 relevant tags"],
-  "body": "the full article body in Markdown, with## headings, no title heading (title is separate), can include inline markdown links to real sources you found via research"
-}`;
+  const schema = {
+    type: "object",
+    properties: {
+      title: { type: "string", description: "Punchy and specific, under 90 chars" },
+      description: { type: "string", description: "1-2 sentences, under 200 chars" },
+      tags: { type: "array", items: { type: "string" }, description: "3 to 5 relevant tags" },
+      body: { type: "string", description: "Full article body in Markdown" },
+    },
+    required: ["title", "description", "tags", "body"],
+    additionalProperties: false,
+  };
 
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
@@ -92,10 +96,19 @@ Return ONLY valid JSON (no markdown fences) with this exact shape:
     body: JSON.stringify({
       model: "gpt-4o",
       tools: [{ type: "web_search_preview" }],
+      max_output_tokens: 4096,
       input: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
+      text: {
+        format: {
+          type: "json_schema",
+          name: "article",
+          schema,
+          strict: true,
+        },
+      },
     }),
   });
 
@@ -111,11 +124,18 @@ Return ONLY valid JSON (no markdown fences) with this exact shape:
   const rawText = textPart?.text ?? data.output_text;
 
   if (!rawText) {
-    throw new Error("No text output returned from OpenAI Responses API.");
+    throw new Error(
+      `No text output returned from OpenAI Responses API. Full response: ${JSON.stringify(data).slice(0, 2000)}`
+    );
   }
 
-  const cleaned = rawText.trim().replace(/^```json\s*/i, "").replace(/```$/, "");
-  return JSON.parse(cleaned);
+  try {
+    return JSON.parse(rawText);
+  } catch (err) {
+    throw new Error(
+      `Failed to parse JSON from model output: ${err.message}\nRaw output (first 2000 chars): ${rawText.slice(0, 2000)}`
+    );
+  }
 }
 
 async function main() {
