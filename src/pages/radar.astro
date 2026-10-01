@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Emerging Technology & Innovation Radar"
+  description="An industry-agnostic Emerging Technology & Innovation Radar by Shailesh Kumar — pick an industry, and get a well-researched map of what to adopt, trial, assess and hold next."
+>
+  <div id="radar-app"></div>
+</BaseLayout>
+
+<script>
+  import { initRadarApp } from '../scripts/radar-app';
+  initRadarApp();
+</script>

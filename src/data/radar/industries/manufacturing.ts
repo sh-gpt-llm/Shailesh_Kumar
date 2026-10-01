@@ -1,0 +1,131 @@
+import type { IndustryRadar } from '../types';
+
+export const manufacturing: IndustryRadar = {
+  slug: 'manufacturing-industrial',
+  name: 'Manufacturing & Industrial',
+  tagline: 'Where the shop floor, the supply chain and the engineering desk are being re-wired by AI and connectivity.',
+  scope:
+    'Scope of analysis: discrete and process manufacturing, industrial engineering and supply chain operations — read through the lens of a plant, engineering or supply-chain leader balancing uptime, safety and the pressure to modernise OT alongside IT.',
+  heroStat: [
+    { label: 'technologies tracked', value: '30' },
+    { label: 'new this edition', value: '11' },
+    { label: 'accelerating', value: '12' },
+    { label: 'quadrants', value: '4' },
+  ],
+  themes: [
+    {
+      title: 'The factory gets an agentic layer',
+      description: 'Agentic shop-floor operations and supply/production planning agents are moving from pilot to production fastest where downtime cost makes the ROI case undeniable.',
+    },
+    {
+      title: 'OT security stops being an afterthought',
+      description: 'Threat modeling for ICS/OT systems and non-human identity governance are catching up to a decade of converged IT/OT risk that regulation is now forcing into the open.',
+    },
+    {
+      title: 'The digital twin becomes the engineering desk',
+      description: 'Industrial digital twins and generative design are converging into a single simulated environment where new products and processes are validated before a single part is machined.',
+    },
+  ],
+  technologies: [
+    { id: 1, name: 'Multimodal Visual Quality Inspection', quadrant: 1, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Quality'], summary: 'Vision-language models inspecting products for defects against spec.', brief: 'Visual inspection AI has matured well beyond narrow defect-classifier models — multimodal models that reason over images alongside spec documents now handle far more nuanced, context-dependent quality calls.' },
+    { id: 2, name: 'Agentic Shop-Floor Operations', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Operations'], summary: 'Agents coordinating scheduling, exception-handling and routine decisions across production lines.', brief: 'Shop-floor agentic tooling is accelerating fastest in facilities with high changeover frequency, where the cost of manual re-scheduling is highest and the task is well-bounded enough for safe automation.' },
+    { id: 3, name: 'Small Language Models for Technician Support', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Workforce'], summary: 'Compact, fine-tuned models running on-site to guide maintenance technicians.', brief: 'SLMs fine-tuned on a plant\'s own manuals and maintenance history can run on local hardware with no connectivity dependency — critical for sites with limited or unreliable network access.' },
+    { id: 4, name: 'Reasoning Models for Root-Cause Analysis', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Quality'], summary: 'Models working through multi-step causal reasoning across sensor, process and quality data.', brief: 'Reasoning models are starting to outperform traditional rules-based root-cause tools on complex, multi-variable failure investigations, though domain-expert validation remains essential.' },
+    { id: 5, name: 'AI Gateway & Model Routing for OT/IT Systems', quadrant: 1, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Platform'], summary: 'A governed control plane for which model handles which operational-technology query.', brief: 'As more models touch both IT and OT data, a dedicated gateway enforcing stricter latency, safety and auditing rules for OT-adjacent queries is becoming a necessary architectural layer.' },
+    { id: 6, name: 'Autonomous Coding Agents for Industrial Software', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Engineering'], summary: 'Agents assisting modernisation of legacy PLC, SCADA and MES-adjacent code.', brief: 'Early pilots focus on test generation and documentation for legacy industrial codebases — direct agent-authored changes to safety-critical control logic remain tightly gated by validation requirements.' },
+    { id: 7, name: 'Generative Design for Engineering', quadrant: 1, ring: 'assess', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['R&D'], summary: 'AI generating and optimising component and product designs against constraints.', brief: 'Generative design tools are producing genuinely novel, manufacturable component geometries that outperform human-first designs on weight and material-use objectives — adoption is gated more by validation and certification processes than by the technology itself.' },
+    { id: 8, name: 'Agentic Supply & Production Planning', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Supply Chain'], summary: 'Agents coordinating multi-step planning across suppliers, inventory and production schedules.', brief: 'A high-value, still-early use case — the planning logic is tractable for agentic AI, but data quality and system integration across supplier networks remain the gating constraint.' },
+
+    { id: 9, name: 'Industrial Digital Twins', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'Simulated, continuously updated models of production lines and processes.', brief: 'Digital twins have moved from engineering showcase to operational necessity — they are now the default environment for validating process changes before touching physical equipment.' },
+    { id: 10, name: 'Edge AI on the Factory Floor', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'Inference running directly on or near production-line hardware.', brief: 'Latency, reliability and bandwidth constraints make edge inference the default architecture for real-time quality and safety applications on the production line.' },
+    { id: 11, name: 'Private 5G for Industrial Sites', quadrant: 2, ring: 'trial', momentum: 'steady', timeHorizon: '12-18 mo', tags: ['Connectivity'], summary: 'Dedicated, low-latency wireless networks for large industrial campuses.', brief: 'Private 5G is proving its value for mobile robotics coordination and dense sensor networks where WiFi reliability or licensing constraints make it impractical — adoption is steady rather than explosive given the capital cost.' },
+    { id: 12, name: 'Confidential Computing for Industrial IP', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Security'], summary: 'Hardware-enforced encryption protecting proprietary process and design data in use.', brief: 'Manufacturers collaborating with suppliers and partners on shared platforms increasingly need guarantees that proprietary process parameters and designs remain confidential even during joint computation.' },
+    { id: 13, name: 'Non-Human Identity for OT Systems', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Governing the growing population of service accounts and agent identities touching OT.', brief: 'As agentic tooling and remote-monitoring services multiply machine identities with access to operational technology, rigorous non-human IAM becomes essential to close a historically under-governed attack surface.' },
+    { id: 14, name: 'Sovereign & Regional Cloud for Industrial Data', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Compliance'], summary: 'Infrastructure guaranteeing industrial and process data residency within a jurisdiction.', brief: 'Export-control and critical-infrastructure regulation are pushing multinational manufacturers toward jurisdiction-locked deployment for sensitive process and design data.' },
+    { id: 15, name: 'eBPF-Style Observability for OT Networks', quadrant: 2, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Security'], summary: 'Low-overhead, kernel-level visibility extended into converged IT/OT network monitoring.', brief: 'Extending modern, low-overhead observability techniques into OT network monitoring is an emerging but promising route to closing long-standing visibility gaps on the plant floor.' },
+    { id: 16, name: 'Composable MES / Industrial Platforms', quadrant: 2, ring: 'assess', momentum: 'accelerating', timeHorizon: '2-3 yr', tags: ['Platform'], summary: 'Modular, API-first manufacturing execution systems replacing monolithic MES suites.', brief: 'Composable, API-first MES platforms are starting to challenge decades-old monolithic suites, though migration risk keeps most large manufacturers in careful, phased pilots for now.' },
+
+    { id: 17, name: 'Evaluation-Driven AI for Predictive Maintenance', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Operations'], summary: 'Continuous evaluation suites validating predictive-maintenance model accuracy over time.', brief: 'Predictive maintenance models degrade as equipment ages and operating conditions shift — continuous, automated evaluation against real failure outcomes is now standard practice for any mature programme.' },
+    { id: 18, name: 'Digital Product Passport', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Sustainability', 'Compliance'], summary: 'Structured, machine-readable records of a product\'s materials, provenance and lifecycle.', brief: 'Extended-producer-responsibility and circular-economy regulation in multiple markets are converting product passports from a sustainability nice-to-have into a market-access requirement.' },
+    { id: 19, name: 'Synthetic Data for Rare-Defect Training', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Quality', 'Data'], summary: 'Generated defect imagery and sensor data for training models on rare failure modes.', brief: 'Rare but critical defect types are, by definition, underrepresented in real production data — synthetic generation is proving essential for training inspection models that catch low-frequency, high-severity failures.' },
+    { id: 20, name: 'Continuous Compliance-as-Code (Industrial)', quadrant: 3, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['Compliance'], summary: 'Automated, always-on evidence collection against industrial safety and quality standards.', brief: 'Manual audit preparation for ISO, safety and quality standards cannot keep pace with the rate of digital change on the plant floor — automating evidence collection is becoming the expected baseline.' },
+    { id: 21, name: 'Threat Modeling for OT / ICS Systems', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Structured analysis of adversarial and safety risks specific to converged IT/OT environments.', brief: 'Converged IT/OT environments face risks that neither traditional IT security review nor legacy OT safety analysis fully covers — dedicated ICS threat modeling is increasingly a regulatory and insurance expectation.' },
+    { id: 22, name: 'FinOps for AI', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Cost'], summary: 'Cost visibility, budgets and chargeback for model and inference spend across plants.', brief: 'As AI deployments scale from pilot lines to full plants and then multi-site rollouts, extending cost-management discipline to inference spend is becoming necessary to keep scaling sustainable.' },
+    { id: 23, name: 'Zero-Trust Architecture for OT', quadrant: 3, ring: 'assess', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Security'], summary: 'Extending zero-trust principles into operational-technology network segments.', brief: 'Flat, implicitly-trusted OT networks are a known high-severity risk — zero-trust segmentation extended into OT is accelerating, driven largely by cyber-insurance and regulatory pressure.' },
+    { id: 24, name: 'Green & Sustainable Manufacturing Engineering', quadrant: 3, ring: 'hold', momentum: 'steady', timeHorizon: 'Now', tags: ['Sustainability'], summary: 'Engineering practices and tooling optimising for energy and material efficiency.', brief: 'Important and increasingly regulated, but accurate, workload-level carbon and material-flow accounting tooling remains immature across most manufacturing software stacks — track closely, invest selectively.' },
+
+    { id: 25, name: 'Knowledge Graphs & GraphRAG for Engineering Documentation', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Engineering', 'Data'], summary: 'Structured engineering knowledge graphs combined with retrieval for design and troubleshooting support.', brief: 'GraphRAG over structured bills of materials, specs and historical change records is proving far more reliable than plain document search for complex engineering troubleshooting.' },
+    { id: 26, name: 'Vector Search over Technical Manuals', quadrant: 4, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Workforce'], summary: 'Semantic search across equipment manuals, SOPs and maintenance records.', brief: 'Semantic search over curated technical documentation is now a baseline expectation for any technician-facing support tool, replacing keyword search in legacy document systems.' },
+    { id: 27, name: 'LLM Observability for Industrial AI', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Tracing, auditing and quality monitoring tailored to industrial AI deployments.', brief: 'Industrial deployments need observability that captures not just cost and latency but safety-relevant quality signals, given the physical-world consequences of a bad model output.' },
+    { id: 28, name: 'Agent & Tool Protocols for Machine-to-Machine Coordination', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Platform'], summary: 'Emerging standards for how agents and machines discover and call each other\'s capabilities.', brief: 'Standardising how shop-floor agents, robots and planning systems interoperate is an early but consequential space — betting on open protocols now avoids costly re-platforming as the market consolidates.' },
+    { id: 29, name: 'Rust / Modern Tooling for Embedded Systems', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Memory-safe systems languages increasingly used in embedded and real-time control software.', brief: 'Memory-safety guarantees are compelling for safety-critical embedded code — Rust adoption in new embedded and real-time control projects is accelerating, though legacy C/C++ migration remains gradual.' },
+    { id: 30, name: 'Quantum Computing for Materials & Process Optimisation', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '2-3 yr', tags: ['R&D'], summary: 'Quantum algorithms for materials discovery and complex process optimisation.', brief: 'Hybrid classical-quantum pilots are showing early promise for narrowly scoped materials-discovery and scheduling-optimisation problems — not yet a general-purpose industrial tool.' },
+  ],
+  editorsPicks: [2, 9, 18, 21, 7],
+  editorsNote:
+    'If I had to defend five bets to a plant operations director tomorrow: Agentic Shop-Floor Operations because the downtime-cost math makes the ROI case undeniable; Industrial Digital Twins because they have quietly become the default environment for any serious process change; Digital Product Passport because extended-producer-responsibility regulation is turning it into a market-access requirement, not a sustainability nice-to-have; Threat Modeling for OT/ICS Systems because converged IT/OT risk is the single most under-addressed exposure in most plants today; and Generative Design because it is producing manufacturable designs that quite simply outperform what human-first engineering was producing a few years ago.',
+  watchlist: [
+    { name: 'Embodied AI & Mobile Robotics', blurb: 'Autonomous mobile robots handling material movement and routine physical tasks on the floor.' },
+    { name: 'Context Engineering for Technician Copilots', blurb: 'Deliberate design of what equipment and process context is fed into technician-facing AI.' },
+    { name: 'AI SRE / Agentic AIOps for Industrial Control Networks', blurb: 'Agents triaging and in some cases remediating incidents in converged IT/OT network environments.' },
+    { name: 'Spatial Computing for Remote Assistance', blurb: 'AR-guided remote expert assistance for maintenance and commissioning tasks.' },
+    { name: 'GPU Neoclouds for Simulation Workloads', blurb: 'Specialised GPU providers offering lower-cost capacity for digital-twin and simulation compute.' },
+    { name: 'Quantum-Safe Cryptography for Industrial Control Systems', blurb: 'Post-quantum encryption planning for long-lived industrial control and safety systems.' },
+    { name: 'Agentic Energy & Utility Optimisation', blurb: 'Agents continuously optimising plant-level energy consumption against cost and carbon targets.' },
+    { name: 'Answer Engine Optimisation for Technical Content', blurb: 'Ensuring authoritative technical and parts documentation is correctly surfaced by AI answer engines.' },
+    { name: '3D-Printed Production at Scale', blurb: 'Additive manufacturing moving from prototyping into genuine low-to-mid volume production use cases.' },
+    { name: 'Self-Driving Labs for Materials Science', blurb: 'Automated, closed-loop experimentation accelerating new materials discovery for industrial use.' },
+    { name: 'Decentralised Supplier Identity & Provenance', blurb: 'Verifiable, portable supplier and component provenance credentials across supply networks.' },
+    { name: 'AI-Native Capacity & Scenario Planning', blurb: 'Generative scenario modelling for multi-site capacity and investment decisions.' },
+  ],
+  ecosystem: [
+    { rank: 1, name: 'Siemens', posture: 'Deepen', note: 'Industrial software, digital twin and MES platform breadth.', mix: { adopt: 4, trial: 6, assess: 5 }, onRadar: 15, overHorizon: 4 },
+    { rank: 2, name: 'Microsoft / Azure IoT', posture: 'Deepen', note: 'Industrial cloud, copilots and edge-to-cloud connectivity.', mix: { adopt: 3, trial: 6, assess: 6 }, onRadar: 15, overHorizon: 4 },
+    { rank: 3, name: 'Rockwell Automation', posture: 'Deepen', note: 'Control systems and OT platform incumbency.', mix: { adopt: 3, trial: 4, assess: 3 }, onRadar: 10, overHorizon: 2 },
+    { rank: 4, name: 'AWS IoT & Edge', posture: 'Maintain', note: 'Broad edge and industrial IoT infrastructure.', mix: { adopt: 2, trial: 4, assess: 4 }, onRadar: 10, overHorizon: 3 },
+    { rank: 5, name: 'NVIDIA (Omniverse, edge AI)', posture: 'Deepen', note: 'Digital twin simulation and industrial edge AI hardware/software stack.', mix: { trial: 4, assess: 4 }, onRadar: 8, overHorizon: 3 },
+    { rank: 6, name: 'SAP', posture: 'Maintain', note: 'ERP and supply-chain planning backbone across most large manufacturers.', mix: { adopt: 2, trial: 2, assess: 2 }, onRadar: 6, overHorizon: 1 },
+    { rank: 7, name: 'PTC', posture: 'Watch', note: 'Digital twin and product lifecycle management tooling.', mix: { trial: 2, assess: 1 }, onRadar: 3, overHorizon: 1 },
+    { rank: 8, name: 'Dassault Systèmes', posture: 'Watch', note: 'Generative design and simulation platform provider.', mix: { trial: 1, assess: 2 }, onRadar: 3, overHorizon: 2 },
+  ],
+  movements: [
+    { title: 'Agentic operations reach the floor', horizon: 'Now', description: 'Shop-floor agents and supply/production planning agents are moving fastest where downtime cost makes the case undeniable.' },
+    { title: 'OT security catches up', horizon: 'Now → 18 mo', description: 'Threat modeling, zero-trust and non-human identity are finally closing a decade-old IT/OT security gap, driven by regulation and insurance.' },
+    { title: 'The digital twin becomes the design desk', horizon: 'Now → 18 mo', description: 'Digital twins and generative design are converging into a single simulated validation environment ahead of physical production.' },
+    { title: 'Provenance becomes a market-access requirement', horizon: '12-18 mo', description: 'Digital product passports are shifting from sustainability reporting into genuine market-access gatekeeping.' },
+    { title: 'Composable industrial software arrives', horizon: '2-3 yr', description: 'Modular MES and industrial platforms are beginning to challenge decades-old monolithic suites.' },
+  ],
+  functions: [
+    { name: 'Plant Operations', description: 'Production scheduling, shop-floor execution and uptime.', posture: 'Adoption-led', newCount: 6, mix: { adopt: 6, trial: 8, assess: 4 } },
+    { name: 'Engineering & R&D', description: 'Product and process design, simulation and materials research.', posture: 'Frontier-leaning', newCount: 7, mix: { adopt: 2, trial: 5, assess: 7 } },
+    { name: 'Quality & Compliance', description: 'Quality assurance, inspection and regulatory compliance.', posture: 'Adoption-led', newCount: 4, mix: { adopt: 4, trial: 5, assess: 3 } },
+    { name: 'Supply Chain & Logistics', description: 'Procurement, inventory and multi-site logistics planning.', posture: 'Balanced', newCount: 4, mix: { trial: 3, assess: 4 } },
+    { name: 'OT Security & Cyber', description: 'Operational-technology security and converged IT/OT risk.', posture: 'Frontier-leaning', newCount: 5, mix: { trial: 4, assess: 4 } },
+    { name: 'Sustainability & Corporate', description: 'Environmental compliance, sustainability reporting and corporate functions.', posture: 'Balanced', newCount: 2, mix: { trial: 1, assess: 2, hold: 1 } },
+  ],
+  geography: {
+    categories: ['Overall', 'Industrial Robotics & Automation', 'Advanced Materials', 'Industrial AI'],
+    leaders: {
+      'Overall': [
+        { rank: 1, place: 'United States', score: 86 }, { rank: 2, place: 'Germany', score: 84 }, { rank: 3, place: 'China', score: 83 },
+        { rank: 4, place: 'Japan', score: 79 }, { rank: 5, place: 'South Korea', score: 75 }, { rank: 6, place: 'Taiwan', score: 68 },
+        { rank: 7, place: 'Switzerland', score: 64 }, { rank: 8, place: 'Sweden', score: 60 }, { rank: 9, place: 'Singapore', score: 58 }, { rank: 10, place: 'Italy', score: 55 },
+      ],
+      'Industrial Robotics & Automation': [
+        { rank: 1, place: 'Japan', score: 90 }, { rank: 2, place: 'Germany', score: 87 }, { rank: 3, place: 'South Korea', score: 85 },
+        { rank: 4, place: 'China', score: 83 }, { rank: 5, place: 'United States', score: 78 }, { rank: 6, place: 'Switzerland', score: 68 },
+        { rank: 7, place: 'Taiwan', score: 65 }, { rank: 8, place: 'Italy', score: 62 }, { rank: 9, place: 'Sweden', score: 60 }, { rank: 10, place: 'Singapore', score: 57 },
+      ],
+      'Advanced Materials': [
+        { rank: 1, place: 'United States', score: 85 }, { rank: 2, place: 'China', score: 82 }, { rank: 3, place: 'Germany', score: 78 },
+        { rank: 4, place: 'Japan', score: 76 }, { rank: 5, place: 'South Korea', score: 70 }, { rank: 6, place: 'United Kingdom', score: 63 },
+        { rank: 7, place: 'France', score: 61 }, { rank: 8, place: 'Netherlands', score: 58 }, { rank: 9, place: 'Israel', score: 55 }, { rank: 10, place: 'Taiwan', score: 54 },
+      ],
+      'Industrial AI': [
+        { rank: 1, place: 'United States', score: 87 }, { rank: 2, place: 'China', score: 80 }, { rank: 3, place: 'Germany', score: 76 },
+        { rank: 4, place: 'Japan', score: 70 }, { rank: 5, place: 'South Korea', score: 68 }, { rank: 6, place: 'United Kingdom', score: 61 },
+        { rank: 7, place: 'Israel', score: 59 }, { rank: 8, place: 'Sweden', score: 57 }, { rank: 9, place: 'Canada', score: 55 }, { rank: 10, place: 'Singapore', score: 53 },
+      ],
+    },
+  },
+};

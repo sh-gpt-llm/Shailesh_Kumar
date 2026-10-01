@@ -1,0 +1,131 @@
+import type { IndustryRadar } from '../types';
+
+export const retail: IndustryRadar = {
+  slug: 'retail-consumer',
+  name: 'Retail & Consumer',
+  tagline: 'Where shopping, merchandising and the store itself are being rebuilt around agents and answer engines.',
+  scope:
+    'Scope of analysis: e-commerce, brick-and-mortar retail, consumer brands and retail media — read through the lens of a commerce, merchandising or digital leader balancing margin pressure with the shift from search boxes to AI answer engines and shopping agents.',
+  heroStat: [
+    { label: 'technologies tracked', value: '30' },
+    { label: 'new this edition', value: '12' },
+    { label: 'accelerating', value: '13' },
+    { label: 'quadrants', value: '4' },
+  ],
+  themes: [
+    {
+      title: 'The customer is increasingly an agent, not a person',
+      description: 'Agentic commerce and shopping assistants are starting to browse, compare and even check out on a shopper\'s behalf — optimising for AI answer engines is becoming as important as optimising for search.',
+    },
+    {
+      title: 'Personalisation needs a rigorous evaluation discipline',
+      description: 'As recommendation and merchandising decisions move to reasoning models, evaluation-driven development is the only way to avoid silently degrading customer experience at scale.',
+    },
+    {
+      title: 'The store becomes a real-time, edge-native system',
+      description: 'Unified commerce, edge AI at the point of sale and private connectivity are converging so that online and in-store inventory, pricing and promotions move in lockstep.',
+    },
+  ],
+  technologies: [
+    { id: 1, name: 'Multimodal Product Discovery & Search', quadrant: 1, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Commerce'], summary: 'Search that reasons across images, text and style, not just keywords.', brief: 'Multimodal search ("find me something like this photo, but in blue") is now table stakes for any serious e-commerce catalogue — keyword-only search is a measurable conversion drag.' },
+    { id: 2, name: 'Agentic Customer Service', quadrant: 1, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Service'], summary: 'Multi-step agents resolving order issues, returns and account queries end to end.', brief: 'Agentic customer service has crossed from chatbot novelty to genuine resolution capability for a large share of tier-one support volume, freeing human agents for complex or sensitive cases.' },
+    { id: 3, name: 'Small Language Models for In-Store Assistants', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Operations', 'Cost'], summary: 'Compact, fine-tuned models running on in-store devices and kiosks.', brief: 'Running fine-tuned SLMs on in-store hardware avoids both the latency and connectivity risk of calling a cloud model for every associate or kiosk interaction on the shop floor.' },
+    { id: 4, name: 'Reasoning Models for Merchandising Decisions', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Merchandising'], summary: 'Models working through multi-step pricing, assortment and promotion reasoning.', brief: 'Reasoning models are starting to outperform rules-based merchandising engines on complex, multi-constraint pricing and assortment decisions, with human merchandisers retaining override authority.' },
+    { id: 5, name: 'AI Gateway & Model Routing for Commerce Systems', quadrant: 1, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Platform'], summary: 'A governed control plane for which model handles which commerce query.', brief: 'As retailers adopt multiple models across search, service and merchandising, a dedicated gateway for cost control, routing and fallback is becoming necessary infrastructure, not a nice-to-have.' },
+    { id: 6, name: 'Autonomous Coding Agents for Commerce Platforms', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Engineering'], summary: 'Agents assisting migration and feature development on e-commerce platforms.', brief: 'Early pilots show strong results on well-tested storefront and checkout codebases — still requires careful human review for anything touching payment or PCI-scoped code paths.' },
+    { id: 7, name: 'Generative Product Content & Creative', quadrant: 1, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Marketing'], summary: 'AI generating product copy, imagery variations and localisation at catalogue scale.', brief: 'Generative content has made true catalogue-scale localisation and A/B creative testing financially viable for the first time — the constraint has shifted from production capacity to brand governance.' },
+    { id: 8, name: 'Agentic Demand & Inventory Planning', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Supply Chain'], summary: 'Agents coordinating demand forecasting and inventory allocation across channels.', brief: 'A high-value but still-early use case — the forecasting logic itself is tractable for agentic AI, but fragmented data across suppliers and channels remains the primary gating constraint.' },
+
+    { id: 9, name: 'Composable Commerce Platforms', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Platform'], summary: 'Modular, API-first commerce replacing monolithic platform suites.', brief: 'Composable commerce has become the default architecture for any retailer needing to ship experiments fast across multiple channels without a full platform migration every time.' },
+    { id: 10, name: 'Unified Commerce / Real-Time Inventory', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'Single, real-time view of inventory and orders across online and in-store channels.', brief: 'Customers now expect accurate real-time stock visibility and seamless buy-online-pickup-in-store flows — unified commerce has moved from differentiator to baseline expectation.' },
+    { id: 11, name: 'Retail Media Network Infrastructure', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Monetisation'], summary: 'Platforms letting retailers monetise their own first-party data and on-site/app ad inventory.', brief: 'Retail media is now one of the fastest-growing, highest-margin revenue lines for major retailers, driven by first-party data advantages as third-party cookies continue to erode.' },
+    { id: 12, name: 'Edge AI for In-Store & POS Devices', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Operations'], summary: 'Inference running directly on point-of-sale and in-store hardware.', brief: 'Edge inference at POS is unlocking real-time loss-prevention and personalised in-store offers without the latency or connectivity dependency of a round-trip to the cloud.' },
+    { id: 13, name: 'Confidential Computing for Customer Data', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Security', 'Privacy'], summary: 'Hardware-enforced encryption of customer data in use, including for retail media clean rooms.', brief: 'Confidential computing underpins the data clean rooms retail media networks rely on to let advertisers target without either party exposing raw customer data to the other.' },
+    { id: 14, name: 'Non-Human Identity for Commerce APIs', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Governing the growing population of service accounts, bots and shopping-agent identities.', brief: 'As AI shopping agents begin calling commerce APIs on behalf of customers, retailers need robust, auditable identity governance to distinguish legitimate agentic traffic from scraping and fraud.' },
+    { id: 15, name: 'Sovereign & Regional Cloud for Customer Data', quadrant: 2, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Compliance'], summary: 'Infrastructure guaranteeing customer data residency within a jurisdiction.', brief: 'Tightening consumer-data-protection regulation in multiple markets is making jurisdiction-locked deployment an increasingly common requirement for multinational retailers.' },
+    { id: 16, name: 'Private 5G / Connectivity for Store Operations', quadrant: 2, ring: 'hold', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'Dedicated low-latency wireless networks for large-format stores and warehouses.', brief: 'Valuable for large-format stores and fulfilment centres with dense device and robotics needs, but most retailers are prioritising software-layer investment over new connectivity infrastructure right now.' },
+
+    { id: 17, name: 'Evaluation-Driven AI for Recommendations', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Merchandising'], summary: 'Continuous evaluation suites validating recommendation and ranking model quality.', brief: 'Recommendation models silently drift as catalogue and customer behaviour change — continuous, automated evaluation against both engagement and revenue outcomes is now standard practice at mature retailers.' },
+    { id: 18, name: 'Answer Engine Optimisation (AEO) for Product Discovery', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Marketing'], summary: 'Optimising product and brand content to be surfaced and cited by AI shopping and answer engines.', brief: 'As shoppers increasingly ask AI assistants "what should I buy" instead of searching, AEO is rapidly becoming as important a discipline as SEO was for the search-engine era — and far less understood today.' },
+    { id: 19, name: 'Synthetic Data for Personalisation Testing', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Data', 'Privacy'], summary: 'Statistically realistic, privacy-safe synthetic customer data for testing personalisation models.', brief: 'Synthetic customer data is unlocking rigorous personalisation-model testing against rare segments and edge cases that privacy rules would otherwise make difficult to test against real data.' },
+    { id: 20, name: 'Continuous Compliance-as-Code (Privacy & Consumer)', quadrant: 3, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['Compliance'], summary: 'Automated, always-on evidence collection against privacy and consumer-protection regulation.', brief: 'Manual privacy-compliance audits cannot keep pace with the rate of personalisation and AI feature shipping — automating evidence collection into the deployment pipeline is becoming standard practice.' },
+    { id: 21, name: 'Threat Modeling for Commerce & Payment Systems', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Structured analysis of fraud, scraping and AI-agent-specific risks in commerce systems.', brief: 'Agentic shopping traffic introduces new attack surface — from AI-agent account takeover to automated promo abuse — that conventional e-commerce fraud models were not built to detect.' },
+    { id: 22, name: 'Digital Product Passport (Circular Retail)', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Sustainability'], summary: 'Structured, machine-readable records of a product\'s materials, provenance and lifecycle.', brief: 'Extended-producer-responsibility regulation is converting product passports from a sustainability narrative into a market-access requirement for consumer brands in several regions.' },
+    { id: 23, name: 'FinOps for AI', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Cost'], summary: 'Cost visibility, budgets and chargeback for model and inference spend.', brief: 'As AI touches search, service, merchandising and content at catalogue scale, extending FinOps discipline to inference spend is becoming necessary to keep the economics of personalisation sustainable.' },
+    { id: 24, name: 'Zero-Trust Architecture for Retail Systems', quadrant: 3, ring: 'hold', momentum: 'steady', timeHorizon: 'Now', tags: ['Security'], summary: 'Extending zero-trust principles across commerce, POS and supply-chain systems.', brief: 'Directionally important as agentic traffic grows, but most retailers are still working through foundational identity and segmentation work before a genuine zero-trust architecture is realistic.' },
+
+    { id: 25, name: 'Knowledge Graphs & GraphRAG for Product Catalogs', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Data'], summary: 'Structured product knowledge graphs combined with retrieval for discovery and service.', brief: 'GraphRAG over a well-structured product knowledge graph (attributes, compatibility, substitutes) dramatically improves both search relevance and customer-service answer accuracy over plain-text retrieval.' },
+    { id: 26, name: 'Vector Search over Catalog & Reviews', quadrant: 4, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Commerce'], summary: 'Semantic search across product descriptions, attributes and customer reviews.', brief: 'Semantic search spanning catalogue and review content is now a baseline expectation for e-commerce search quality, well beyond simple keyword matching.' },
+    { id: 27, name: 'LLM Observability for Commerce AI', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Tracing, auditing and quality monitoring tailored to customer-facing commerce AI.', brief: 'Customer-facing AI needs observability that tracks conversion and satisfaction impact alongside cost and latency — generic APM tooling misses the commerce-specific quality signals that matter most.' },
+    { id: 28, name: 'Agent & Tool Protocols for Agentic Commerce', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Platform'], summary: 'Emerging standards for how shopping agents discover products and complete checkout on a customer\'s behalf.', brief: 'A genuine standards race is underway for how third-party shopping agents should be allowed to browse, compare and check out on a retailer\'s site — early movers risk losing visibility to agents that cannot parse their storefront.' },
+    { id: 29, name: 'Rust / Modern Tooling for High-Throughput Commerce Systems', quadrant: 4, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Memory-safe, high-performance languages used in peak-load commerce infrastructure.', brief: 'For peak-event infrastructure (major sales events, flash sales), the performance and reliability gains from modern systems languages are increasingly worth the migration cost for the highest-traffic services.' },
+    { id: 30, name: 'Generative Virtual Try-On & Styling', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Commerce'], summary: 'Generative models rendering how products look on or with the customer\'s own items.', brief: 'Virtual try-on quality has improved sharply enough in the last cycle to meaningfully reduce return rates in apparel and footwear, making it one of the clearer near-term ROI stories in generative commerce.' },
+  ],
+  editorsPicks: [2, 18, 11, 28, 7],
+  editorsNote:
+    'If I had to defend five bets to a chief commerce officer tomorrow: Agentic Customer Service because the resolution-rate gains are already proven at scale; Answer Engine Optimisation because the shift from search boxes to AI answer engines is happening faster than most commerce teams have budgeted for; Retail Media Network Infrastructure because it is quietly becoming one of the highest-margin lines on the P&L; Agent & Tool Protocols for Agentic Commerce because the standards race for how shopping agents interact with your storefront will determine who stays visible in an agentic shopping world; and Generative Product Content because it has made catalogue-scale localisation genuinely affordable for the first time.',
+  watchlist: [
+    { name: 'Context Engineering for Shopping Assistants', blurb: 'Deliberate design of what customer, catalogue and order context is fed into shopping-agent prompts.' },
+    { name: 'AI Coworkers for Merchandising Teams', blurb: 'Persistent AI identities handling recurring pricing, assortment and promotion analysis tasks.' },
+    { name: 'Browser-Use Shopping Agents', blurb: 'Third-party agents that operate a real browser to compare prices and complete purchases on a shopper\'s behalf.' },
+    { name: 'GPU Neoclouds for Personalisation Model Training', blurb: 'Specialised GPU providers offering lower-cost capacity for recommendation-model training.' },
+    { name: 'AI-Native Visual Merchandising', blurb: 'Generative tools designing in-store and digital visual merchandising layouts automatically.' },
+    { name: 'Embodied AI for Fulfilment Centres', blurb: 'Autonomous robots handling picking, packing and routine fulfilment-centre logistics.' },
+    { name: 'Decentralised Loyalty & Identity', blurb: 'Portable, customer-controlled loyalty and identity credentials usable across retailers.' },
+    { name: 'Quantum-Safe Cryptography for Payment Data', blurb: 'Post-quantum encryption planning for long-lived stored payment and customer data.' },
+    { name: 'AI SRE / Agentic AIOps for Commerce Platforms', blurb: 'Agents triaging and in some cases remediating incidents during peak-traffic commerce events.' },
+    { name: 'Spatial Computing for Store Design', blurb: 'AR/VR tools for planning and testing in-store layouts and planograms before physical rollout.' },
+    { name: 'Hyper-Local Dynamic Pricing', blurb: 'Real-time, store- or micro-market-level pricing driven by local demand and inventory signals.' },
+    { name: 'Social Commerce Agent Integrations', blurb: 'Shopping agents embedded directly inside social and messaging platforms, not just storefronts.' },
+  ],
+  ecosystem: [
+    { rank: 1, name: 'Shopify', posture: 'Deepen', note: 'Composable commerce platform with rapidly expanding agentic-commerce tooling.', mix: { adopt: 3, trial: 6, assess: 5 }, onRadar: 14, overHorizon: 4 },
+    { rank: 2, name: 'Salesforce Commerce Cloud', posture: 'Deepen', note: 'Enterprise commerce platform with deep service and agent integration.', mix: { adopt: 3, trial: 5, assess: 5 }, onRadar: 13, overHorizon: 3 },
+    { rank: 3, name: 'Google (Search, Shopping, Gemini)', posture: 'Deepen', note: 'Reshaping discovery itself via AI-driven shopping and answer surfaces.', mix: { trial: 5, assess: 5 }, onRadar: 10, overHorizon: 4 },
+    { rank: 4, name: 'OpenAI (agentic commerce initiatives)', posture: 'Watch', note: 'Driving early standards work on agent-led shopping and checkout.', mix: { trial: 3, assess: 2 }, onRadar: 5, overHorizon: 3 },
+    { rank: 5, name: 'Adobe (Commerce, Firefly)', posture: 'Maintain', note: 'Commerce platform plus generative content tooling for catalogue-scale creative.', mix: { adopt: 2, trial: 3, assess: 2 }, onRadar: 7, overHorizon: 2 },
+    { rank: 6, name: 'AWS', posture: 'Maintain', note: 'Infrastructure backbone for many large retail and peak-event workloads.', mix: { adopt: 2, trial: 3, assess: 3 }, onRadar: 8, overHorizon: 2 },
+    { rank: 7, name: 'Criteo / The Trade Desk (retail media)', posture: 'Watch', note: 'Ad-tech players expanding deeper into retail media infrastructure.', mix: { trial: 2, assess: 1 }, onRadar: 3, overHorizon: 1 },
+    { rank: 8, name: 'NVIDIA (recommendation & generative commerce)', posture: 'Watch', note: 'Hardware and reference architectures for large-scale recommendation and generative retail AI.', mix: { trial: 2, assess: 2 }, onRadar: 4, overHorizon: 2 },
+  ],
+  movements: [
+    { title: 'From search box to answer engine', horizon: 'Now', description: 'AEO and agent/tool protocols are the leading edge of commerce adapting to AI-mediated discovery and purchase.' },
+    { title: 'Agentic service goes mainstream', horizon: 'Now', description: 'Agentic customer service has crossed from novelty to genuine resolution capability for a large share of support volume.' },
+    { title: 'Retail media becomes a core business line', horizon: 'Now → 12 mo', description: 'First-party data advantages are turning retail media into one of the highest-margin revenue lines for major retailers.' },
+    { title: 'Unified, real-time commerce', horizon: '12-18 mo', description: 'Real-time inventory, edge AI at POS and private connectivity are converging into a single always-current view of stock and pricing.' },
+    { title: 'Provenance and circularity go mainstream', horizon: '12-18 mo', description: 'Digital product passports are shifting from sustainability narrative into genuine market-access gatekeeping for consumer brands.' },
+  ],
+  functions: [
+    { name: 'Digital Commerce & Merchandising', description: 'Online storefront, search, recommendations and merchandising.', posture: 'Frontier-leaning', newCount: 8, mix: { adopt: 4, trial: 8, assess: 6 } },
+    { name: 'Customer Service & Experience', description: 'Support, service operations and customer-facing agents.', posture: 'Adoption-led', newCount: 4, mix: { adopt: 3, trial: 4, assess: 2 } },
+    { name: 'Marketing & Retail Media', description: 'Brand marketing, creative and retail media monetisation.', posture: 'Frontier-leaning', newCount: 5, mix: { adopt: 2, trial: 5, assess: 3 } },
+    { name: 'Store & Supply Chain Operations', description: 'In-store operations, fulfilment and supply chain planning.', posture: 'Balanced', newCount: 4, mix: { adopt: 2, trial: 4, assess: 4, hold: 1 } },
+    { name: 'Security & Trust', description: 'Fraud prevention, payment security and privacy compliance.', posture: 'Frontier-leaning', newCount: 4, mix: { trial: 4, assess: 3 } },
+    { name: 'Sustainability & Corporate', description: 'Product stewardship, sustainability reporting and corporate operations.', posture: 'Balanced', newCount: 2, mix: { trial: 1, assess: 2 } },
+  ],
+  geography: {
+    categories: ['Overall', 'E-commerce Innovation', 'Retail Media', 'Consumer AI Adoption'],
+    leaders: {
+      'Overall': [
+        { rank: 1, place: 'United States', score: 89 }, { rank: 2, place: 'China', score: 87 }, { rank: 3, place: 'United Kingdom', score: 74 },
+        { rank: 4, place: 'South Korea', score: 70 }, { rank: 5, place: 'Singapore', score: 66 }, { rank: 6, place: 'Germany', score: 63 },
+        { rank: 7, place: 'Japan', score: 61 }, { rank: 8, place: 'India', score: 59 }, { rank: 9, place: 'Canada', score: 57 }, { rank: 10, place: 'Brazil', score: 55 },
+      ],
+      'E-commerce Innovation': [
+        { rank: 1, place: 'China', score: 91 }, { rank: 2, place: 'United States', score: 88 }, { rank: 3, place: 'South Korea', score: 76 },
+        { rank: 4, place: 'United Kingdom', score: 70 }, { rank: 5, place: 'Singapore', score: 67 }, { rank: 6, place: 'India', score: 64 },
+        { rank: 7, place: 'Indonesia', score: 60 }, { rank: 8, place: 'Germany', score: 58 }, { rank: 9, place: 'Brazil', score: 56 }, { rank: 10, place: 'Japan', score: 54 },
+      ],
+      'Retail Media': [
+        { rank: 1, place: 'United States', score: 90 }, { rank: 2, place: 'United Kingdom', score: 75 }, { rank: 3, place: 'China', score: 72 },
+        { rank: 4, place: 'Germany', score: 65 }, { rank: 5, place: 'France', score: 62 }, { rank: 6, place: 'Canada', score: 60 },
+        { rank: 7, place: 'Australia', score: 58 }, { rank: 8, place: 'Brazil', score: 55 }, { rank: 9, place: 'Japan', score: 53 }, { rank: 10, place: 'Netherlands', score: 51 },
+      ],
+      'Consumer AI Adoption': [
+        { rank: 1, place: 'China', score: 88 }, { rank: 2, place: 'United States', score: 85 }, { rank: 3, place: 'South Korea', score: 77 },
+        { rank: 4, place: 'Singapore', score: 70 }, { rank: 5, place: 'United Kingdom', score: 66 }, { rank: 6, place: 'India', score: 63 },
+        { rank: 7, place: 'UAE', score: 60 }, { rank: 8, place: 'Germany', score: 57 }, { rank: 9, place: 'Japan', score: 55 }, { rank: 10, place: 'Brazil', score: 53 },
+      ],
+    },
+  },
+};

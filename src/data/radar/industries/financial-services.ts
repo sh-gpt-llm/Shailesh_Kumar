@@ -1,0 +1,131 @@
+import type { IndustryRadar } from '../types';
+
+export const financialServices: IndustryRadar = {
+  slug: 'financial-services',
+  name: 'Financial Services',
+  tagline: 'Where banking, payments, insurance and wealth management are re-platforming for an agentic, real-time world.',
+  scope:
+    'Scope of analysis: retail and commercial banking, payments, insurance and wealth management — read through the lens of a risk, technology or operations leader balancing regulatory scrutiny with the cost of standing still.',
+  heroStat: [
+    { label: 'technologies tracked', value: '30' },
+    { label: 'new this edition', value: '10' },
+    { label: 'accelerating', value: '12' },
+    { label: 'quadrants', value: '4' },
+  ],
+  themes: [
+    {
+      title: 'Explainability stops being a nice-to-have',
+      description: 'As AI moves into credit, underwriting and AML decisions, explainable-by-design models and evaluation suites are becoming the condition of regulatory approval, not an afterthought.',
+    },
+    {
+      title: 'Real time becomes the default, not the premium tier',
+      description: 'Real-time payments rails and agentic fraud investigation are compressing decision windows from days to seconds across the transaction lifecycle.',
+    },
+    {
+      title: 'The core finally gets rebuilt',
+      description: 'Composable core banking and autonomous coding agents are, for the first time, making large-scale legacy core modernisation a realistic multi-year plan rather than a perpetual deferral.',
+    },
+  ],
+  technologies: [
+    { id: 1, name: 'Agentic Fraud Investigation', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Risk', 'Operations'], summary: 'Agents that triage alerts, gather evidence and draft case summaries across systems.', brief: 'Fraud teams drowning in alert volume are the clearest near-term agentic win in financial services — agents handle evidence gathering and drafting while humans retain the final call decision.' },
+    { id: 2, name: 'Multimodal Document Intelligence', quadrant: 1, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'Models extracting structured data from loan, KYC and claims documents.', brief: 'Document intelligence has matured from OCR-plus-rules to genuinely robust multimodal extraction, cutting manual review time in onboarding and claims processing significantly.' },
+    { id: 3, name: 'Small Language Models for Compliance Triage', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Compliance', 'Cost'], summary: 'Fine-tuned compact models for high-volume, narrow compliance classification tasks.', brief: 'Running compliance triage on fine-tuned SLMs inside the institution\'s own boundary avoids both the cost and the data-residency risk of routing sensitive queries to third-party frontier models.' },
+    { id: 4, name: 'Reasoning Models for Credit & Risk Analysis', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Risk'], summary: 'Models working through multi-step financial reasoning before a recommendation.', brief: 'Reasoning models show real promise in complex underwriting and risk scenarios, but every output must be paired with an explainability layer suitable for regulatory review.' },
+    { id: 5, name: 'AI Gateway & Model Routing for Trading/Risk Systems', quadrant: 1, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Platform'], summary: 'A governed control plane for which model handles which trading or risk query.', brief: 'Multi-model strategies for risk and trading workloads need centralised auditing, latency control and fallback — the financial sector\'s compliance requirements make this a harder, more consequential build than in most industries.' },
+    { id: 6, name: 'Autonomous Coding Agents for Core Modernisation', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Engineering'], summary: 'Agents assisting large-scale legacy core banking code migration and testing.', brief: 'Early pilots show strong results translating and testing well-documented COBOL/mainframe logic — still requires expert review for the riskiest transaction-critical paths.' },
+    { id: 7, name: 'Conversational AI for Wealth & Advisory', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Commercial'], summary: 'AI assistants supporting advisors and, increasingly, clients directly.', brief: 'Advisor-facing copilots are ahead of client-facing ones, given suitability and fiduciary-duty obligations — direct-to-client conversational advice remains heavily constrained by regulation.' },
+    { id: 8, name: 'Agentic Treasury & Cash Management', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Operations'], summary: 'Agents forecasting and optimising cash positions across accounts and entities.', brief: 'A high-value but still-early use case — the data integration challenge across banking relationships is currently a bigger constraint than the AI capability itself.' },
+
+    { id: 9, name: 'Real-Time Payments Infrastructure', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Payments'], summary: 'Instant settlement rails replacing batch-based payment processing.', brief: 'Real-time rails are now table stakes in most markets — the competitive battleground has shifted to the value-added services built on top (richer data, instant reconciliation, embedded finance).' },
+    { id: 10, name: 'Confidential Computing for Transaction Data', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Security'], summary: 'Hardware-enforced encryption of sensitive financial data in use.', brief: 'Confidential computing is increasingly required for multi-party data collaboration use cases such as consortium fraud detection, where no single party can see raw counterpart data.' },
+    { id: 11, name: 'Sovereign & Regional Cloud for Financial Data', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Compliance'], summary: 'Infrastructure guaranteeing financial data residency within a jurisdiction.', brief: 'Operational-resilience and data-sovereignty regulation are converging to make jurisdiction-locked cloud deployment a standard requirement for systemically important institutions.' },
+    { id: 12, name: 'Non-Human Identity for Trading & API Systems', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Governing the growing population of service accounts, bots and agent identities.', brief: 'As algorithmic trading and agentic operations tooling multiply machine identities, rigorous non-human IAM is becoming essential to prevent a new, fast-moving class of insider-style risk.' },
+    { id: 13, name: 'Tokenization & Digital Asset Infrastructure', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Payments'], summary: 'Infrastructure for tokenised deposits, securities and programmable settlement.', brief: 'Pilot programmes for tokenised deposits and securities settlement are moving from innovation labs into regulated production pilots at a number of major institutions.' },
+    { id: 14, name: 'Composable Core Banking', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Platform'], summary: 'Modular, API-first core banking replacing monolithic legacy cores.', brief: 'Composable cores finally make incremental, risk-managed core replacement realistic — paired with autonomous coding agents, the business case for full legacy core replacement is the strongest it has been in a decade.' },
+    { id: 15, name: 'Quantum-Safe Cryptography for Financial Data', quadrant: 2, ring: 'assess', momentum: 'accelerating', timeHorizon: '2-3 yr', tags: ['Security'], summary: 'Post-quantum algorithms protecting long-lived financial and customer data.', brief: 'Given the decades-long confidentiality requirements on financial records, "harvest now, decrypt later" risk makes early post-quantum migration planning a prudent, not premature, investment.' },
+    { id: 16, name: 'Edge AI for Branch & ATM Devices', quadrant: 2, ring: 'hold', momentum: 'steady', timeHorizon: 'Now', tags: ['Operations'], summary: 'On-device inference for branch and self-service channel devices.', brief: 'Useful for specific fraud-detection and biometric use cases at the edge, but most institutions are deprioritising branch/ATM investment relative to digital and agentic channels.' },
+
+    { id: 17, name: 'Explainable AI for Regulatory Compliance', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Compliance', 'Risk'], summary: 'Model architectures and tooling producing regulator-ready explanations for every decision.', brief: 'Explainability is no longer a research nicety — in credit, underwriting and AML decisioning it is frequently a hard regulatory requirement, and institutions are standardising on explainable-by-design approaches rather than retrofitted interpretability tools.' },
+    { id: 18, name: 'Evaluation-Driven AI for Credit Decisioning', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Risk'], summary: 'Continuous, fairness- and accuracy-tested evaluation suites gating every model change.', brief: 'Given fair-lending obligations, no credit model should move to production without a continuously run evaluation suite testing for both accuracy and disparate-impact fairness.' },
+    { id: 19, name: 'AI-Powered AML / Transaction Monitoring', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Compliance'], summary: 'ML-driven detection replacing rigid, rules-only transaction monitoring.', brief: 'ML-augmented AML monitoring is significantly reducing false-positive rates compared with legacy rules engines, freeing investigator capacity for genuinely suspicious activity.' },
+    { id: 20, name: 'Continuous Regulatory Compliance-as-Code', quadrant: 3, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['Compliance'], summary: 'Automated, always-on evidence collection against regulatory control frameworks.', brief: 'Manual audit evidence gathering cannot keep pace with the rate of AI-driven system change — compliance-as-code embedded directly in the deployment pipeline is becoming standard for regulated institutions.' },
+    { id: 21, name: 'Synthetic Transaction Data', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Data'], summary: 'Statistically realistic, privacy-safe synthetic transaction data for testing and fraud-model training.', brief: 'Synthetic transaction data enables rigorous fraud-model stress-testing against rare patterns without exposing real customer data, and is increasingly accepted by internal model-risk functions.' },
+    { id: 22, name: 'Threat Modeling for ML Trading Systems', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Security', 'Risk'], summary: 'Structured analysis of adversarial and manipulation risks specific to ML-driven trading.', brief: 'ML-driven trading and risk systems face distinct adversarial risks — from data poisoning to market-manipulation-style gaming of model behaviour — that conventional security review does not adequately cover.' },
+    { id: 23, name: 'FinOps for AI', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Cost'], summary: 'Cost visibility, budgets and chargeback for model and inference spend.', brief: 'As AI workloads scale across risk, fraud and advisory functions, extending FinOps discipline to inference spend is becoming necessary to keep AI investment sustainable and auditable.' },
+    { id: 24, name: 'Zero-Trust Architecture for AI Workloads', quadrant: 3, ring: 'assess', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['Security'], summary: 'Extending zero-trust principles to model endpoints and agentic tool calls.', brief: 'Agentic workflows touching core banking and payment systems need least-privilege, continuously verified access control — extending zero-trust from the network layer to the agent-tool-call layer is the next step.' },
+
+    { id: 25, name: 'Knowledge Graphs & GraphRAG for Financial Crime', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Compliance', 'Data'], summary: 'Graph-structured entity and relationship data combined with retrieval for investigation support.', brief: 'Financial crime investigation is fundamentally a relationship-mapping problem — knowledge graphs paired with retrieval-augmented reasoning are proving far more effective than flat-document search.' },
+    { id: 26, name: 'Vector Search over Regulatory & Policy Documents', quadrant: 4, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Compliance'], summary: 'Semantic search across regulation, policy and internal control documentation.', brief: 'Semantic search over curated, version-controlled regulatory corpora is now a baseline capability for compliance and legal teams navigating fast-changing rulebooks.' },
+    { id: 27, name: 'LLM Observability for Financial AI', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Tracing, auditing and quality monitoring tailored to regulated financial AI deployments.', brief: 'Regulated AI deployments need observability that captures full auditability of every prompt, response and decision path — generic APM tooling does not meet the bar.' },
+    { id: 28, name: 'Agent & Tool Protocols for Open Banking', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Platform'], summary: 'Emerging standards for how financial agents discover and call open-banking APIs safely.', brief: 'As agentic assistants begin acting on customers\' behalf across institutions, standardising safe, consented tool-call protocols for open-banking APIs is an early but important space to watch.' },
+    { id: 29, name: 'Rust for High-Performance Trading Systems', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Memory-safe systems language increasingly used in latency-critical trading infrastructure.', brief: 'Rust\'s combination of memory safety and C++-comparable performance is winning it a growing share of new latency-sensitive trading and risk-engine development.' },
+    { id: 30, name: 'Quantum Computing for Portfolio Optimisation', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '2-3 yr', tags: ['Risk'], summary: 'Quantum algorithms for complex portfolio and risk optimisation problems.', brief: 'Hybrid classical-quantum approaches are showing early promise on specific, narrowly-scoped optimisation problems — not yet a general-purpose replacement for classical risk engines.' },
+  ],
+  editorsPicks: [17, 1, 14, 11, 19],
+  editorsNote:
+    'If I had to defend five bets to a chief risk officer tomorrow: Explainable AI for Regulatory Compliance, because every other AI bet in this list depends on it being solved first; Agentic Fraud Investigation, because the ROI case is immediate and the risk profile is manageable; Composable Core Banking, because it is finally making legacy modernisation tractable rather than perpetually deferred; Sovereign & Regional Cloud, because data-residency regulation is tightening faster than most technology roadmaps assume; and AI-Powered AML, because false-positive fatigue is now a genuine operational risk in its own right.',
+  watchlist: [
+    { name: 'Agentic Underwriting Assistants', blurb: 'Agents assembling full underwriting case files across multiple data sources for human sign-off.' },
+    { name: 'Embedded Finance Orchestration', blurb: 'Platforms letting non-financial brands embed banking, lending and payments natively into their products.' },
+    { name: 'AI-Native Insurance Claims Triage', blurb: 'Multimodal models assessing claims evidence (photos, documents) for faster, fairer triage.' },
+    { name: 'Context Engineering for Risk Prompts', blurb: 'Deliberate design of what data and context is fed into risk and compliance models.' },
+    { name: 'Answer Engine Optimisation for Financial Content', blurb: 'Ensuring regulated, accurate financial guidance is correctly surfaced by AI answer engines.' },
+    { name: 'Central Bank Digital Currencies (CBDC) Rails', blurb: 'Infrastructure readiness for potential retail and wholesale CBDC rollouts across markets.' },
+    { name: 'GPU Neoclouds for Risk Model Training', blurb: 'Specialised GPU providers offering lower-cost training capacity for internal risk model development.' },
+    { name: 'AI SRE / Agentic AIOps for Core Systems', blurb: 'Agents triaging and in some cases remediating incidents in payment and core banking systems.' },
+    { name: 'Behavioural Biometrics for Continuous Authentication', blurb: 'Passive, continuous identity verification based on interaction patterns rather than one-time checks.' },
+    { name: 'Climate & ESG Risk Modelling AI', blurb: 'Models quantifying climate transition risk exposure across lending and investment portfolios.' },
+    { name: 'AI-Assisted Regulatory Horizon Scanning', blurb: 'Automated tracking and summarisation of incoming regulatory change across jurisdictions.' },
+    { name: 'Decentralised Identity for KYC', blurb: 'Reusable, user-controlled digital identity credentials reducing repeated KYC friction.' },
+  ],
+  ecosystem: [
+    { rank: 1, name: 'Microsoft / Azure', posture: 'Deepen', note: 'Copilot ecosystem and strong regulated-cloud posture for financial institutions.', mix: { adopt: 4, trial: 6, assess: 6 }, onRadar: 16, overHorizon: 4 },
+    { rank: 2, name: 'AWS Financial Services', posture: 'Deepen', note: 'Broad infrastructure plus a dedicated regulated-industry compliance programme.', mix: { adopt: 3, trial: 5, assess: 6 }, onRadar: 14, overHorizon: 4 },
+    { rank: 3, name: 'Google Cloud', posture: 'Maintain', note: 'Strong in fraud/AML ML tooling and data analytics.', mix: { adopt: 2, trial: 4, assess: 4 }, onRadar: 10, overHorizon: 3 },
+    { rank: 4, name: 'Databricks', posture: 'Deepen', note: 'Lakehouse platform widely adopted for risk and fraud data.', mix: { adopt: 2, trial: 4, assess: 3 }, onRadar: 9, overHorizon: 2 },
+    { rank: 5, name: 'Temenos / Thought Machine (core banking)', posture: 'Deepen', note: 'Composable core banking platform providers.', mix: { trial: 3, assess: 2 }, onRadar: 5, overHorizon: 2 },
+    { rank: 6, name: 'Mastercard / Visa (real-time & tokenisation)', posture: 'Maintain', note: 'Payments network operators extending into real-time rails and tokenisation.', mix: { adopt: 2, trial: 2 }, onRadar: 4, overHorizon: 2 },
+    { rank: 7, name: 'Chainalysis / Elliptic', posture: 'Watch', note: 'Blockchain analytics for financial crime and digital asset risk.', mix: { trial: 1, assess: 1 }, onRadar: 2, overHorizon: 2 },
+    { rank: 8, name: 'OpenAI / Anthropic', posture: 'Watch', note: 'Frontier model providers increasingly offering regulated-industry deployment options.', mix: { trial: 3, assess: 2 }, onRadar: 5, overHorizon: 3 },
+  ],
+  movements: [
+    { title: 'Explainability as market entry fee', horizon: 'Now', description: 'Explainable-by-design is becoming the condition for deploying AI in any decisioning use case, not an optional enhancement.' },
+    { title: 'The core finally moves', horizon: 'Now → 18 mo', description: 'Composable banking platforms plus coding agents are making large-scale core replacement a realistic multi-year plan for the first time.' },
+    { title: 'Real-time and tokenised money', horizon: 'Now → 18 mo', description: 'Real-time rails and tokenised deposits/securities are converging toward a programmable settlement layer.' },
+    { title: 'Agentic operations enter regulated workflows', horizon: '12-18 mo', description: 'Fraud investigation and AML triage are the leading edge of agentic AI entering genuinely regulated decision workflows.' },
+    { title: 'Post-quantum migration planning begins', horizon: '2-3 yr', description: 'Long data-confidentiality horizons are pushing early post-quantum cryptography planning years ahead of the quantum threat itself.' },
+  ],
+  functions: [
+    { name: 'Risk & Compliance', description: 'Credit risk, model risk, regulatory compliance and AML.', posture: 'Frontier-leaning', newCount: 7, mix: { adopt: 5, trial: 7, assess: 6 } },
+    { name: 'Technology & Core Platforms', description: 'Core banking, payments infrastructure and platform engineering.', posture: 'Adoption-led', newCount: 5, mix: { adopt: 4, trial: 6, assess: 4 } },
+    { name: 'Fraud & Financial Crime', description: 'Fraud detection, investigation and financial crime operations.', posture: 'Frontier-leaning', newCount: 5, mix: { trial: 5, assess: 4 } },
+    { name: 'Commercial & Wealth', description: 'Retail, commercial banking and wealth/advisory.', posture: 'Balanced', newCount: 4, mix: { adopt: 2, trial: 3, assess: 4 } },
+    { name: 'Security & Identity', description: 'Cybersecurity, identity and cryptographic infrastructure.', posture: 'Frontier-leaning', newCount: 4, mix: { trial: 3, assess: 4 } },
+    { name: 'Corporate & Finance', description: 'Treasury, internal finance and corporate operations.', posture: 'Balanced', newCount: 2, mix: { trial: 1, assess: 2, hold: 1 } },
+  ],
+  geography: {
+    categories: ['Overall', 'Fintech & Payments', 'Regulatory Technology', 'Digital Assets'],
+    leaders: {
+      'Overall': [
+        { rank: 1, place: 'United States', score: 90 }, { rank: 2, place: 'United Kingdom', score: 82 }, { rank: 3, place: 'Singapore', score: 76 },
+        { rank: 4, place: 'China', score: 72 }, { rank: 5, place: 'Switzerland', score: 70 }, { rank: 6, place: 'Hong Kong', score: 68 },
+        { rank: 7, place: 'Germany', score: 63 }, { rank: 8, place: 'India', score: 61 }, { rank: 9, place: 'Australia', score: 59 }, { rank: 10, place: 'UAE', score: 58 },
+      ],
+      'Fintech & Payments': [
+        { rank: 1, place: 'United Kingdom', score: 85 }, { rank: 2, place: 'United States', score: 84 }, { rank: 3, place: 'Singapore', score: 78 },
+        { rank: 4, place: 'India', score: 73 }, { rank: 5, place: 'Brazil', score: 69 }, { rank: 6, place: 'China', score: 67 },
+        { rank: 7, place: 'Nigeria', score: 60 }, { rank: 8, place: 'Sweden', score: 59 }, { rank: 9, place: 'UAE', score: 57 }, { rank: 10, place: 'Indonesia', score: 55 },
+      ],
+      'Regulatory Technology': [
+        { rank: 1, place: 'United States', score: 86 }, { rank: 2, place: 'United Kingdom', score: 83 }, { rank: 3, place: 'Singapore', score: 74 },
+        { rank: 4, place: 'Switzerland', score: 68 }, { rank: 5, place: 'Hong Kong', score: 65 }, { rank: 6, place: 'Germany', score: 62 },
+        { rank: 7, place: 'Australia', score: 60 }, { rank: 8, place: 'Ireland', score: 58 }, { rank: 9, place: 'Netherlands', score: 56 }, { rank: 10, place: 'Canada', score: 54 },
+      ],
+      'Digital Assets': [
+        { rank: 1, place: 'United States', score: 80 }, { rank: 2, place: 'Singapore', score: 76 }, { rank: 3, place: 'Switzerland', score: 73 },
+        { rank: 4, place: 'United Kingdom', score: 69 }, { rank: 5, place: 'UAE', score: 66 }, { rank: 6, place: 'Hong Kong', score: 64 },
+        { rank: 7, place: 'South Korea', score: 60 }, { rank: 8, place: 'Japan', score: 58 }, { rank: 9, place: 'Germany', score: 54 }, { rank: 10, place: 'Brazil', score: 52 },
+      ],
+    },
+  },
+};

@@ -1,0 +1,132 @@
+import type { IndustryRadar } from '../types';
+
+export const healthcare: IndustryRadar = {
+  slug: 'healthcare-life-sciences',
+  name: 'Healthcare & Life Sciences',
+  tagline: 'Where clinical care, biomedical research and health-tech platforms are converging.',
+  scope:
+    'Scope of analysis: providers, payers, biopharma R&D and med-tech — read through the lens of a clinical, scientific or health-IT leader balancing patient safety, regulation and the pressure to modernise.',
+  heroStat: [
+    { label: 'technologies tracked', value: '30' },
+    { label: 'new this edition', value: '12' },
+    { label: 'accelerating', value: '11' },
+    { label: 'quadrants', value: '4' },
+  ],
+  themes: [
+    {
+      title: 'The clinician gets an AI co-pilot, not an AI replacement',
+      description: 'Ambient scribes and diagnostic-support AI are being adopted fastest where they reduce administrative burden, not where they touch final clinical judgement.',
+    },
+    {
+      title: 'The lab goes autonomous',
+      description: 'Self-driving labs and generative biology are compressing discovery timelines that used to take years into months — the bottleneck is shifting from experiments to validation.',
+    },
+    {
+      title: 'Interoperability is finally non-negotiable',
+      description: 'FHIR-native data platforms and federated learning are responses to the same pressure: health data must move safely between systems without ever leaving the system of record.',
+    },
+  ],
+  technologies: [
+    { id: 1, name: 'Ambient Clinical Documentation AI', quadrant: 1, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Clinical', 'Provider'], summary: 'AI scribes that listen to consultations and draft clinical notes.', brief: 'Ambient documentation is the single fastest-adopted clinical AI use case because it attacks clinician burnout directly without touching diagnosis or treatment decisions — the ROI case is now well established.' },
+    { id: 2, name: 'Multimodal Diagnostic AI', quadrant: 1, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Clinical'], summary: 'Models reasoning jointly over imaging, labs and clinical notes.', brief: 'Diagnostic models that combine imaging with structured and unstructured clinical data now outperform single-modality tools in several specialties, though regulatory clearance still trails capability.' },
+    { id: 3, name: 'Agentic Care Coordination', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Operations'], summary: 'Multi-step AI that schedules, follows up and coordinates care across settings.', brief: 'Care coordination is an ideal agentic use case: high administrative volume, clear workflows, and low clinical risk — adoption is accelerating fastest in payer and large provider-network settings.' },
+    { id: 4, name: 'Small Language Models at the Point of Care', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Clinical', 'Cost'], summary: 'Compact, fine-tuned models running on local or edge infrastructure.', brief: 'SLMs make it possible to run clinically fine-tuned models inside a hospital network boundary, avoiding the data-residency and latency problems of calling out to a frontier model API.' },
+    { id: 5, name: 'Reasoning Models for Differential Diagnosis Support', quadrant: 1, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Clinical'], summary: 'Models that work through multi-step clinical reasoning before suggesting a differential.', brief: 'Early results show reasoning models materially reduce diagnostic error on complex cases when used as a second opinion — always positioned as decision support, never as the decision-maker.' },
+    { id: 6, name: 'AI Gateway & Model Routing for Clinical Systems', quadrant: 1, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Platform'], summary: 'A governed control plane for which model handles which clinical query.', brief: 'Health systems running multiple models for different specialties need centralised routing, auditing and fallback — the clinical equivalent of an API gateway, with compliance logging built in.' },
+    { id: 7, name: 'Autonomous Research Agents', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['R&D'], summary: 'Agents that search literature, design experiments and draft findings with minimal supervision.', brief: 'Promising for literature synthesis and hypothesis generation in early discovery, but still requires heavy human verification before any experimental or regulatory step.' },
+    { id: 8, name: 'Generative Biology', quadrant: 1, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['R&D'], summary: 'Generative models designing novel proteins, molecules and biological sequences.', brief: 'Generative biology is compressing early-stage discovery timelines dramatically, but wet-lab validation remains the gating step — treat as an acceleration of discovery, not a replacement for it.' },
+
+    { id: 9, name: 'FHIR-Native Clinical Data Platforms', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Data', 'Interoperability'], summary: 'Data platforms built around the FHIR interoperability standard from the ground up.', brief: 'FHIR-native platforms are now the default foundation for any new clinical data investment — retrofitting interoperability onto legacy data models is consistently more expensive than starting FHIR-native.' },
+    { id: 10, name: 'Confidential Computing for PHI', quadrant: 2, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['Security'], summary: 'Hardware-enforced encryption of protected health information in use.', brief: 'Confidential computing has moved from research curiosity to a practical requirement for any multi-party health-data collaboration, including federated learning and research consortia.' },
+    { id: 11, name: 'Federated Learning Across Health Systems', quadrant: 2, ring: 'trial', momentum: 'accelerating', timeHorizon: '12-18 mo', tags: ['R&D', 'Data'], summary: 'Training shared models across institutions without moving patient data.', brief: 'Federated learning is the most credible path to training robust clinical models on diverse populations without the data-sharing agreements that have historically stalled multi-institution research.' },
+    { id: 12, name: 'Sovereign & Regional Health Data Cloud', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Compliance'], summary: 'Cloud infrastructure guaranteeing health data never leaves a given jurisdiction.', brief: 'Tightening health-data residency rules in multiple regions are making sovereign cloud a procurement requirement, not a nice-to-have, for any multinational health-tech vendor.' },
+    { id: 13, name: 'Non-Human Identity for Clinical Systems', quadrant: 2, ring: 'trial', momentum: 'new', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Governing the growing population of service accounts and clinical-AI agent identities.', brief: 'As agentic AI touches scheduling, documentation and coordination systems, the number of non-human identities with access to PHI grows sharply — identity governance has to scale with it.' },
+    { id: 14, name: 'Edge AI for Bedside & Wearable Devices', quadrant: 2, ring: 'assess', momentum: 'new', timeHorizon: '2-3 yr', tags: ['Clinical'], summary: 'Inference running directly on monitoring and wearable devices.', brief: 'On-device inference enables continuous monitoring with alerting that does not depend on network connectivity — compelling for remote and home-care settings, still maturing for regulatory clearance.' },
+    { id: 15, name: 'Digital Twins of Patients & Care Pathways', quadrant: 2, ring: 'assess', momentum: 'new', timeHorizon: '2-3 yr', tags: ['Operations'], summary: 'Simulated models of individual patients or hospital processes for planning and prediction.', brief: 'Patient- and pathway-level digital twins show strong promise for capacity planning and treatment simulation, but data fidelity and validation standards are still being established.' },
+    { id: 16, name: 'Interoperability via Bulk FHIR & Health APIs', quadrant: 2, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Interoperability'], summary: 'Standardised bulk data exchange APIs across EHRs and health platforms.', brief: 'Regulatory mandates in several markets have made bulk FHIR APIs a baseline requirement — any platform without them is now at a structural disadvantage in enterprise health deals.' },
+
+    { id: 17, name: 'Evaluation-Driven Clinical AI', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Clinical', 'Safety'], summary: 'Continuous, clinically-validated evaluation suites gating every model change.', brief: 'Given patient-safety stakes, no clinical AI feature should ship without a living, clinician-reviewed evaluation suite — this is rapidly becoming both best practice and, in some jurisdictions, a regulatory expectation.' },
+    { id: 18, name: 'Real-World Evidence (RWE) Pipelines', quadrant: 3, ring: 'adopt', momentum: 'accelerating', timeHorizon: 'Now', tags: ['R&D'], summary: 'Automated pipelines turning real-world clinical data into regulatory-grade evidence.', brief: 'RWE is increasingly accepted by regulators alongside traditional trial data, making investment in clean, automated evidence pipelines a durable competitive advantage.' },
+    { id: 19, name: 'Synthetic Patient Data', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Data', 'Privacy'], summary: 'Statistically realistic, privacy-safe synthetic patient records for testing and training.', brief: 'Synthetic patient data is unlocking development and testing workflows that were previously blocked by privacy review — particularly valuable for stress-testing rare-condition scenarios.' },
+    { id: 20, name: 'Continuous Regulatory Compliance-as-Code', quadrant: 3, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['Compliance'], summary: 'Automated, always-on evidence collection against health-regulatory frameworks.', brief: 'Manual audit preparation cannot keep pace with continuous AI deployment — encoding compliance checks directly into the deployment pipeline is becoming standard practice for health-tech vendors.' },
+    { id: 21, name: 'Threat Modeling for Clinical ML Systems', quadrant: 3, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['Security'], summary: 'Structured analysis of adversarial and failure risks specific to clinical AI.', brief: 'Clinical ML systems face unique risks — data poisoning that shifts diagnostic thresholds, for example — that generic application security review does not catch. A dedicated clinical ML threat model is essential before launch.' },
+    { id: 22, name: 'Self-Driving Labs', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '12-18 mo', tags: ['R&D'], summary: 'Robotics and AI running closed-loop experimentation cycles with minimal human intervention.', brief: 'Self-driving labs are compressing design-make-test-analyse cycles from weeks to days in leading research organisations — still capital-intensive, but the cost curve is falling fast.' },
+    { id: 23, name: 'AI-Assisted Regulatory & Medical Writing', quadrant: 3, ring: 'assess', momentum: 'new', timeHorizon: '6-12 mo', tags: ['R&D', 'Compliance'], summary: 'AI drafting regulatory submissions and medical documents under human review.', brief: 'Early deployments show real time savings in first-draft generation of structured regulatory documents, with mandatory expert review before submission — a clear near-term productivity win.' },
+    { id: 24, name: 'Decentralized Clinical Trials', quadrant: 3, ring: 'hold', momentum: 'steady', timeHorizon: 'Now', tags: ['R&D'], summary: 'Trials conducted substantially through remote monitoring and local care rather than central sites.', brief: 'Decentralised trial models proved valuable during forced remote-operation periods but adoption has plateaued — logistics and data-quality complexity are offsetting the participation benefits for now.' },
+
+    { id: 25, name: 'Knowledge Graphs & GraphRAG for Biomedical Literature', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: '6-12 mo', tags: ['R&D', 'Data'], summary: 'Structured knowledge graphs combined with retrieval for literature-grounded AI reasoning.', brief: 'GraphRAG over curated biomedical knowledge graphs materially reduces hallucination risk compared with plain text retrieval — an increasingly standard pattern for research-assistant tools.' },
+    { id: 26, name: 'Vector Search over Medical Literature', quadrant: 4, ring: 'adopt', momentum: 'steady', timeHorizon: 'Now', tags: ['R&D'], summary: 'Semantic search across clinical guidelines, trial data and publications.', brief: 'Semantic search over curated, versioned literature corpora is now a baseline capability expected in any clinical decision-support or research tool.' },
+    { id: 27, name: 'LLM Observability for Clinical Systems', quadrant: 4, ring: 'trial', momentum: 'accelerating', timeHorizon: 'Now', tags: ['Engineering'], summary: 'Tracing, auditing and quality monitoring tailored to clinical AI deployments.', brief: 'Clinical deployments need observability that captures not just cost and latency but clinically relevant quality signals and audit trails for every model response.' },
+    { id: 28, name: 'Agent & Tool Protocols for Health Data Access', quadrant: 4, ring: 'trial', momentum: 'new', timeHorizon: '12-18 mo', tags: ['Platform'], summary: 'Emerging standards for how clinical agents discover and call health-data tools safely.', brief: 'Standardising how agents request and are granted access to sensitive health data and systems is becoming a prerequisite for scaling agentic workflows safely in regulated environments.' },
+    { id: 29, name: 'Quantum Computing for Molecular Simulation', quadrant: 4, ring: 'assess', momentum: 'new', timeHorizon: '2-3 yr', tags: ['R&D'], summary: 'Quantum algorithms for simulating molecular interactions beyond classical reach.', brief: 'Still pre-commercial for most drug-discovery use cases, but hybrid classical-quantum pilots are showing early promise for specific, narrow molecular simulation problems.' },
+    { id: 30, name: 'Bioinformatics Pipeline Modernisation (Rust/Modern Tooling)', quadrant: 4, ring: 'trial', momentum: 'steady', timeHorizon: 'Now', tags: ['R&D', 'Engineering'], summary: 'Rewriting legacy genomics and bioinformatics pipelines in modern, faster tooling.', brief: 'Legacy bioinformatics pipelines are a frequent bottleneck in discovery throughput — modernising to faster languages and tooling delivers outsized, low-risk performance gains.' },
+  ],
+  editorsPicks: [1, 8, 11, 17, 22],
+  editorsNote:
+    'If I had to defend five bets to a chief medical officer tomorrow: Ambient Clinical Documentation AI because it is the clearest, safest, fastest ROI available today; Generative Biology and Self-Driving Labs because together they are compressing discovery timelines more than any single technology has in a generation; Federated Learning because it finally offers a credible path through the data-sharing deadlock; and Evaluation-Driven Clinical AI because, in this industry more than any other, you cannot responsibly ship what you have not rigorously measured.',
+  watchlist: [
+    { name: 'Agentic Clinical Trial Matching', blurb: 'Agents that continuously match eligible patients to open trials across a health system\'s records.' },
+    { name: 'AI-Native Patient Engagement', blurb: 'Conversational agents handling intake, triage-adjacent questions and follow-up outside clinical judgement.' },
+    { name: 'Context Engineering for Clinical Prompts', blurb: 'Deliberate design of what clinical context is fed into a model, distinct from general prompt engineering.' },
+    { name: 'Quantum-Safe Cryptography for Health Records', blurb: 'Post-quantum encryption for health records that must remain confidential for decades.' },
+    { name: 'Spatial Computing for Surgical Planning', blurb: 'AR/VR visualisation of patient anatomy for pre-operative planning and training.' },
+    { name: 'Answer Engine Optimisation for Patient Information', blurb: 'Ensuring authoritative health content is correctly surfaced and cited by AI answer engines.' },
+    { name: 'Private 5G for Hospital Campuses', blurb: 'Dedicated low-latency wireless networks supporting real-time device and robotics coordination.' },
+    { name: 'AI-Powered Pharmacovigilance', blurb: 'Automated signal detection across adverse-event reports at a scale manual review cannot match.' },
+    { name: 'Digital Biomarkers from Wearables', blurb: 'Continuous physiological signals used as endpoints or early indicators in research and care.' },
+    { name: 'Embodied AI for Hospital Logistics', blurb: 'Autonomous robots handling supply delivery and routine logistics within care facilities.' },
+    { name: 'AI SRE for Clinical Systems Uptime', blurb: 'Agentic operations tooling applied to the uniquely high-stakes uptime requirements of clinical IT.' },
+    { name: 'Generative Models for Clinical Trial Design', blurb: 'Early-stage use of generative AI to optimise trial protocol design itself.' },
+  ],
+  ecosystem: [
+    { rank: 1, name: 'Microsoft / Azure Health', posture: 'Deepen', note: 'Health-data platform plus ambient documentation and copilots.', mix: { adopt: 4, trial: 6, assess: 7 }, onRadar: 17, overHorizon: 5 },
+    { rank: 2, name: 'Google Cloud / DeepMind Health', posture: 'Deepen', note: 'Diagnostic and multimodal model leadership, strong life-sciences research ties.', mix: { adopt: 3, trial: 6, assess: 7 }, onRadar: 16, overHorizon: 5 },
+    { rank: 3, name: 'AWS HealthLake', posture: 'Deepen', note: 'FHIR-native data lake and broad infrastructure reach.', mix: { adopt: 3, trial: 5, assess: 5 }, onRadar: 13, overHorizon: 4 },
+    { rank: 4, name: 'Epic / Oracle Health', posture: 'Deepen', note: 'EHR incumbents expanding into embedded AI and interoperability APIs.', mix: { adopt: 4, trial: 4, assess: 3 }, onRadar: 11, overHorizon: 2 },
+    { rank: 5, name: 'Databricks', posture: 'Maintain', note: 'Lakehouse platform increasingly used for clinical and research data.', mix: { adopt: 2, trial: 3, assess: 3 }, onRadar: 8, overHorizon: 2 },
+    { rank: 6, name: 'Veeva', posture: 'Maintain', note: 'Life-sciences CRM and clinical content platform.', mix: { adopt: 2, trial: 2 }, onRadar: 4, overHorizon: 1 },
+    { rank: 7, name: 'Nuance (ambient documentation)', posture: 'Maintain', note: 'Deep incumbency in clinical voice and documentation AI.', mix: { adopt: 2, trial: 1 }, onRadar: 3, overHorizon: 1 },
+    { rank: 8, name: 'NVIDIA Clara', posture: 'Watch', note: 'Healthcare-specific AI infrastructure and model toolkits.', mix: { trial: 2, assess: 2 }, onRadar: 4, overHorizon: 2 },
+    { rank: 9, name: 'IBM Watson Health successors', posture: 'Watch', note: 'Residual enterprise footprint in clinical decision support.', mix: { assess: 2 }, onRadar: 2, overHorizon: 1 },
+  ],
+  movements: [
+    { title: 'The administrative-burden offensive', horizon: 'Now', description: 'Ambient documentation and agentic coordination are the fastest-moving category because they relieve burnout without touching clinical judgement.' },
+    { title: 'Discovery goes closed-loop', horizon: 'Now → 18 mo', description: 'Generative biology and self-driving labs are compressing early discovery cycles from years to months.' },
+    { title: 'Interoperability stops being optional', horizon: 'Now', description: 'Regulatory mandates are converting FHIR and bulk health APIs from best practice into procurement requirements.' },
+    { title: 'Federated and sovereign data architectures converge', horizon: '12-18 mo', description: 'Federated learning and sovereign cloud are two sides of the same problem: unlocking data value without moving the data.' },
+    { title: 'Clinical AI governance matures', horizon: '12-18 mo', description: 'Evaluation-driven development and dedicated ML threat modelling are moving from best practice to regulatory expectation.' },
+  ],
+  functions: [
+    { name: 'Clinical Operations', description: 'Direct patient care delivery and clinical workflow.', posture: 'Adoption-led', newCount: 5, mix: { adopt: 6, trial: 6, assess: 4 } },
+    { name: 'R&D / Discovery', description: 'Biomedical research, discovery and translational science.', posture: 'Frontier-leaning', newCount: 9, mix: { trial: 5, assess: 9 } },
+    { name: 'Clinical Trials & Regulatory', description: 'Trial operations, regulatory affairs and submissions.', posture: 'Balanced', newCount: 4, mix: { adopt: 2, trial: 4, assess: 4, hold: 1 } },
+    { name: 'Health IT & Data', description: 'EHR, interoperability and clinical data platforms.', posture: 'Adoption-led', newCount: 4, mix: { adopt: 5, trial: 5, assess: 3 } },
+    { name: 'Security & Compliance', description: 'Information security, privacy and regulatory compliance.', posture: 'Frontier-leaning', newCount: 3, mix: { trial: 4, assess: 4 } },
+    { name: 'Patient & Member Engagement', description: 'Patient-facing digital services and communications.', posture: 'Balanced', newCount: 3, mix: { trial: 2, assess: 3 } },
+  ],
+  geography: {
+    categories: ['Overall', 'Clinical AI', 'Biopharma R&D', 'Health Data Platforms'],
+    leaders: {
+      'Overall': [
+        { rank: 1, place: 'United States', score: 90 }, { rank: 2, place: 'United Kingdom', score: 76 }, { rank: 3, place: 'China', score: 74 },
+        { rank: 4, place: 'Germany', score: 69 }, { rank: 5, place: 'Switzerland', score: 68 }, { rank: 6, place: 'South Korea', score: 63 },
+        { rank: 7, place: 'Israel', score: 61 }, { rank: 8, place: 'Japan', score: 60 }, { rank: 9, place: 'Singapore', score: 58 }, { rank: 10, place: 'Canada', score: 57 },
+      ],
+      'Clinical AI': [
+        { rank: 1, place: 'United States', score: 92 }, { rank: 2, place: 'United Kingdom', score: 74 }, { rank: 3, place: 'China', score: 70 },
+        { rank: 4, place: 'South Korea', score: 65 }, { rank: 5, place: 'Germany', score: 62 }, { rank: 6, place: 'Israel', score: 61 },
+        { rank: 7, place: 'Canada', score: 58 }, { rank: 8, place: 'Japan', score: 57 }, { rank: 9, place: 'Australia', score: 55 }, { rank: 10, place: 'Singapore', score: 54 },
+      ],
+      'Biopharma R&D': [
+        { rank: 1, place: 'United States', score: 93 }, { rank: 2, place: 'Switzerland', score: 79 }, { rank: 3, place: 'United Kingdom', score: 73 },
+        { rank: 4, place: 'Germany', score: 70 }, { rank: 5, place: 'China', score: 68 }, { rank: 6, place: 'France', score: 62 },
+        { rank: 7, place: 'Japan', score: 60 }, { rank: 8, place: 'Belgium', score: 56 }, { rank: 9, place: 'Denmark', score: 55 }, { rank: 10, place: 'Ireland', score: 53 },
+      ],
+      'Health Data Platforms': [
+        { rank: 1, place: 'United States', score: 88 }, { rank: 2, place: 'United Kingdom', score: 72 }, { rank: 3, place: 'Estonia', score: 69 },
+        { rank: 4, place: 'Germany', score: 65 }, { rank: 5, place: 'Netherlands', score: 63 }, { rank: 6, place: 'Singapore', score: 61 },
+        { rank: 7, place: 'Australia', score: 59 }, { rank: 8, place: 'Canada', score: 58 }, { rank: 9, place: 'South Korea', score: 56 }, { rank: 10, place: 'India', score: 52 },
+      ],
+    },
+  },
+};
