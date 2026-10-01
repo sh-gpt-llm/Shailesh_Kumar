@@ -20,10 +20,12 @@ else
 fi
 
 echo "==> Syncing with GitHub main..."
-git pull --rebase origin main
+# Unset GIT_ASKPASS so VS Code's GitHub session can't override the stored PAT.
+# VS Code signs in with a different account that has no push access to this repo.
+GIT_ASKPASS= git pull --rebase origin main
 
 echo "==> Pushing to GitHub main (Netlify will auto-deploy)..."
-git push origin main
+GIT_ASKPASS= git push origin main
 
 echo "==> Done. Netlify will rebuild and publish automatically in ~30-60s:"
 echo "    https://fastidious-praline-2bbf62.netlify.app/"
