@@ -23,6 +23,15 @@ export interface Technology {
   brief: string; // longer "read the brief" paragraph
   timeHorizon: string; // e.g. "Now", "12-18 mo", "2-3 yr"
   tags: string[];
+  /** Ring in the prior edition. Absent on the baseline edition. */
+  previousRing?: Ring;
+}
+
+export interface Edition {
+  label: string;
+  published: string;
+  /** True when there is no prior edition to compare movement against. */
+  baseline?: boolean;
 }
 
 export interface Theme {
@@ -70,6 +79,7 @@ export interface IndustryRadar {
   name: string;
   tagline: string;
   scope: string;
+  edition: Edition;
   heroStat: { label: string; value: string }[];
   themes: Theme[];
   technologies: Technology[];

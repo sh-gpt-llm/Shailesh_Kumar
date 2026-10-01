@@ -6,6 +6,7 @@ export const retail: IndustryRadar = {
   tagline: 'Where shopping, merchandising and the store itself are being rebuilt around agents and answer engines.',
   scope:
     'Scope of analysis: e-commerce, brick-and-mortar retail, consumer brands and retail media — read through the lens of a commerce, merchandising or digital leader balancing margin pressure with the shift from search boxes to AI answer engines and shopping agents.',
+  edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
   heroStat: [
     { label: 'technologies tracked', value: '30' },
     { label: 'new this edition', value: '12' },

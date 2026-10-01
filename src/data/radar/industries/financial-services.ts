@@ -6,6 +6,7 @@ export const financialServices: IndustryRadar = {
   tagline: 'Where banking, payments, insurance and wealth management are re-platforming for an agentic, real-time world.',
   scope:
     'Scope of analysis: retail and commercial banking, payments, insurance and wealth management — read through the lens of a risk, technology or operations leader balancing regulatory scrutiny with the cost of standing still.',
+  edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
   heroStat: [
     { label: 'technologies tracked', value: '30' },
     { label: 'new this edition', value: '10' },

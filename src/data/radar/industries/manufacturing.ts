@@ -6,6 +6,7 @@ export const manufacturing: IndustryRadar = {
   tagline: 'Where the shop floor, the supply chain and the engineering desk are being re-wired by AI and connectivity.',
   scope:
     'Scope of analysis: discrete and process manufacturing, industrial engineering and supply chain operations — read through the lens of a plant, engineering or supply-chain leader balancing uptime, safety and the pressure to modernise OT alongside IT.',
+  edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
   heroStat: [
     { label: 'technologies tracked', value: '30' },
     { label: 'new this edition', value: '11' },

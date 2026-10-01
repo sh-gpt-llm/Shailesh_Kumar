@@ -6,6 +6,7 @@ export const healthcare: IndustryRadar = {
   tagline: 'Where clinical care, biomedical research and health-tech platforms are converging.',
   scope:
     'Scope of analysis: providers, payers, biopharma R&D and med-tech — read through the lens of a clinical, scientific or health-IT leader balancing patient safety, regulation and the pressure to modernise.',
+  edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
   heroStat: [
     { label: 'technologies tracked', value: '30' },
     { label: 'new this edition', value: '12' },
