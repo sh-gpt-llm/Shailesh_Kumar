@@ -35,4 +35,70 @@ if (unmatched.length) {
   process.exit(1);
 }
 
-console.log(`✓ radar: ${aliasCount} canonical aliases matched against ${technologyNames.size} technologies`);
+// Every dependsOn id must exist in that industry, and nothing may depend on itself.
+const slugByFile = {
+  'tech.ts': 'tech-saas',
+  'healthcare.ts': 'healthcare-life-sciences',
+  'financial-services.ts': 'financial-services',
+  'manufacturing.ts': 'manufacturing-industrial',
+  'retail.ts': 'retail-consumer',
+};
+const idsBySlug = {};
+for (const file of files) {
+  const source = readFileSync(join(industriesDir, file), 'utf8');
+  const ids = new Set();
+  for (const m of source.matchAll(/\{ id: (\d+), name: '/g)) ids.add(Number(m[1]));
+  idsBySlug[slugByFile[file]] = ids;
+}
+
+const augment = readFileSync(join(projectRoot, 'src/data/radar/augment.ts'), 'utf8');
+
+// Brace-matched extraction: entries appear both inline and multi-line, so a
+// plain regex over the whole block silently skips the inline ones.
+const sliceBlock = (text, openIndex) => {
+  let depth = 0;
+  for (let i = openIndex; i < text.length; i++) {
+    if (text[i] === '{') depth++;
+    else if (text[i] === '}') {
+      depth--;
+      if (depth === 0) return text.slice(openIndex, i + 1);
+    }
+  }
+  return '';
+};
+
+const depErrors = [];
+let depCount = 0;
+let entryCount = 0;
+for (const slugMatch of augment.matchAll(/'([a-z-]+)':\s*\{/g)) {
+  const slug = slugMatch[1];
+  const ids = idsBySlug[slug];
+  if (!ids) continue;
+  const block = sliceBlock(augment, slugMatch.index + slugMatch[0].length - 1);
+  for (const entryMatch of block.matchAll(/(?:^|\n)\s{4}(\d+):\s*\{/g)) {
+    const ownerId = Number(entryMatch[1]);
+    entryCount++;
+    const entry = sliceBlock(block, entryMatch.index + entryMatch[0].length - 1);
+    const deps = entry.match(/dependsOn:\s*\[([^\]]*)\]/);
+    if (!deps) continue;
+    for (const raw of deps[1].split(',')) {
+      const id = Number(raw.trim());
+      if (!Number.isFinite(id) || raw.trim() === '') continue;
+      depCount++;
+      if (!ids.has(id)) depErrors.push(`${slug}: technology ${ownerId} depends on unknown id ${id}`);
+      if (id === ownerId) depErrors.push(`${slug}: technology ${ownerId} depends on itself`);
+    }
+    if (!ids.has(ownerId)) depErrors.push(`${slug}: augment declared for unknown technology id ${ownerId}`);
+  }
+}
+
+if (depErrors.length) {
+  console.error(`\n✗ radar: ${depErrors.length} invalid dependency reference(s):`);
+  for (const e of depErrors) console.error(`    ${e}`);
+  console.error('');
+  process.exit(1);
+}
+
+console.log(
+  `✓ radar: ${aliasCount} aliases, ${entryCount} augmented technologies and ${depCount} dependencies validated against ${technologyNames.size} technologies`
+);

@@ -91,3 +91,60 @@ body {
   background-size: 200% 200%;
   animation: drift 12s ease infinite;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.radar-blip:focus-visible circle {
+  stroke: #fbbf24;
+  stroke-width: 3;
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  body {
+    background: #fff !important;
+  }
+  body * {
+    color: #111 !important;
+  }
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  #radar-app select,
+  #radar-app input {
+    display: none !important;
+  }
+  .glass,
+  .glow-border {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    backdrop-filter: none !important;
+  }
+  .glow-border::before {
+    display: none !important;
+  }
+  .gradient-text {
+    -webkit-text-fill-color: #111;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  section {
+    break-inside: avoid;
+  }
+}

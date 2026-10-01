@@ -7,12 +7,6 @@ export const tech: IndustryRadar = {
   scope:
     'Scope of analysis: cloud-native platforms, developer tooling, AI/ML infrastructure, and the commercial SaaS stack — read through the lens of a product, platform or engineering leader deciding where to invest the next two budget cycles.',
   edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
-  heroStat: [
-    { label: 'technologies tracked', value: '30' },
-    { label: 'new this edition', value: '11' },
-    { label: 'accelerating', value: '13' },
-    { label: 'quadrants', value: '4' },
-  ],
   themes: [
     {
       title: 'Agents leave the sandbox',

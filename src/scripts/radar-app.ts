@@ -16,6 +16,8 @@ import {
 } from './radar/position';
 import type { PositionMap, Stance } from './radar/position';
 import { layoutBlips, RING_BANDS } from './radar/layout';
+import { toCsv, toJson, download } from './radar/export';
+import { ROLE_PATHS, rolePathById } from './radar/roles';
 
 const RING_ORDER: Ring[] = ['adopt', 'trial', 'assess', 'hold'];
 const RING_COLOR: Record<Ring, string> = {
@@ -28,11 +30,21 @@ const RING_COLOR: Record<Ring, string> = {
 const TABS: { id: Tab; label: string; hint: string }[] = [
   { id: 'radar', label: 'Radar', hint: 'The quadrant and ring visualisation of every technology' },
   { id: 'list', label: 'List', hint: 'Every technology as one index, grouped by quadrant and ring' },
+  { id: 'roadmap', label: 'Roadmap', hint: 'When to act, and what each technology builds on' },
   { id: 'compare', label: 'Compare', hint: 'One technology, seen across all five industries at once' },
   { id: 'position', label: 'Your Position', hint: 'Mark where you stand and get a gap analysis' },
   { id: 'ecosystem', label: 'Ecosystem', hint: 'The vendors and platforms building in this space' },
   { id: 'functions', label: 'By Function', hint: "The radar through each business function's lens" },
   { id: 'geography', label: 'Geography', hint: 'Where capability concentrates around the world' },
+];
+
+// Ordered buckets for the Roadmap swimlanes; technologies are matched by the
+// timeHorizon strings used across the datasets.
+const HORIZONS: { label: string; matches: string[] }[] = [
+  { label: 'Act now', matches: ['Now'] },
+  { label: 'Next 6–12 months', matches: ['6-12 mo'] },
+  { label: '12–18 months', matches: ['12-18 mo'] },
+  { label: '2–3 years', matches: ['2-3 yr'] },
 ];
 
 const esc = (s: string): string =>
@@ -58,6 +70,7 @@ export function initRadarApp() {
     selectedId: null,
     compareKey: null,
     geoCategory: '',
+    role: null,
   });
 
   let position: PositionMap = {};
@@ -135,6 +148,13 @@ export function initRadarApp() {
 
   function hero(ind: IndustryRadar) {
     const newCount = ind.technologies.filter((t) => t.momentum === 'new').length;
+    // Derived from the data so the headline numbers can never drift from the radar.
+    const stats = [
+      { label: 'technologies tracked', value: String(ind.technologies.length) },
+      { label: 'new this edition', value: String(newCount) },
+      { label: 'accelerating', value: String(ind.technologies.filter((t) => t.momentum === 'accelerating').length) },
+      { label: 'on the watchlist', value: String(ind.watchlist.length) },
+    ];
     return `
       <section class="mx-auto max-w-6xl px-6 pt-10 pb-6">
         <div class="flex flex-wrap items-center gap-3">
@@ -147,7 +167,7 @@ export function initRadarApp() {
         <p class="mt-4 max-w-3xl text-base leading-relaxed text-mist">${esc(ind.tagline)}</p>
         <p class="mt-4 max-w-3xl rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-relaxed text-mist">${esc(ind.scope)}</p>
         <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          ${ind.heroStat
+          ${stats
             .map(
               (s) => `
             <div class="glass rounded-2xl p-4 text-center">
@@ -161,7 +181,10 @@ export function initRadarApp() {
           <span class="rounded-full bg-white/5 px-3 py-1">◌ ${newCount} new this edition</span>
           <span class="rounded-full bg-white/5 px-3 py-1">Published ${esc(ind.edition.published)}</span>
           ${ind.edition.baseline ? `<span class="rounded-full bg-white/5 px-3 py-1">Baseline edition — ring movement is tracked from the next release</span>` : ''}
-          <button data-action="share" class="rounded-full border border-white/15 px-3 py-1 transition hover:text-white">Copy share link</button>
+          <button data-action="share" class="no-print rounded-full border border-white/15 px-3 py-1 transition hover:text-white">Copy share link</button>
+          <button data-action="export-csv" class="no-print rounded-full border border-white/15 px-3 py-1 transition hover:text-white">Download CSV</button>
+          <button data-action="export-json" class="no-print rounded-full border border-white/15 px-3 py-1 transition hover:text-white">Download JSON</button>
+          <button data-action="print" class="no-print rounded-full border border-white/15 px-3 py-1 transition hover:text-white">Print / PDF</button>
         </div>
       </section>`;
   }
@@ -202,7 +225,7 @@ export function initRadarApp() {
   }
 
   function controls(ind: IndustryRadar) {
-    if (state.tab !== 'radar' && state.tab !== 'list') return '';
+    if (state.tab !== 'radar' && state.tab !== 'list' && state.tab !== 'roadmap') return '';
     const active = state.quadrant !== 'all' || state.ring !== 'all' || state.search;
     return `
       <section class="mx-auto max-w-6xl px-6 py-5">
@@ -691,6 +714,199 @@ export function initRadarApp() {
 
   /* -------------------------------------------------------- shared sections */
 
+  function startHere(ind: IndustryRadar) {
+    const active = state.role ? rolePathById(state.role) : null;
+    return `
+      <section class="mx-auto max-w-6xl px-6 py-6 no-print">
+        <div class="glass glow-border rounded-3xl p-6">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="font-display text-base font-semibold text-white">Start here</h2>
+              <p class="mt-1 text-sm text-mist">Ninety seconds, tailored to how you'll actually use this radar.</p>
+            </div>
+            ${active ? `<button data-action="clear-role" class="rounded-xl bg-white/10 px-3 py-1.5 text-xs text-white">Clear</button>` : ''}
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            ${ROLE_PATHS.map(
+              (r) => `
+              <button data-action="role" data-role="${r.id}" class="rounded-full border px-4 py-2 text-sm font-medium transition ${
+                state.role === r.id
+                  ? 'border-transparent bg-white text-ink'
+                  : 'border-white/10 text-mist hover:border-white/30 hover:text-white'
+              }">${esc(r.label)}</button>`
+            ).join('')}
+          </div>
+          ${
+            active
+              ? `
+            <div class="mt-5 grid gap-5 lg:grid-cols-[1fr_280px]">
+              <div>
+                <p class="text-sm italic text-mist">${esc(active.blurb)}</p>
+                <ol class="mt-3 space-y-2">
+                  ${active.steps
+                    .map(
+                      (s, i) => `
+                    <li class="flex gap-3">
+                      <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-500/30 text-[10px] font-bold text-violet-200">${i + 1}</span>
+                      <span class="text-sm text-mist"><strong class="text-white">${esc(s.title)}</strong> — ${esc(s.detail)}</span>
+                    </li>`
+                    )
+                    .join('')}
+                </ol>
+              </div>
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-cyan-400">Your ${active.pick(ind).length} priority reads</p>
+                <div class="mt-2 max-h-56 space-y-1.5 overflow-y-auto pr-1">
+                  ${active
+                    .pick(ind)
+                    .slice(0, 12)
+                    .map(
+                      (t) => `<button data-action="select-tech" data-id="${t.id}" class="block w-full rounded-lg border border-white/10 px-3 py-1.5 text-left text-xs text-white transition hover:bg-white/10">${pad2(t.id)} · ${esc(t.name)}</button>`
+                    )
+                    .join('')}
+                </div>
+              </div>
+            </div>`
+              : ''
+          }
+        </div>
+      </section>`;
+  }
+
+  function whatChanged(ind: IndustryRadar) {
+    const fresh = ind.technologies.filter((t) => t.momentum === 'new');
+    const accelerating = ind.technologies.filter((t) => t.momentum === 'accelerating');
+    const cooling = ind.technologies.filter((t) => t.momentum === 'cooling');
+    const moved = ind.technologies.filter((t) => t.previousRing && t.previousRing !== t.ring);
+
+    const column = (title: string, color: string, items: Technology[], empty: string) => `
+      <div class="rounded-2xl border border-white/10 p-4">
+        <h3 class="font-display text-sm font-semibold" style="color:${color}">${esc(title)} <span class="text-mist">· ${items.length}</span></h3>
+        ${
+          items.length
+            ? `<ul class="mt-2 max-h-48 space-y-1 overflow-y-auto pr-1">${items
+                .map(
+                  (t) => `<li><button data-action="select-tech" data-id="${t.id}" class="text-left text-xs text-white hover:underline">${pad2(t.id)} · ${esc(t.name)}</button></li>`
+                )
+                .join('')}</ul>`
+            : `<p class="mt-2 text-xs text-mist">${esc(empty)}</p>`
+        }
+      </div>`;
+
+    return `
+      <section class="mx-auto max-w-6xl px-6 py-10">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">What changed · ${esc(ind.edition.label)}</h2>
+          <span class="text-xs text-mist">Published ${esc(ind.edition.published)}</span>
+        </div>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          ${column('New this edition', '#22d3ee', fresh, 'Nothing new.')}
+          ${column('Accelerating', '#34d399', accelerating, 'No accelerating entries.')}
+          ${column('Cooling', '#f87171', cooling, 'Nothing cooling.')}
+          ${column(
+            'Moved ring',
+            '#a78bfa',
+            moved,
+            ind.edition.baseline
+              ? 'This is the baseline edition — ring movement is tracked from the next release onward.'
+              : 'No ring changes.'
+          )}
+        </div>
+      </section>`;
+  }
+
+  function roadmapTab(ind: IndustryRadar) {
+    const items = filteredTech(ind);
+    const byId = new Map(ind.technologies.map((t) => [t.id, t]));
+    const enables = new Map<number, Technology[]>();
+    for (const t of ind.technologies) {
+      for (const dep of t.dependsOn ?? []) {
+        const list = enables.get(dep);
+        if (list) list.push(t);
+        else enables.set(dep, [t]);
+      }
+    }
+
+    const lanes = HORIZONS.map((h) => {
+      const laneItems = items.filter((t) => h.matches.includes(t.timeHorizon));
+      if (!laneItems.length) return '';
+      return `
+        <div class="mt-6">
+          <div class="flex items-baseline gap-3">
+            <h3 class="font-display text-lg font-semibold text-white">${esc(h.label)}</h3>
+            <span class="text-xs text-mist">${laneItems.length} ${laneItems.length === 1 ? 'technology' : 'technologies'}</span>
+          </div>
+          <div class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            ${laneItems
+              .map((t) => {
+                const deps = (t.dependsOn ?? []).map((d) => byId.get(d)).filter((d): d is Technology => !!d);
+                const unlocks = enables.get(t.id) ?? [];
+                return `
+                <div class="glass rounded-xl p-4">
+                  <div class="flex items-center justify-between gap-2 text-xs text-mist">
+                    <span>${pad2(t.id)}</span>
+                    <span class="rounded-full px-2 py-0.5 font-semibold" style="background:${RING_COLOR[t.ring]}33;color:${RING_COLOR[t.ring]}">${esc(ringLabel(t.ring))}</span>
+                  </div>
+                  <button data-action="select-tech" data-id="${t.id}" class="mt-1.5 block text-left text-sm font-semibold text-white hover:underline">${esc(t.name)}</button>
+                  ${
+                    deps.length
+                      ? `<p class="mt-2 text-[11px] text-mist"><span class="text-amber-300">Builds on</span> ${deps
+                          .map((d) => `<button data-action="select-tech" data-id="${d.id}" class="underline decoration-dotted hover:text-white">${esc(d.name)}</button>`)
+                          .join(', ')}</p>`
+                      : ''
+                  }
+                  ${
+                    unlocks.length
+                      ? `<p class="mt-1 text-[11px] text-mist"><span class="text-emerald-300">Enables</span> ${unlocks
+                          .map((d) => `<button data-action="select-tech" data-id="${d.id}" class="underline decoration-dotted hover:text-white">${esc(d.name)}</button>`)
+                          .join(', ')}</p>`
+                      : ''
+                  }
+                </div>`;
+              })
+              .join('')}
+          </div>
+        </div>`;
+    }).join('');
+
+    const linked = ind.technologies.filter((t) => (t.dependsOn ?? []).length).length;
+
+    return `
+      <div class="pb-10">
+        <h2 class="font-display text-2xl font-semibold text-white">Not just what. <em class="gradient-text not-italic">When, and in what order.</em></h2>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-mist">
+          Rings tell you how proven something is. They do not tell you when to act or what has to be in place first.
+          This view groups the radar by time horizon and maps the dependencies between entries — ${linked} of
+          ${ind.technologies.length} technologies have an explicit prerequisite.
+        </p>
+        ${lanes || `<p class="py-16 text-center text-mist">No technologies match that filter.</p>`}
+      </div>`;
+  }
+
+  function newsletter() {
+    return `
+      <section class="mx-auto max-w-6xl px-6 py-10 no-print">
+        <div class="glass glow-border rounded-3xl p-6 sm:p-8">
+          <div class="grid gap-5 lg:grid-cols-[1fr_320px] lg:items-center">
+            <div>
+              <h2 class="font-display text-xl font-semibold text-white">Get the next edition.</h2>
+              <p class="mt-2 text-sm leading-relaxed text-mist">
+                Each edition re-scores every technology and tracks what moved. No spam, no sharing your address — just the radar.
+              </p>
+            </div>
+            <form name="radar-subscribe" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="flex flex-col gap-2">
+              <input type="hidden" name="form-name" value="radar-subscribe" />
+              <p class="hidden"><label>Leave this empty: <input name="bot-field" /></label></p>
+              <label class="sr-only" for="subscribe-email">Email address</label>
+              <input id="subscribe-email" type="email" name="email" required placeholder="you@company.com"
+                class="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-mist/60 focus:border-violet-400 focus:outline-none" />
+              <button type="submit" class="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-4 py-2.5 text-sm font-semibold text-ink">Notify me</button>
+            </form>
+          </div>
+        </div>
+      </section>`;
+  }
+
   function editorsNote(ind: IndustryRadar) {
     return `
       <section class="mx-auto max-w-6xl px-6 py-10">
@@ -761,6 +977,9 @@ export function initRadarApp() {
       ? INDUSTRIES.filter((i) => i.slug !== ind.slug && i.technologies.some((x) => canonicalKeyFor(x.name) === canonical)).length
       : 0;
     const stance = position[t.id];
+    const byId = new Map(ind.technologies.map((x) => [x.id, x]));
+    const deps = (t.dependsOn ?? []).map((d) => byId.get(d)).filter((d): d is Technology => !!d);
+    const unlocks = ind.technologies.filter((x) => (x.dependsOn ?? []).includes(t.id));
 
     return `
       <div data-action="close-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
@@ -780,6 +999,38 @@ export function initRadarApp() {
           </div>
 
           <p class="mt-5 text-sm leading-relaxed text-mist">${esc(t.brief)}</p>
+
+          ${
+            t.evidence?.length
+              ? `<div class="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
+                   <p class="text-xs font-semibold uppercase tracking-wide text-cyan-400">Signals behind this placement</p>
+                   <ul class="mt-2 space-y-1.5">
+                     ${t.evidence.map((e) => `<li class="flex gap-2 text-xs leading-relaxed text-mist"><span class="text-cyan-400">—</span><span>${esc(e)}</span></li>`).join('')}
+                   </ul>
+                 </div>`
+              : ''
+          }
+
+          ${
+            deps.length || unlocks.length
+              ? `<div class="mt-4 space-y-2">
+                   ${
+                     deps.length
+                       ? `<p class="text-xs text-mist"><span class="font-semibold text-amber-300">Builds on</span> ${deps
+                           .map((d) => `<button data-action="select-tech" data-id="${d.id}" class="underline decoration-dotted hover:text-white">${esc(d.name)}</button>`)
+                           .join(', ')}</p>`
+                       : ''
+                   }
+                   ${
+                     unlocks.length
+                       ? `<p class="text-xs text-mist"><span class="font-semibold text-emerald-300">Enables</span> ${unlocks
+                           .map((d) => `<button data-action="select-tech" data-id="${d.id}" class="underline decoration-dotted hover:text-white">${esc(d.name)}</button>`)
+                           .join(', ')}</p>`
+                       : ''
+                   }
+                 </div>`
+              : ''
+          }
 
           <div class="mt-5 flex flex-wrap items-center gap-2 text-xs text-mist">
             <span class="rounded-full border border-white/10 px-2.5 py-1">Time horizon: ${esc(t.timeHorizon)}</span>
@@ -876,26 +1127,31 @@ export function initRadarApp() {
         ? radarTab(ind)
         : state.tab === 'list'
           ? listTab(ind)
-          : state.tab === 'compare'
-            ? compareTab()
-            : state.tab === 'position'
-              ? positionTab(ind)
-              : state.tab === 'ecosystem'
-                ? ecosystemTab(ind)
-                : state.tab === 'functions'
-                  ? functionsTab(ind)
-                  : geographyTab(ind);
+          : state.tab === 'roadmap'
+            ? roadmapTab(ind)
+            : state.tab === 'compare'
+              ? compareTab()
+              : state.tab === 'position'
+                ? positionTab(ind)
+                : state.tab === 'ecosystem'
+                  ? ecosystemTab(ind)
+                  : state.tab === 'functions'
+                    ? functionsTab(ind)
+                    : geographyTab(ind);
 
     root!.innerHTML = `
       ${industryPicker(ind)}
       ${hero(ind)}
+      ${startHere(ind)}
       ${themes(ind)}
       ${tabBar()}
       ${controls(ind)}
       <div class="mx-auto max-w-6xl px-6">${body}</div>
+      ${whatChanged(ind)}
       ${editorsNote(ind)}
       ${watchlist(ind)}
       ${methodology()}
+      ${newsletter()}
       ${detailModal(ind)}
       ${commandPalette()}
       ${toastEl()}`;
@@ -1010,6 +1266,27 @@ export function initRadarApp() {
         break;
       case 'share':
         copy(shareUrlFor(state, DEFAULT_INDUSTRY_SLUG), 'Link copied to clipboard');
+        break;
+      case 'role':
+        setState({ role: el.dataset.role! });
+        break;
+      case 'clear-role':
+        setState({ role: null });
+        break;
+      case 'export-csv': {
+        const ind = industry();
+        download(`radar-${ind.slug}-${ind.edition.published}.csv`, toCsv(ind), 'text/csv;charset=utf-8');
+        flash('CSV downloaded');
+        break;
+      }
+      case 'export-json': {
+        const ind = industry();
+        download(`radar-${ind.slug}-${ind.edition.published}.json`, toJson(ind), 'application/json');
+        flash('JSON downloaded');
+        break;
+      }
+      case 'print':
+        window.print();
         break;
       case 'share-position': {
         const base = shareUrlFor({ ...state, tab: 'position' }, DEFAULT_INDUSTRY_SLUG);

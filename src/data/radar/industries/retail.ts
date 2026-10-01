@@ -7,12 +7,6 @@ export const retail: IndustryRadar = {
   scope:
     'Scope of analysis: e-commerce, brick-and-mortar retail, consumer brands and retail media — read through the lens of a commerce, merchandising or digital leader balancing margin pressure with the shift from search boxes to AI answer engines and shopping agents.',
   edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
-  heroStat: [
-    { label: 'technologies tracked', value: '30' },
-    { label: 'new this edition', value: '12' },
-    { label: 'accelerating', value: '13' },
-    { label: 'quadrants', value: '4' },
-  ],
   themes: [
     {
       title: 'The customer is increasingly an agent, not a person',

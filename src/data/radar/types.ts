@@ -25,6 +25,10 @@ export interface Technology {
   tags: string[];
   /** Ring in the prior edition. Absent on the baseline edition. */
   previousRing?: Ring;
+  /** Ids of technologies within the same industry this one builds on. */
+  dependsOn?: number[];
+  /** Observable market signals supporting this placement. */
+  evidence?: string[];
 }
 
 export interface Edition {
@@ -80,7 +84,6 @@ export interface IndustryRadar {
   tagline: string;
   scope: string;
   edition: Edition;
-  heroStat: { label: string; value: string }[];
   themes: Theme[];
   technologies: Technology[];
   editorsPicks: number[]; // technology ids

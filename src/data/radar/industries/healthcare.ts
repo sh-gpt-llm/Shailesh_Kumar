@@ -7,12 +7,6 @@ export const healthcare: IndustryRadar = {
   scope:
     'Scope of analysis: providers, payers, biopharma R&D and med-tech — read through the lens of a clinical, scientific or health-IT leader balancing patient safety, regulation and the pressure to modernise.',
   edition: { label: 'Edition 2026.1', published: '2026-10-01', baseline: true },
-  heroStat: [
-    { label: 'technologies tracked', value: '30' },
-    { label: 'new this edition', value: '12' },
-    { label: 'accelerating', value: '11' },
-    { label: 'quadrants', value: '4' },
-  ],
   themes: [
     {
       title: 'The clinician gets an AI co-pilot, not an AI replacement',

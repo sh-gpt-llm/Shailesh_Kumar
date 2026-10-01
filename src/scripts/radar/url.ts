@@ -1,6 +1,6 @@
 import type { Ring, QuadrantId } from '../../data/radar/types';
 
-export type Tab = 'radar' | 'list' | 'compare' | 'position' | 'ecosystem' | 'functions' | 'geography';
+export type Tab = 'radar' | 'list' | 'roadmap' | 'compare' | 'position' | 'ecosystem' | 'functions' | 'geography';
 
 export interface RadarState {
   industrySlug: string;
@@ -11,9 +11,10 @@ export interface RadarState {
   selectedId: number | null;
   compareKey: string | null;
   geoCategory: string;
+  role: string | null;
 }
 
-const VALID_TABS: Tab[] = ['radar', 'list', 'compare', 'position', 'ecosystem', 'functions', 'geography'];
+const VALID_TABS: Tab[] = ['radar', 'list', 'roadmap', 'compare', 'position', 'ecosystem', 'functions', 'geography'];
 const VALID_RINGS: Ring[] = ['adopt', 'trial', 'assess', 'hold'];
 
 export function readStateFromUrl(fallback: RadarState): RadarState {
@@ -32,6 +33,7 @@ export function readStateFromUrl(fallback: RadarState): RadarState {
     selectedId: tech && /^\d+$/.test(tech) ? Number(tech) : null,
     compareKey: p.get('compare'),
     geoCategory: p.get('geo') || '',
+    role: p.get('role'),
   };
 }
 
@@ -45,6 +47,7 @@ export function writeStateToUrl(state: RadarState, defaultIndustry: string) {
   if (state.selectedId != null) p.set('tech', String(state.selectedId));
   if (state.compareKey) p.set('compare', state.compareKey);
   if (state.geoCategory) p.set('geo', state.geoCategory);
+  if (state.role) p.set('role', state.role);
 
   const qs = p.toString();
   const url = `${window.location.pathname}${qs ? `?${qs}` : ''}`;

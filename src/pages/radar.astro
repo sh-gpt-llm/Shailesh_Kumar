@@ -5,6 +5,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Emerging Technology & Innovation Radar"
   description="An industry-agnostic Emerging Technology & Innovation Radar by Shailesh Kumar — pick an industry, and get a well-researched map of what to adopt, trial, assess and hold next."
 >
+  {/* Netlify detects forms in the static build output; the live form is rendered client-side. */}
+  <form name="radar-subscribe" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="radar-subscribe" />
+    <input type="email" name="email" />
+    <input name="bot-field" />
+  </form>
+
   <div id="radar-app"></div>
 </BaseLayout>
 
