@@ -1018,7 +1018,8 @@ export function initRadarApp() {
 
     return `
       <div data-action="close-modal" data-overlay class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
-        <div data-stop class="glow-border max-h-[85vh] w-full max-w-xl overflow-y-auto overflow-x-hidden rounded-3xl border border-white/15 bg-ink-soft p-7 shadow-2xl shadow-black/60">
+        <div data-stop class="glow-border w-full max-w-xl rounded-3xl border border-white/15 bg-ink-soft shadow-2xl shadow-black/60">
+          <div class="max-h-[85vh] overflow-y-auto overflow-x-hidden rounded-3xl p-7">
           <div class="flex items-start justify-between gap-4">
             <div>
               <div class="flex flex-wrap gap-2 text-xs">
@@ -1092,6 +1093,7 @@ export function initRadarApp() {
               : ''
           }
           <button data-action="share" class="mt-2 w-full rounded-xl border border-white/15 px-4 py-2.5 text-xs text-mist hover:text-white">Copy link to this technology</button>
+          </div>
         </div>
       </div>`;
   }
