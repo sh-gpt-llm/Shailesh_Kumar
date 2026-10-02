@@ -1,0 +1,22 @@
+---
+import site from '../data/site.json';
+
+// Privacy-first analytics only: no cookies, no cross-site tracking, no consent
+// banner required. Swap provider in src/data/site.json.
+const analytics = (site as { analytics?: { provider?: string; siteId?: string; host?: string } }).analytics;
+const provider = analytics?.provider ?? 'none';
+const siteId = analytics?.siteId ?? '';
+const host = analytics?.host ?? '';
+const enabled = provider !== 'none' && siteId.length > 0;
+---
+{enabled && provider === 'plausible' && (
+  <script is:inline defer data-domain={siteId} src={`${host || 'https://plausible.io'}/js/script.js`}></script>
+)}
+
+{enabled && provider === 'umami' && (
+  <script is:inline defer data-website-id={siteId} src={`${host || 'https://cloud.umami.is'}/script.js`}></script>
+)}
+
+{enabled && provider === 'goatcounter' && (
+  <script is:inline data-goatcounter={`${host || `https://${siteId}.goatcounter.com`}/count`} async src="//gc.zgo.at/count.js"></script>
+)}

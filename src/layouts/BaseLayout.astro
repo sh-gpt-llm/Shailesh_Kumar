@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+import site from '../data/site.json';
 
 interface Props {
   title: string;
@@ -33,6 +35,7 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <Analytics />
     <slot name="head" />
   </head>
   <body class="antialiased selection:bg-violet-500">
@@ -95,7 +98,7 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
           </div>
           <div class="flex gap-6">
             <a href="https://www.linkedin.com/in/shailesh-18-kr-2561281069" target="_blank" rel="noopener" class="hover:text-white">LinkedIn</a>
-            <a href="mailto:sh.1810.kr@gmail.com" class="hover:text-white">Email</a>
+            <a href={`mailto:${site.contact.email}`} class="hover:text-white">Email</a>
             <a href="/writing" class="hover:text-white">Writing</a>
           </div>
         </div>

@@ -22,5 +22,10 @@
     "location": "Based in Bengaluru, Karnataka, India · Working with teams globally",
     "headline": "Open to advisory, speaking & bold collaborations",
     "description": "Whether it's enterprise architecture governance, an AI operating model, or a digital core modernization program — I'd love to hear about what you're building."
+  },
+  "analytics": {
+    "provider": "none",
+    "siteId": "",
+    "host": ""
   }
 }
