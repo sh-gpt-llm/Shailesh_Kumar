@@ -711,7 +711,7 @@ export function initRadarApp() {
 
         <div class="mt-6 grid gap-6 lg:grid-cols-[1fr_280px]">
           <div class="glass rounded-3xl p-3 sm:p-5">
-            <div id="geo-canvas" class="flex min-h-[320px] items-center justify-center">
+            <div id="geo-canvas" class="flex min-h-[380px] w-full items-center justify-center">
               <p class="text-sm text-mist">Loading map…</p>
             </div>
             <p class="mt-3 text-center text-xs text-mist">
