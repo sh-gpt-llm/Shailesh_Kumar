@@ -27,5 +27,9 @@
     "provider": "umami",
     "siteId": "f2d62702-3487-4ed6-8df5-9297a9047cb8",
     "host": ""
+  },
+  "verification": {
+    "google": "",
+    "bing": ""
   }
 }

@@ -18,6 +18,7 @@ const nav = [
 ];
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => currentPath === href || (href !== '/' && currentPath.startsWith(href));
+const verification = (site as { verification?: { google?: string; bing?: string } }).verification;
 ---
 <!doctype html>
 <html lang="en">
@@ -32,6 +33,8 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    {verification?.google && <meta name="google-site-verification" content={verification.google} />}
+    {verification?.bing && <meta name="msvalidate.01" content={verification.bing} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
