@@ -10,6 +10,8 @@ import {
   VENDOR_QUESTIONS,
   NEXA_FAQ,
 } from '../../data/nexa/framework';
+import { RING_TO_DIFFERENTIATION, HORIZON_TO_TIME_TO_VALUE, PREFILLABLE } from '../../scripts/nexa/prefill';
+import { RINGS } from '../../data/radar/types';
 
 const pageUrl = new URL('/nexa/framework/', Astro.site).href;
 const appUrl = new URL('/nexa/', Astro.site).href;
@@ -169,6 +171,56 @@ const schema = [
           </div>
         ))}
       </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Starting scores from the radar</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Where what you are assessing matches a technology on the
+        <a href="/radar/" class="underline decoration-dotted hover:text-white">Emerging Technology &amp; Innovation Radar</a>,
+        NEXA offers starting values for two dimensions. Only two, because only two are properties of the technology
+        itself. The other {DIMENSIONS.length - PREFILLABLE.length} — capability gap, estate overlap, strategic alignment
+        and reversibility — describe your organisation, not the product, and guessing them would be dishonest.
+        Every suggested value is overridable, and nothing is applied unless you ask for it.
+      </p>
+
+      <h3 class="mt-7 text-xs font-semibold uppercase tracking-wide text-cyan-400">Ring → differentiation</h3>
+      <table class="mt-3 w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+            <th class="py-2 pr-3">Radar ring</th>
+            <th class="py-2 pr-3">Suggested score</th>
+            <th class="py-2">Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          {RINGS.map((r) => (
+            <tr class="border-b border-white/5">
+              <td class="py-2 pr-3 font-semibold text-white">{r.label}</td>
+              <td class="py-2 pr-3 font-mono text-white">{RING_TO_DIFFERENTIATION[r.id]}</td>
+              <td class="py-2 text-mist">
+                {r.id === 'adopt' && 'Proven and widely available, so an incumbent already ships it.'}
+                {r.id === 'trial' && 'Established enough to pilot, but not yet commodity.'}
+                {r.id === 'assess' && 'Early enough that few vendors deliver it credibly.'}
+                {r.id === 'hold' && 'Either commoditised or problematic. Rarely a moat.'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 text-xs leading-relaxed text-mist/70">
+        Adjusted by momentum: new this edition raises it by one, cooling lowers it by one, both clamped to the 0–4 scale.
+      </p>
+
+      <h3 class="mt-7 text-xs font-semibold uppercase tracking-wide text-cyan-400">Time horizon → time to value</h3>
+      <ul class="mt-3 space-y-1.5">
+        {HORIZON_TO_TIME_TO_VALUE.map((h) => (
+          <li class="text-sm text-mist">
+            <span class="font-mono text-white">{h.score}</span> — radar horizon “{h.match}”
+          </li>
+        ))}
+      </ul>
+      <p class="mt-3 text-xs leading-relaxed text-mist/70">Anything with no recorded horizon is left mid-scale at 2.</p>
     </section>
 
     <section class="mt-14">

@@ -25,7 +25,15 @@ export interface Matchable {
   tags: string[];
 }
 
-export function termMatch<T extends Matchable>(query: string, items: T[], limit = 8): T[] {
+export interface ScoredMatch<T> {
+  item: T;
+  score: number;
+}
+
+/** A name token is worth 6, a tag token 3, a summary token 1. */
+export const NAME_HIT = 6;
+
+export function termMatchScored<T extends Matchable>(query: string, items: T[], limit = 8): ScoredMatch<T>[] {
   const qTokens = [...new Set(tokenise(query).map(stem))];
   if (!qTokens.length) return [];
 
@@ -36,7 +44,7 @@ export function termMatch<T extends Matchable>(query: string, items: T[], limit 
 
     let score = 0;
     for (const q of qTokens) {
-      if (nameTokens.has(q)) score += 6;
+      if (nameTokens.has(q)) score += NAME_HIT;
       else if (tagTokens.has(q)) score += 3;
       else if (summaryTokens.has(q)) score += 1;
     }
@@ -47,6 +55,9 @@ export function termMatch<T extends Matchable>(query: string, items: T[], limit 
   return scored
     .filter((s) => s.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((s) => s.item);
+    .slice(0, limit);
+}
+
+export function termMatch<T extends Matchable>(query: string, items: T[], limit = 8): T[] {
+  return termMatchScored(query, items, limit).map((s) => s.item);
 }

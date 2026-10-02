@@ -5,17 +5,39 @@ import { assess } from './nexa/engine';
 import type { Assessment } from './nexa/engine';
 import { loadAll, saveAll, newAssessment, encodeAssessment, decodeAssessment, toCsv, toJson } from './nexa/store';
 import { fuzzySearch } from './radar/fuzzy';
-import { termMatch } from './nexa/match';
+import { termMatch, termMatchScored, NAME_HIT } from './nexa/match';
+import { suggestFrom, PREFILLABLE } from './nexa/prefill';
+import type { RadarMatch } from './nexa/prefill';
+import { routeFor } from '../data/radar/routes';
 import { download } from './radar/export';
 
 const esc = (s: string): string =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
 
 // One flat catalogue of every technology on the radar, used as the estate picker's
-// vocabulary. Names recur across industries, so it is deduplicated by name.
-const CATALOGUE = [
+// vocabulary and as the source for score prefill. Names recur across industries,
+// so it is deduplicated by name.
+const CATALOGUE: RadarMatch[] = [
   ...new Map(
-    INDUSTRIES.flatMap((i) => i.technologies.map((t) => [t.name, { name: t.name, summary: t.summary, tags: t.tags }] as const))
+    INDUSTRIES.flatMap((i) =>
+      i.technologies.map(
+        (t) =>
+          [
+            t.name,
+            {
+              name: t.name,
+              summary: t.summary,
+              tags: t.tags,
+              ring: t.ring,
+              momentum: t.momentum,
+              timeHorizon: t.timeHorizon,
+              evidence: t.evidence ?? [],
+              url: routeFor(i.slug, t.name),
+              industry: i.name,
+            },
+          ] as const
+      )
+    )
   ).values(),
 ];
 
@@ -30,6 +52,8 @@ export function initNexaApp() {
   let step: Step = 'path';
   let showSaved = false;
   let estateQuery = '';
+  let prefillDismissed = false;
+  let prefillApplied = false;
   let toast = '';
 
   const shared = new URLSearchParams(window.location.search).get('a');
@@ -265,6 +289,72 @@ export function initNexaApp() {
       </section>`;
   }
 
+  function bestRadarMatch(): RadarMatch | null {
+    const a = draft!;
+    const q = `${a.capability} ${a.subject}`.trim();
+    if (!q) return null;
+    // Prefilling asserts "this is that technology", so it needs at least one hit
+    // on the name itself. Summary-only collisions are far too loose for a claim.
+    const top = termMatchScored(q, CATALOGUE, 1)[0];
+    return top && top.score >= NAME_HIT ? top.item : null;
+  }
+
+  function prefillCard() {
+    if (prefillDismissed) return '';
+    const match = bestRadarMatch();
+    if (!match) return '';
+    const suggestion = suggestFrom(match);
+    const untouched = DIMENSIONS.filter((d) => !PREFILLABLE.includes(d.id)).map((d) => d.name.toLowerCase());
+
+    return `
+      <div class="no-print mb-6 rounded-2xl border border-cyan-400/30 bg-cyan-400/[0.06] p-5">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs font-semibold uppercase tracking-wide text-cyan-400">The radar knows this one</p>
+            <p class="mt-2 text-sm text-mist">
+              This looks like <a href="${esc(match.url)}" target="_blank" rel="noopener" class="font-semibold text-white underline decoration-dotted">${esc(match.name)}</a>,
+              placed in <strong class="text-white">${esc(match.ring.toUpperCase())}</strong> on the ${esc(match.industry)} radar.
+            </p>
+          </div>
+          <button data-action="dismiss-prefill" aria-label="Dismiss" class="shrink-0 text-xs text-mist/70 transition hover:text-white">Dismiss</button>
+        </div>
+
+        <ul class="mt-4 space-y-2">
+          ${suggestion.notes
+            .map(
+              (n) => `
+            <li class="flex gap-3 text-xs leading-relaxed text-mist">
+              <span class="mt-0.5 flex h-5 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-400/20 font-mono text-[10px] font-bold text-cyan-200">${n.score}/4</span>
+              <span><strong class="text-white">${esc(DIMENSIONS.find((d) => d.id === n.dimension)!.name)}</strong> — ${esc(n.reason)}</span>
+            </li>`
+            )
+            .join('')}
+        </ul>
+
+        ${
+          match.evidence.length
+            ? `<div class="mt-3 border-t border-white/10 pt-3">
+                 <p class="text-[11px] font-semibold uppercase tracking-wide text-mist/70">Signals behind that placement</p>
+                 <ul class="mt-1.5 space-y-1">
+                   ${match.evidence.slice(0, 3).map((e) => `<li class="text-[11px] leading-relaxed text-mist/80">— ${esc(e)}</li>`).join('')}
+                 </ul>
+               </div>`
+            : ''
+        }
+
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <button data-action="apply-prefill"
+            class="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:opacity-90">
+            ${prefillApplied ? 'Re-apply these two' : 'Use these as a starting point'}
+          </button>
+          <p class="text-[11px] leading-relaxed text-mist/70">
+            Only ${PREFILLABLE.length} of the ${DIMENSIONS.length} can come from the radar.
+            ${esc(untouched.join(', '))} are about your organisation, so they are left for you.
+          </p>
+        </div>
+      </div>`;
+  }
+
   function scoreStep() {
     const a = draft!;
     return `
@@ -277,7 +367,9 @@ export function initNexaApp() {
             assessment that cannot survive a pessimistic reading will not survive a steering committee either.
           </p>
 
-          <div class="mt-6 space-y-6">
+          <div class="mt-6">${prefillCard()}</div>
+
+          <div class="space-y-6">
             ${DIMENSIONS.map(
               (d) => `
               <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
@@ -604,6 +696,8 @@ export function initNexaApp() {
         draft = newAssessment(el.dataset.path as 'vendor' | 'gap');
         step = 'subject';
         estateQuery = '';
+        prefillDismissed = false;
+        prefillApplied = false;
         render();
         break;
       case 'goto-step':
@@ -640,6 +734,18 @@ export function initNexaApp() {
         if (draft) draft.ask = el.dataset.ask as AskId;
         render();
         break;
+      case 'apply-prefill': {
+        const match = bestRadarMatch();
+        if (!draft || !match) break;
+        Object.assign(draft.scores, suggestFrom(match).scores);
+        prefillApplied = true;
+        flash(`Starting scores taken from ${match.name}`);
+        break;
+      }
+      case 'dismiss-prefill':
+        prefillDismissed = true;
+        render();
+        break;
       case 'save': {
         if (!draft) break;
         captureInputs();
@@ -673,6 +779,8 @@ export function initNexaApp() {
         draft = null;
         step = 'path';
         estateQuery = '';
+        prefillDismissed = false;
+        prefillApplied = false;
         render();
         break;
       case 'share': {

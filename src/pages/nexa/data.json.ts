@@ -9,6 +9,7 @@ import {
   VENDOR_QUESTIONS,
   NEXA_FAQ,
 } from '../../data/nexa/framework';
+import { RING_TO_DIFFERENTIATION, HORIZON_TO_TIME_TO_VALUE, PREFILLABLE } from '../../scripts/nexa/prefill';
 
 export const GET: APIRoute = ({ site }) => {
   const base = site?.href.replace(/\/$/, '') ?? 'https://vantessence.com';
@@ -83,6 +84,19 @@ export const GET: APIRoute = ({ site }) => {
     swing: {
       description:
         'The framework also reports the single dimension that, raised by one point, most improves the case — and whether that change flips the verdict. A dimension that changes the verdict always outranks one that only moves the number.',
+    },
+
+    radarPrefill: {
+      description:
+        'Where the subject matches a technology on the Emerging Technology & Innovation Radar, starting values are offered for the dimensions that are properties of the technology itself. The remaining dimensions describe the assessing organisation and are never inferred.',
+      source: `${base}/radar/data.json`,
+      prefillable: PREFILLABLE,
+      neverInferred: DIMENSIONS.filter((d) => !PREFILLABLE.includes(d.id)).map((d) => d.id),
+      ringToDifferentiation: RING_TO_DIFFERENTIATION,
+      momentumAdjustment: { new: 1, cooling: -1, accelerating: 0, steady: 0, clampedTo: [0, 4] },
+      horizonToTimeToValue: HORIZON_TO_TIME_TO_VALUE.map((h) => ({ horizon: h.match, score: h.score })),
+      horizonDefault: 2,
+      applied: 'Only on explicit user action. Every value remains overridable.',
     },
 
     diligence: DILIGENCE.map((d) => ({
