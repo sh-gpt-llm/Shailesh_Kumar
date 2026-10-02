@@ -24,8 +24,8 @@
     "description": "Whether it's enterprise architecture governance, an AI operating model, or a digital core modernization program — I'd love to hear about what you're building."
   },
   "analytics": {
-    "provider": "none",
-    "siteId": "",
+    "provider": "umami",
+    "siteId": "f2d62702-3487-4ed6-8df5-9297a9047cb8",
     "host": ""
   }
 }
