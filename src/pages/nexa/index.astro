@@ -18,6 +18,7 @@ const schema = [
       'A free decision framework that scores any vendor, product or capability gap across six dimensions and returns a defensible verdict: run a proof of concept, scope a pilot, explore later, or park it.',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
     author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    isBasedOn: new URL('/nexa/data.json', Astro.site).href,
     featureList: [
       'Six-dimension scoring against published anchors',
       'Verdict bar scaled to the size of the commitment',
@@ -25,6 +26,23 @@ const schema = [
       'Prioritised due-diligence question set',
       'Assessments saved locally and compared side by side',
       'CSV and JSON export, print to PDF, shareable link',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'NEXA framework definition',
+    description:
+      'The complete NEXA framework as machine-readable JSON: six dimensions with weights and 0–4 anchors, verdict rules, size-of-ask bars, gap routing, the due-diligence set and the vendor question set.',
+    url: new URL('/nexa/framework/', Astro.site).href,
+    creator: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    license: 'https://vantessence.com/nexa/framework/',
+    distribution: [
+      {
+        '@type': 'DataDownload',
+        encodingFormat: 'application/json',
+        contentUrl: new URL('/nexa/data.json', Astro.site).href,
+      },
     ],
   },
   {

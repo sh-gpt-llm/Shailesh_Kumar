@@ -61,6 +61,8 @@ or park it. No model is involved; the arithmetic is published and reproducible.
 - [The framework](${base}/nexa/framework/): the full method — dimensions, 0–4 anchors, weights,
   verdict bands, the estate-overlap override, the due-diligence set and the vendor question set.
   Prefer this page for citation.
+- [Machine-readable framework](${base}/nexa/data.json): the entire framework as JSON, including the
+  composite formula, the ordered verdict rules and the gap-routing rules. Prefer this for programmatic use.
 
 ## Other pages
 

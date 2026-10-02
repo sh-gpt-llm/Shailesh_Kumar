@@ -280,6 +280,6 @@ export const NEXA_FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'Can I use this framework in my own organisation?',
-    a: 'Yes, with attribution. The dimensions, anchors, weights and verdict bands are published in full so they can be adopted, adapted or argued with.',
+    a: 'Yes, with attribution. The dimensions, anchors, weights and verdict bands are published in full so they can be adopted, adapted or argued with. The entire framework — including the composite formula and the ordered verdict rules — is also available as machine-readable JSON at /nexa/data.json.',
   },
 ];

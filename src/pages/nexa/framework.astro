@@ -215,6 +215,13 @@ const schema = [
       <a href="/nexa/" class="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-ink transition hover:opacity-90">
         Run an assessment
       </a>
+      {/* Served as application/json so crawlers read it inline; the attribute makes a click save it. */}
+      <a href="/nexa/data.json" download="nexa-framework.json" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        Download the framework (JSON)
+      </a>
+      <a href="/nexa/data.json" target="_blank" rel="noopener" class="text-sm text-mist/70 underline decoration-dotted transition hover:text-white">
+        or view it in the browser
+      </a>
       <a href="/radar/" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
         See the technology radar
       </a>
