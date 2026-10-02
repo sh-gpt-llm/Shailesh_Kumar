@@ -18,6 +18,7 @@ import type { PositionMap, Stance } from './radar/position';
 import { layoutBlips, RING_BANDS } from './radar/layout';
 import { toCsv, toJson, download } from './radar/export';
 import { ROLE_PATHS, rolePathById } from './radar/roles';
+import type { GeoView, GlobeHandle } from './radar/geo';
 
 const RING_ORDER: Ring[] = ['adopt', 'trial', 'assess', 'hold'];
 const RING_COLOR: Record<Ring, string> = {
@@ -78,6 +79,8 @@ export function initRadarApp() {
   let paletteQuery = '';
   let paletteIndex = 0;
   let toast = '';
+  let geoView: GeoView = 'globe';
+  let geoHandle: GlobeHandle | null = null;
 
   const industry = (): IndustryRadar => INDUSTRIES.find((i) => i.slug === state.industrySlug) ?? INDUSTRIES[0];
 
@@ -683,32 +686,64 @@ export function initRadarApp() {
     return `
       <div class="pb-10">
         <h2 class="font-display text-2xl font-semibold text-white">Where it concentrates around the world.</h2>
-        <div class="mt-5 flex flex-wrap gap-2">
-          ${ind.geography.categories
-            .map(
-              (c) => `
-            <button data-action="geo-cat" data-cat="${esc(c)}" class="rounded-full border px-4 py-1.5 text-sm font-medium transition ${
-              cat === c ? 'border-transparent bg-white text-ink' : 'border-white/10 text-mist hover:text-white'
-            }">${esc(c)}</button>`
-            )
-            .join('')}
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap gap-2">
+            ${ind.geography.categories
+              .map(
+                (c) => `
+              <button data-action="geo-cat" data-cat="${esc(c)}" class="rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                cat === c ? 'border-transparent bg-white text-ink' : 'border-white/10 text-mist hover:text-white'
+              }">${esc(c)}</button>`
+              )
+              .join('')}
+          </div>
+          <div class="no-print flex gap-1 rounded-xl border border-white/10 bg-white/5 p-1">
+            ${(['globe', 'map'] as GeoView[])
+              .map(
+                (v) => `
+              <button data-action="geo-view" data-view="${v}" class="rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition ${
+                geoView === v ? 'bg-white text-ink' : 'text-mist hover:text-white'
+              }">${v}</button>`
+              )
+              .join('')}
+          </div>
         </div>
-        <div class="mt-6 space-y-2">
-          ${leaders
-            .map(
-              (l) => `
-            <div class="flex items-center gap-4">
-              <span class="w-6 shrink-0 text-xs text-mist">${l.rank}</span>
-              <span class="w-36 shrink-0 text-sm text-white">${esc(l.place)}</span>
-              <div class="h-2.5 flex-1 overflow-hidden rounded-full bg-white/5">
-                <div class="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400" style="width:${(l.score / max) * 100}%"></div>
-              </div>
-              <span class="w-8 shrink-0 text-right text-xs text-mist">${l.score}</span>
-            </div>`
-            )
-            .join('')}
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-[1fr_280px]">
+          <div class="glass rounded-3xl p-3 sm:p-5">
+            <div id="geo-canvas" class="flex min-h-[320px] items-center justify-center">
+              <p class="text-sm text-mist">Loading map…</p>
+            </div>
+            <p class="mt-3 text-center text-xs text-mist">
+              ${geoView === 'globe' ? 'Drag to spin the globe · hover a country for its score' : 'Hover a country for its score'}
+            </p>
+          </div>
+          <aside>
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-mist">Centre of gravity</p>
+            <p class="mt-1 font-display text-sm italic text-white">${esc(cat)}</p>
+            <div class="mt-3 space-y-1.5">
+              ${leaders
+                .map(
+                  (l) => `
+                <div data-geo-row="${esc(l.place)}" class="flex items-center gap-2 rounded-lg px-1.5 py-1 transition">
+                  <span class="w-5 shrink-0 text-right text-[11px] text-mist">${l.rank}</span>
+                  <span class="w-28 shrink-0 truncate text-xs text-white">${esc(l.place)}</span>
+                  <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                    <div class="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-500" style="width:${(l.score / max) * 100}%"></div>
+                  </div>
+                  <span class="w-6 shrink-0 text-right text-[11px] text-mist">${l.score}</span>
+                </div>`
+                )
+                .join('')}
+            </div>
+            <div class="mt-4 flex items-center gap-2 text-[10px] text-mist">
+              <span>Less</span>
+              <span class="h-1.5 flex-1 rounded-full" style="background:linear-gradient(90deg,#94a3b8,#22d3ee,#7c3aed)"></span>
+              <span>More</span>
+            </div>
+          </aside>
         </div>
-        <p class="mt-4 text-xs text-mist">Editorial, directional read — relative signal, not a precise index.</p>
+        <p class="mt-4 text-xs text-mist">Editorial, directional read — relative signal, not a precise index. Singapore and Hong Kong are shown as markers; they are too small to render as areas at this scale.</p>
       </div>`;
   }
 
@@ -1157,6 +1192,32 @@ export function initRadarApp() {
       ${toastEl()}`;
 
     bind();
+    if (state.tab === 'geography') void mountGeography(ind);
+  }
+
+  // The boundary data is ~105KB, so it is only fetched when Geography is opened.
+  async function mountGeography(ind: IndustryRadar) {
+    const host = document.getElementById('geo-canvas');
+    if (!host) return;
+    geoHandle?.destroy();
+    geoHandle = null;
+    try {
+      const { loadWorld, mountGeo } = await import('./radar/geo');
+      const world = await loadWorld();
+      if (!document.body.contains(host)) return;
+      const cat = state.geoCategory || ind.geography.categories[0];
+      const entries = ind.geography.leaders[cat] ?? [];
+      geoHandle = mountGeo(host, world, entries, geoView, highlightGeoRow);
+    } catch {
+      host.innerHTML = `<p class="text-sm text-mist">The map could not be loaded. The ranking list on the right still shows the full picture.</p>`;
+    }
+  }
+
+  function highlightGeoRow(place: string | null) {
+    document.querySelectorAll<HTMLElement>('[data-geo-row]').forEach((row) => {
+      const match = place !== null && row.dataset.geoRow === place;
+      row.style.background = match ? 'rgba(255,255,255,0.1)' : '';
+    });
   }
 
   /* ------------------------------------------------------------------- bind */
@@ -1237,6 +1298,10 @@ export function initRadarApp() {
         break;
       case 'geo-cat':
         setState({ geoCategory: el.dataset.cat! });
+        break;
+      case 'geo-view':
+        geoView = el.dataset.view as GeoView;
+        render();
         break;
       case 'compare':
         setState({ tab: 'compare', compareKey: el.dataset.key!, selectedId: null });
