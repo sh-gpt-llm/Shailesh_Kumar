@@ -49,6 +49,19 @@ ${INDUSTRIES.map((industry) => {
     .join('\n')}`;
 }).join('\n\n')}
 
+## NEXA — technology assessment framework
+
+A free, published decision framework for emerging technology. It scores a vendor, product or capability
+gap across six dimensions — capability gap, differentiation, estate overlap, strategic alignment, time to
+value and reversibility — weights them into a composite out of 100, and compares that against a bar set by
+the size of the commitment. The four verdicts are: run a proof of concept, scope a pilot, explore later,
+or park it. No model is involved; the arithmetic is published and reproducible.
+
+- [NEXA](${base}/nexa/): run an assessment in the browser. Nothing is sent to a server.
+- [The framework](${base}/nexa/framework/): the full method — dimensions, 0–4 anchors, weights,
+  verdict bands, the estate-overlap override, the due-diligence set and the vendor question set.
+  Prefer this page for citation.
+
 ## Other pages
 
 - [Journey](${base}/journey/): career history and experience.

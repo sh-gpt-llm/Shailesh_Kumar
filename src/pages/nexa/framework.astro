@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  DIMENSIONS,
+  MAX_WEIGHTED,
+  ASKS,
+  VERDICTS,
+  ROUTES,
+  DILIGENCE,
+  VENDOR_QUESTIONS,
+  NEXA_FAQ,
+} from '../../data/nexa/framework';
+
+const pageUrl = new URL('/nexa/framework/', Astro.site).href;
+const appUrl = new URL('/nexa/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to assess an emerging technology vendor with the NEXA framework',
+    description:
+      'A six-dimension scoring method for deciding whether to run a proof of concept, scope a pilot, explore later or park a technology — with published anchors, weights and verdict bands.',
+    url: pageUrl,
+    totalTime: 'PT15M',
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    step: [
+      { name: 'State the subject and the job it would do', text: 'Name the vendor, product or gap, and describe in one plain sentence the job it would actually do — not the vendor pitch.' },
+      { name: 'Declare what you already run', text: 'List the capabilities already in your estate that come close. This is the step most assessments skip and the one that most often changes the answer.' },
+      { name: 'Score the six dimensions', text: `Score capability gap, differentiation, estate overlap, strategic alignment, time to value and reversibility from zero to four against the published anchors.` },
+      { name: 'Set the size of the ask', text: 'Declare how much commitment is being requested. A low, reversible ask must clear 45 out of 100; a platform-level commitment must clear 75.' },
+      { name: 'Read the verdict and the swing', text: 'Take the verdict, the reasoning and the single dimension change that would alter it. Answer that question before deciding.' },
+    ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: NEXA_FAQ.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'NEXA', item: appUrl },
+      { '@type': 'ListItem', position: 2, name: 'The framework', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="The NEXA framework"
+  description="The full NEXA scoring method: six dimensions, published anchors and weights, verdict bands scaled to the size of the commitment, and the due-diligence question set. Free to adopt with attribution."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <nav class="text-xs text-mist">
+      <a href="/nexa/" class="transition hover:text-white">NEXA</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">The framework</span>
+    </nav>
+
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">The framework</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      How NEXA <span class="gradient-text">reaches a verdict</span>
+    </h1>
+    <p class="mt-5 text-base leading-relaxed text-mist">
+      Published in full, including the weights, so it can be adopted, adapted or argued with. There is no model and no
+      hidden arithmetic — two people scoring the same thing the same way will get the same answer, which is the entire
+      point of having a framework.
+    </p>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The six dimensions</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Each is scored 0–4 against fixed anchors, then multiplied by its weight. The weighted total is normalised
+        against a maximum of {MAX_WEIGHTED.toFixed(2)} to give a composite out of 100.
+      </p>
+
+      {DIMENSIONS.map((d) => (
+        <div class="mt-8 rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 class="font-display text-xl font-semibold text-white">{d.name}</h3>
+            <span class="font-mono text-xs text-mist">weight ×{d.weight}</span>
+          </div>
+          <p class="mt-2 text-sm text-mist">{d.question}</p>
+          <p class="mt-2 text-xs leading-relaxed text-mist/70">{d.why}</p>
+          <dl class="mt-4 space-y-1.5">
+            {d.anchors.map((a) => (
+              <div class="flex gap-3">
+                <dt class="w-5 shrink-0 font-mono text-xs text-cyan-400">{a.score}</dt>
+                <dd class="text-sm text-mist">{a.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The bar scales with the commitment</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        A score means nothing on its own. The same case that justifies a fortnight of someone's time does not justify a
+        platform decision. The size of the ask sets the threshold the composite has to clear.
+      </p>
+      <table class="mt-5 w-full border-collapse text-left text-sm">
+        <thead>
+          <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+            <th class="py-2.5 pr-3">Size of ask</th>
+            <th class="py-2.5 pr-3">What it means</th>
+            <th class="py-2.5 text-right">Must clear</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ASKS.map((a) => (
+            <tr class="border-b border-white/5">
+              <td class="py-2.5 pr-3 font-semibold text-white">{a.label}</td>
+              <td class="py-2.5 pr-3 text-mist">{a.detail}</td>
+              <td class="py-2.5 text-right font-mono text-white">{a.bar}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The four verdicts</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Clearing the bar gives a proof of concept when the decision is fast and reversible, and a pilot when it is not.
+        Falling short by fifteen or less gives "explore later" — the case is real but something is not yet true. Below
+        that, or where a direct equivalent already exists in the estate, the answer is to park it.
+      </p>
+      <dl class="mt-5 space-y-4">
+        {VERDICTS.map((v) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-lg font-semibold" style={`color:${v.color}`}>{v.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{v.meaning}</dd>
+            <dd class="mt-2 text-xs leading-relaxed text-mist/70"><strong class="text-white">Next step —</strong> {v.nextStep}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/5 p-5">
+        <p class="text-xs font-semibold uppercase tracking-wide text-amber-400">The override</p>
+        <p class="mt-2 text-sm leading-relaxed text-mist">
+          If estate overlap scores 0 — you already run a direct equivalent — and the capability gap scores 1 or less,
+          the verdict is "park it" regardless of how well everything else scores. No amount of strategic alignment
+          justifies buying a second one.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Starting from a gap instead of a vendor</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        When there is no vendor yet, the same scores produce a routing decision rather than a purchase decision.
+      </p>
+      <dl class="mt-5 space-y-3">
+        {ROUTES.map((r) => (
+          <div>
+            <dt class="font-display text-base font-semibold" style={`color:${r.color}`}>{r.label}</dt>
+            <dd class="mt-1 text-sm leading-relaxed text-mist">{r.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The due-diligence set</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Eight domains, ordered by where your own scores say the risk sits. These are the questions that get skipped in
+        an enthusiastic pilot and discovered in an unhappy renewal.
+      </p>
+      <dl class="mt-5 space-y-4">
+        {DILIGENCE.map((d) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{d.name}</dt>
+            <dd class="mt-1 text-sm leading-relaxed text-mist">{d.prompt}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Questions to put to the vendor</h2>
+      <dl class="mt-5 space-y-5">
+        {VENDOR_QUESTIONS.map((q) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">“{q.q}”</dt>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist">{q.why}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+      <dl class="mt-5 space-y-6">
+        {NEXA_FAQ.map((f) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-14 flex flex-wrap items-center gap-4">
+      <a href="/nexa/" class="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-ink transition hover:opacity-90">
+        Run an assessment
+      </a>
+      <a href="/radar/" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        See the technology radar
+      </a>
+    </div>
+
+    <p class="mt-10 text-xs leading-relaxed text-mist/60">
+      The NEXA framework is free to adopt, adapt and cite with attribution to Shailesh Kumar (vantessence.com). It is
+      independent, carries no sponsored placements, and is directional guidance to focus deeper diligence — never a
+      replacement for it.
+    </p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { DIMENSIONS, ASKS, VERDICTS, NEXA_FAQ } from '../../data/nexa/framework';
+import { INDUSTRIES } from '../../data/radar/industries';
+
+const totalTech = INDUSTRIES.reduce((n, i) => n + i.technologies.length, 0);
+const pageUrl = new URL('/nexa/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'NEXA — Technology Assessment Framework',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any modern web browser',
+    url: pageUrl,
+    description:
+      'A free decision framework that scores any vendor, product or capability gap across six dimensions and returns a defensible verdict: run a proof of concept, scope a pilot, explore later, or park it.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    featureList: [
+      'Six-dimension scoring against published anchors',
+      'Verdict bar scaled to the size of the commitment',
+      'Estate overlap checked before any new purchase is recommended',
+      'Prioritised due-diligence question set',
+      'Assessments saved locally and compared side by side',
+      'CSV and JSON export, print to PDF, shareable link',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: NEXA_FAQ.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<BaseLayout
+  title="NEXA — technology assessment framework"
+  description="NEXA scores any vendor, product or capability gap across six dimensions and returns a verdict you can defend: run a proof of concept, scope a pilot, explore later, or park it. Free, private, no account."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <section class="mx-auto max-w-5xl px-6 pt-16 pb-6">
+    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">NEXA</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Decide on new technology <span class="gradient-text">without guessing.</span>
+    </h1>
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist">
+      NEXA scores a vendor, a product or an unmet need across six dimensions — then measures the result against the size
+      of what you are being asked to commit. You get one of four verdicts, the reasoning behind it, and the single thing
+      that would change it.
+    </p>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist/80">
+      It checks what you already run before it ever suggests buying something, because the most expensive mistake in
+      technology selection is paying twice for a capability you own. Everything stays in your browser. There is no
+      account, no server and nothing to sign up for.
+    </p>
+  </section>
+
+  {/*
+    Server-rendered so the framework is readable without JavaScript; the app
+    replaces this on mount.
+  */}
+  <div id="nexa-app">
+    <section class="mx-auto max-w-5xl px-6 py-8">
+      <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The six dimensions</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        {DIMENSIONS.map((d) => (
+          <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+            <h3 class="font-display text-base font-semibold text-white">{d.name}</h3>
+            <p class="mt-1.5 text-sm text-mist">{d.question}</p>
+            <p class="mt-2 text-xs leading-relaxed text-mist/70">{d.why}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The four verdicts</h2>
+      <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+        {VERDICTS.map((v) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold" style={`color:${v.color}`}>{v.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{v.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The bar scales with the ask</h2>
+      <ul class="mt-4 space-y-2">
+        {ASKS.map((a) => (
+          <li class="text-sm text-mist">
+            <strong class="text-white">{a.label}</strong> — {a.detail} Must clear <span class="font-mono text-white">{a.bar}</span> out of 100.
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-10 text-sm text-mist">
+        NEXA checks your estate against the {totalTech} technologies on the
+        <a href="/radar/" class="underline decoration-dotted hover:text-white"> Emerging Technology &amp; Innovation Radar</a>.
+        The full scoring method is published on the
+        <a href="/nexa/framework/" class="underline decoration-dotted hover:text-white"> framework page</a>.
+      </p>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+    <dl class="mt-6 space-y-6">
+      {NEXA_FAQ.map((f) => (
+        <div>
+          <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+          <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initNexaApp } from '../../scripts/nexa-app';
+  initNexaApp();
+</script>
