@@ -2,6 +2,7 @@ import { INDUSTRIES, DEFAULT_INDUSTRY_SLUG } from '../data/radar/industries';
 import { QUADRANTS, RINGS, MOMENTUM } from '../data/radar/types';
 import type { IndustryRadar, Technology, Ring, QuadrantId } from '../data/radar/types';
 import { CANONICAL_THEMES, canonicalKeyFor, themeByKey } from '../data/radar/canonical';
+import { GUIDE_STEPS } from '../data/radar/how-it-works';
 import { readStateFromUrl, writeStateToUrl, shareUrlFor } from './radar/url';
 import type { RadarState, Tab } from './radar/url';
 import { fuzzySearch } from './radar/fuzzy';
@@ -58,6 +59,8 @@ const quadrantName = (q: QuadrantId) => QUADRANTS.find((x) => x.id === q)?.name 
 const quadrantCode = (q: QuadrantId) => QUADRANTS.find((x) => x.id === q)?.code ?? '';
 const pad2 = (n: number) => n.toString().padStart(2, '0');
 
+const GUIDE_SEEN_KEY = 'vantessence.radar.guide.seen';
+
 export function initRadarApp() {
   const root = document.getElementById('radar-app');
   if (!root) return;
@@ -81,6 +84,25 @@ export function initRadarApp() {
   let toast = '';
   let geoView: GeoView = 'globe';
   let geoHandle: GlobeHandle | null = null;
+  let guideOpen = false;
+  let guideStep = 0;
+  // The guide is never forced open; this only controls a one-line first-visit nudge.
+  let guideSeen = ((): boolean => {
+    try {
+      return localStorage.getItem(GUIDE_SEEN_KEY) === '1';
+    } catch {
+      return true;
+    }
+  })();
+
+  function markGuideSeen() {
+    guideSeen = true;
+    try {
+      localStorage.setItem(GUIDE_SEEN_KEY, '1');
+    } catch {
+      /* private browsing — the nudge simply reappears next visit */
+    }
+  }
 
   const industry = (): IndustryRadar => INDUSTRIES.find((i) => i.slug === state.industrySlug) ?? INDUSTRIES[0];
 
@@ -131,11 +153,18 @@ export function initRadarApp() {
       <section class="mx-auto max-w-6xl px-6 pt-16">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <p class="text-xs font-semibold uppercase tracking-[0.4em] text-cyan-400">Select an industry</p>
-          <button data-action="open-palette" class="glass flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs text-mist transition hover:text-white">
-            <span>Search everything</span>
-            <kbd class="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-          </button>
+          <div class="no-print flex items-center gap-2">
+            <button data-action="open-guide" aria-haspopup="dialog" class="glass flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs text-mist transition hover:text-white">
+              <span aria-hidden="true" class="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[9px] font-bold">?</span>
+              <span>How it works</span>
+            </button>
+            <button data-action="open-palette" class="glass flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs text-mist transition hover:text-white">
+              <span>Search everything</span>
+              <kbd class="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+            </button>
+          </div>
         </div>
+        ${guideHint()}
         <div class="mt-5 flex flex-wrap gap-3">
           ${INDUSTRIES.map(
             (i) => `
@@ -749,6 +778,77 @@ export function initRadarApp() {
 
   /* -------------------------------------------------------- shared sections */
 
+  // Deliberately inline rather than an overlay: an interstitial on load would be
+  // both hostile to first-time readers and a search-ranking liability.
+  function guideHint() {
+    if (guideSeen) return '';
+    return `
+      <div class="no-print mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-2.5">
+        <p class="text-xs text-mist">
+          First time here?
+          <button data-action="open-guide" class="ml-1 font-semibold text-white underline decoration-dotted">See how to read the radar</button>
+        </p>
+        <button data-action="dismiss-hint" aria-label="Dismiss" class="text-xs text-mist/70 transition hover:text-white">Dismiss</button>
+      </div>`;
+  }
+
+  function guideModal() {
+    if (!guideOpen) return '';
+    const step = GUIDE_STEPS[guideStep];
+    const last = guideStep === GUIDE_STEPS.length - 1;
+    return `
+      <div data-action="close-guide" data-overlay role="dialog" aria-modal="true" aria-label="How the radar works"
+        class="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
+        <div data-stop class="glow-border w-full max-w-xl rounded-3xl border border-white/15 bg-ink-soft shadow-2xl shadow-black/60">
+          <div class="max-h-[85vh] overflow-y-auto overflow-x-hidden rounded-3xl p-7">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">${esc(step.kicker)}</p>
+                <h2 class="mt-3 font-display text-2xl font-semibold text-white">${esc(step.title)}</h2>
+              </div>
+              <button data-action="close-guide" aria-label="Close" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/25">✕</button>
+            </div>
+
+            <p class="mt-5 text-sm leading-relaxed text-mist">${esc(step.body)}</p>
+
+            ${
+              step.definitions
+                ? `<dl class="mt-5 grid gap-2.5 sm:grid-cols-2">
+                     ${step.definitions
+                       .map(
+                         (d, i) => `
+                       <div class="rounded-2xl p-3.5" style="background:${RING_COLOR[RING_ORDER[i] ?? 'hold']}1f">
+                         <dt class="font-display text-sm font-semibold" style="color:${RING_COLOR[RING_ORDER[i] ?? 'hold']}">${esc(d.term)}</dt>
+                         <dd class="mt-1 text-xs leading-relaxed text-mist">${esc(d.def)}</dd>
+                       </div>`
+                       )
+                       .join('')}
+                   </dl>`
+                : ''
+            }
+
+            ${step.footnote ? `<p class="mt-4 text-xs leading-relaxed text-mist/80">${esc(step.footnote)}</p>` : ''}
+
+            <div class="mt-7 flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs text-mist">${guideStep + 1} / ${GUIDE_STEPS.length}</span>
+              <div class="flex items-center gap-2">
+                ${guideStep > 0 ? `<button data-action="guide-prev" class="rounded-xl px-4 py-2 text-sm font-semibold text-mist transition hover:text-white">Back</button>` : ''}
+                ${
+                  last
+                    ? `<button data-action="close-guide" class="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-5 py-2 text-sm font-semibold text-ink transition hover:opacity-90">Got it</button>`
+                    : `<button data-action="guide-next" class="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-400 px-5 py-2 text-sm font-semibold text-ink transition hover:opacity-90">Next</button>`
+                }
+              </div>
+            </div>
+
+            <p class="mt-5 border-t border-white/10 pt-4 text-center text-xs text-mist">
+              <a href="/radar/how-it-works/" class="underline decoration-dotted transition hover:text-white">Read the full guide, including how placements are decided</a>
+            </p>
+          </div>
+        </div>
+      </div>`;
+  }
+
   function startHere(ind: IndustryRadar) {
     const active = state.role ? rolePathById(state.role) : null;
     return `
@@ -974,6 +1074,10 @@ export function initRadarApp() {
     return `
       <section class="mx-auto max-w-6xl px-6 py-10">
         <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Methodology</h2>
+        <p class="mt-2 text-sm text-mist no-print">
+          <a href="/radar/how-it-works/" class="underline decoration-dotted transition hover:text-white">How to read this radar</a>
+          — the full guide to rings, quadrants and how placements are decided.
+        </p>
         <div class="mt-4 grid gap-6 sm:grid-cols-3">
           <div>
             <h3 class="text-xs font-semibold uppercase tracking-wide text-cyan-400">Rings</h3>
@@ -1190,6 +1294,7 @@ export function initRadarApp() {
       ${methodology()}
       ${newsletter()}
       ${detailModal(ind)}
+      ${guideModal()}
       ${commandPalette()}
       ${toastEl()}`;
 
@@ -1365,8 +1470,7 @@ export function initRadarApp() {
         paletteQuery = '';
         paletteIndex = 0;
         render();
-        break;
-      case 'close-palette':
+        break;      case 'close-palette':
         paletteOpen = false;
         render();
         break;
@@ -1375,6 +1479,28 @@ export function initRadarApp() {
         state = { ...state, industrySlug: el.dataset.slug!, tab: 'radar', selectedId: Number(el.dataset.id) };
         syncPosition();
         writeStateToUrl(state, DEFAULT_INDUSTRY_SLUG);
+        render();
+        break;
+      case 'open-guide':
+        guideOpen = true;
+        guideStep = 0;
+        markGuideSeen();
+        render();
+        break;
+      case 'close-guide':
+        guideOpen = false;
+        render();
+        break;
+      case 'guide-next':
+        guideStep = Math.min(guideStep + 1, GUIDE_STEPS.length - 1);
+        render();
+        break;
+      case 'guide-prev':
+        guideStep = Math.max(guideStep - 1, 0);
+        render();
+        break;
+      case 'dismiss-hint':
+        markGuideSeen();
         render();
         break;
     }
@@ -1401,6 +1527,9 @@ export function initRadarApp() {
     if (ev.key === 'Escape') {
       if (paletteOpen) {
         paletteOpen = false;
+        render();
+      } else if (guideOpen) {
+        guideOpen = false;
         render();
       } else if (state.selectedId != null) {
         setState({ selectedId: null });

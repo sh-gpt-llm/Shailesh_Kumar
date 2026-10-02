@@ -12,6 +12,7 @@ export const GET: APIRoute = async ({ site }) => {
   const urls: { loc: string; lastmod: string; priority: string }[] = [
     { loc: `${base}/`, lastmod: today, priority: '1.0' },
     { loc: `${base}/radar/`, lastmod: INDUSTRIES[0].edition.published, priority: '0.9' },
+    { loc: `${base}/radar/how-it-works/`, lastmod: INDUSTRIES[0].edition.published, priority: '0.8' },
     { loc: `${base}/journey/`, lastmod: today, priority: '0.7' },
     { loc: `${base}/work/`, lastmod: today, priority: '0.7' },
     { loc: `${base}/writing/`, lastmod: today, priority: '0.7' },

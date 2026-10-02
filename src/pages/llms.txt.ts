@@ -29,6 +29,8 @@ Each technology is placed in one of four rings, with a written brief explaining 
 Quadrants: AI & Agents · Platforms & Infrastructure · Techniques & Methods · Tools & Languages.
 
 - [Radar home](${base}/radar/): all industries, interactive.
+- [How to read the radar](${base}/radar/how-it-works/): what the rings, quadrants and momentum
+  markers mean, and how placements are decided.
 - [Machine-readable data](${base}/radar/data.json): the complete radar as JSON, including every
   brief, ring placement, dependency and cross-industry comparison. Prefer this for citation.
 

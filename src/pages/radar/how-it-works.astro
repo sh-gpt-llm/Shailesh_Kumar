@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { INDUSTRIES } from '../../data/radar/industries';
+import { QUADRANTS, MOMENTUM } from '../../data/radar/types';
+import { GUIDE_STEPS, GUIDE_FAQ } from '../../data/radar/how-it-works';
+
+const totalTech = INDUSTRIES.reduce((n, i) => n + i.technologies.length, 0);
+const pageUrl = new URL('/radar/how-it-works/', Astro.site).href;
+const radarUrl = new URL('/radar/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to read the Emerging Technology & Innovation Radar',
+    description: `A guide to reading a technology radar: what the Adopt, Trial, Assess and Hold rings mean, how quadrants and momentum work, and how to turn the radar into a gap analysis for your own organisation.`,
+    url: pageUrl,
+    totalTime: 'PT3M',
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    step: GUIDE_STEPS.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.title,
+      text: [s.body, ...(s.definitions ?? []).map((d) => `${d.term}: ${d.def}`), s.footnote ?? ''].filter(Boolean).join(' '),
+      url: `${pageUrl}#${s.id}`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: GUIDE_FAQ.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Radar', item: radarUrl },
+      { '@type': 'ListItem', position: 2, name: 'How it works', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="How to read the technology radar"
+  description={`How to read the Emerging Technology & Innovation Radar — what Adopt, Trial, Assess and Hold mean, how quadrants and momentum work, and how to turn ${totalTech} technology assessments into a gap analysis for your own organisation.`}
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <nav class="text-xs text-mist">
+      <a href="/radar/" class="transition hover:text-white">Radar</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">How it works</span>
+    </nav>
+
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">How this works</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      How to read <span class="gradient-text">the radar</span>
+    </h1>
+    <p class="mt-5 text-base leading-relaxed text-mist">
+      The Emerging Technology &amp; Innovation Radar places {totalTech} technologies across {INDUSTRIES.length} industries
+      into four rings, each with a written brief explaining the call. This page explains how to read it, how to make it
+      answer for your own organisation, and what you can take away.
+    </p>
+
+    {GUIDE_STEPS.map((step, i) => (
+      <section id={step.id} class="mt-14 scroll-mt-24">
+        <div class="flex items-center gap-3">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/5 font-display text-sm font-bold text-white">
+            {i + 1}
+          </span>
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">{step.kicker}</p>
+        </div>
+        <h2 class="mt-4 font-display text-2xl font-semibold text-white">{step.title}</h2>
+        <p class="mt-3 text-base leading-relaxed text-mist">{step.body}</p>
+
+        {step.definitions && (
+          <dl class="mt-5 grid gap-3 sm:grid-cols-2">
+            {step.definitions.map((d) => (
+              <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <dt class="font-display text-sm font-semibold text-white">{d.term}</dt>
+                <dd class="mt-1 text-sm leading-relaxed text-mist">{d.def}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        {step.footnote && <p class="mt-4 text-sm leading-relaxed text-mist/80">{step.footnote}</p>}
+      </section>
+    ))}
+
+    <section class="mt-14">
+      <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The four quadrants</h2>
+      <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+        {QUADRANTS.map((q) => (
+          <li class="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-white">
+            <span class="mr-2 text-xs text-mist">{q.code}</span>{q.name}
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="mt-10 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Momentum</h2>
+      <ul class="mt-3 space-y-1.5">
+        {MOMENTUM.map((m) => (
+          <li class="text-sm text-mist"><span class="mr-1.5">{m.glyph}</span><strong class="text-white">{m.label}</strong></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+      <dl class="mt-5 space-y-6">
+        {GUIDE_FAQ.map((f) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-14 flex flex-wrap items-center gap-4">
+      <a href="/radar/" class="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-ink transition hover:opacity-90">
+        Open the radar
+      </a>
+      <a href="/radar/data.json" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        Download the raw data
+      </a>
+    </div>
+  </article>
+</BaseLayout>
