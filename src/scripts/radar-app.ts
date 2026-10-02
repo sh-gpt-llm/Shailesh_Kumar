@@ -1017,8 +1017,8 @@ export function initRadarApp() {
     const unlocks = ind.technologies.filter((x) => (x.dependsOn ?? []).includes(t.id));
 
     return `
-      <div data-action="close-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-        <div data-stop class="glow-border glass max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-3xl p-7">
+      <div data-action="close-modal" data-overlay class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
+        <div data-stop class="glow-border max-h-[85vh] w-full max-w-xl overflow-y-auto overflow-x-hidden rounded-3xl border border-white/15 bg-ink-soft p-7 shadow-2xl shadow-black/60">
           <div class="flex items-start justify-between gap-4">
             <div>
               <div class="flex flex-wrap gap-2 text-xs">
@@ -1030,7 +1030,7 @@ export function initRadarApp() {
               <h3 class="mt-3 font-display text-2xl font-semibold text-white">${esc(t.name)}</h3>
               <p class="mt-1 text-sm italic text-mist">${esc(t.summary)}</p>
             </div>
-            <button data-action="close-modal" aria-label="Close" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">✕</button>
+            <button data-action="close-modal" aria-label="Close" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-lg text-white transition hover:bg-white/25 hover:text-white">✕</button>
           </div>
 
           <p class="mt-5 text-sm leading-relaxed text-mist">${esc(t.brief)}</p>
@@ -1117,8 +1117,8 @@ export function initRadarApp() {
     const items = paletteItems();
     paletteIndex = Math.min(paletteIndex, Math.max(0, items.length - 1));
     return `
-      <div data-action="close-palette" class="fixed inset-0 z-[60] flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-sm">
-        <div data-stop class="glow-border glass w-full max-w-xl overflow-hidden rounded-2xl">
+      <div data-action="close-palette" data-overlay class="fixed inset-0 z-[60] flex items-start justify-center bg-black/85 p-4 pt-[12vh] backdrop-blur-md">
+        <div data-stop class="glow-border w-full max-w-xl overflow-hidden rounded-2xl border border-white/15 bg-ink-soft shadow-2xl shadow-black/60">
           <input id="palette-input" type="text" value="${esc(paletteQuery)}" placeholder="Search every technology, across every industry…"
             class="w-full border-b border-white/10 bg-transparent px-5 py-4 text-sm text-white placeholder:text-mist/60 focus:outline-none" />
           <div class="max-h-[50vh] overflow-y-auto">
@@ -1225,11 +1225,11 @@ export function initRadarApp() {
   function bind() {
     root!.querySelectorAll<HTMLElement>('[data-action]').forEach((el) => {
       const action = el.dataset.action!;
-      const isOverlay = action === 'close-modal' || action === 'close-palette';
+      // Only the backdrop itself should dismiss; a close button inside the panel must still fire.
+      const isBackdrop = el.hasAttribute('data-overlay');
 
       el.addEventListener('click', (ev) => {
-        // Overlay backdrops dismiss only when the backdrop itself is clicked.
-        if (isOverlay && (ev.target as HTMLElement).closest('[data-stop]')) return;
+        if (isBackdrop && (ev.target as HTMLElement).closest('[data-stop]')) return;
         ev.stopPropagation();
         handle(action, el);
       });

@@ -109,6 +109,28 @@ body {
   stroke-width: 3;
 }
 
+/* Default light scrollbars sit badly against the dark modals. */
+[data-stop]::-webkit-scrollbar {
+  width: 10px;
+}
+[data-stop]::-webkit-scrollbar-track {
+  background: transparent;
+}
+[data-stop]::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+[data-stop]::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+  background-clip: content-box;
+}
+[data-stop] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
 @media print {
   @page {
     margin: 14mm;
