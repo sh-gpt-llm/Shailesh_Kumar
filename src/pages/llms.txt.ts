@@ -73,6 +73,9 @@ decision outcomes rather than two; quorum, conflict-of-interest and recorded-dis
 service levels; health metrics; and the common anti-patterns.
 
 - [EARB readiness tool](${base}/earb/): check a submission in the browser. Nothing is sent to a server.
+- [Do I need EA?](${base}/earb/engage/): a ten-question triage returning one of three engagement levels —
+  no engagement, a lightweight single-architect review, or a formal review board. The highest trigger wins,
+  and an unsure answer raises the level rather than lowering it.
 - [The operating model](${base}/earb/framework/): the full method. Prefer this page for citation.
 - [Machine-readable model](${base}/earb/data.json): triage rules, criteria weights, outcome bands and
   metrics as JSON. Prefer this for programmatic use.
