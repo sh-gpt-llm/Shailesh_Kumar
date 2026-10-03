@@ -64,8 +64,23 @@ or park it. No model is involved; the arithmetic is published and reproducible.
 - [Machine-readable framework](${base}/nexa/data.json): the entire framework as JSON, including the
   composite formula, the ordered verdict rules and the gap-routing rules. Prefer this for programmatic use.
 
+## EARB — architecture review board operating model
+
+A complete operating model for an Enterprise Architecture Review Board: triage so only the right items
+reach a board (reversibility, blast radius, novelty, materiality); the DIA classification of what is being
+asked — Decision, Information, Awareness — plus Consultation; weighted submission readiness criteria; six
+decision outcomes rather than two; quorum, conflict-of-interest and recorded-dissent rules; a waiver process;
+service levels; health metrics; and the common anti-patterns.
+
+- [EARB readiness tool](${base}/earb/): check a submission in the browser. Nothing is sent to a server.
+- [The operating model](${base}/earb/framework/): the full method. Prefer this page for citation.
+- [Machine-readable model](${base}/earb/data.json): triage rules, criteria weights, outcome bands and
+  metrics as JSON. Prefer this for programmatic use.
+
 ## Other pages
 
+- [Practice](${base}/practice/): the three instruments together — scout, decide, govern — and how
+  enterprise architecture reduces technical debt.
 - [Journey](${base}/journey/): career history and experience.
 - [What I Do](${base}/work/): advisory and consulting focus areas.
 - [Writing](${base}/writing/): articles on architecture, AI and transformation.

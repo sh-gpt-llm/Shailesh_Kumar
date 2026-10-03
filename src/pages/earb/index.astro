@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ASK_TYPES, ROUTES, OUTCOMES, CRITERIA, EARB_PURPOSE, EARB_FAQ } from '../../data/earb/model';
+
+const pageUrl = new URL('/earb/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'EARB Readiness — architecture review board submission check',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any modern web browser',
+    url: pageUrl,
+    description:
+      'Check whether an initiative belongs at an architecture review board, how ready the submission is, and the questions the board will ask. Free, private, no account.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    isBasedOn: new URL('/earb/data.json', Astro.site).href,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: EARB_FAQ.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+<BaseLayout
+  title="EARB — architecture review board readiness"
+  description="Work out whether an initiative belongs at the architecture review board, how ready your submission is, and exactly which questions the board will ask. Based on a published EARB operating model."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <section class="mx-auto max-w-4xl px-6 pt-16 pb-6">
+    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">EARB</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Walk in knowing <span class="gradient-text">what they'll ask.</span>
+    </h1>
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist">
+      Most submissions fail for the same handful of reasons, and almost all of them are fixable the week before.
+      This runs your item through an architecture review board's actual tests — does it even belong here, is the paper
+      reviewable, and which weaknesses will get picked up in the room.
+    </p>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist/80">
+      A rehearsal, not a ruling. Everything stays in your browser — no account, no server, nothing stored.
+    </p>
+  </section>
+
+  {/* Server-rendered so the operating model is readable without JavaScript; the app replaces this on mount. */}
+  <div id="earb-app">
+    <section class="mx-auto max-w-4xl px-6 py-8">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-emerald-300">A board is</p>
+          <ul class="mt-2 space-y-1.5">{EARB_PURPOSE.is.map((x) => <li class="text-xs leading-relaxed text-mist">{x}</li>)}</ul>
+        </div>
+        <div class="rounded-2xl border border-rose-400/20 bg-rose-400/[0.04] p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-rose-300">A board is not</p>
+          <ul class="mt-2 space-y-1.5">{EARB_PURPOSE.isNot.map((x) => <li class="text-xs leading-relaxed text-mist">{x}</li>)}</ul>
+        </div>
+      </div>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">What are you asking for? DIA, plus one</h2>
+      <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+        {ASK_TYPES.map((a) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold" style={`color:${a.color}`}>{a.code} — {a.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{a.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Where it should be decided</h2>
+      <dl class="mt-4 space-y-3">
+        {ROUTES.map((r) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold" style={`color:${r.color}`}>{r.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{r.meaning}</dd>
+            <dd class="mt-1.5 text-xs text-mist/70">Service level — {r.sla}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The {CRITERIA.length} readiness criteria</h2>
+      <ol class="mt-4 space-y-3">
+        {CRITERIA.map((c) => (
+          <li class="text-sm text-mist"><strong class="text-white">{c.name}</strong> — {c.test}</li>
+        ))}
+      </ol>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The six outcomes</h2>
+      <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+        {OUTCOMES.map((o) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold" style={`color:${o.color}`}>{o.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{o.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <p class="mt-10 text-sm text-mist">
+        The full operating model — triage, integrity rules, waivers, service levels, health metrics and anti-patterns —
+        is on the <a href="/earb/framework/" class="underline decoration-dotted hover:text-white">framework page</a>.
+      </p>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+    <dl class="mt-6 space-y-6">
+      {EARB_FAQ.map((f) => (
+        <div>
+          <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+          <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initEarbApp } from '../../scripts/earb-app';
+  initEarbApp();
+</script>

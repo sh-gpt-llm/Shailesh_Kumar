@@ -12,13 +12,17 @@ const { title, description = "Shailesh Kumar — Enterprise Architect, AI Strate
 const nav = [
   { href: '/journey', label: 'Journey' },
   { href: '/work', label: 'What I Do' },
-  { href: '/radar', label: 'Radar' },
-  { href: '/nexa', label: 'NEXA' },
+  { href: '/practice', label: 'Practice' },
   { href: '/writing', label: 'Writing' },
   { href: '/contact', label: 'Contact' },
 ];
 const currentPath = Astro.url.pathname;
-const isActive = (href: string) => currentPath === href || (href !== '/' && currentPath.startsWith(href));
+// The instruments live at their own top-level URLs but belong to Practice in the nav.
+const PRACTICE_PATHS = ['/practice', '/radar', '/nexa', '/earb'];
+const isActive = (href: string) =>
+  href === '/practice'
+    ? PRACTICE_PATHS.some((p) => currentPath === p || currentPath.startsWith(`${p}/`))
+    : currentPath === href || (href !== '/' && currentPath.startsWith(href));
 const verification = (site as { verification?: { google?: string; bing?: string } }).verification;
 ---
 <!doctype html>

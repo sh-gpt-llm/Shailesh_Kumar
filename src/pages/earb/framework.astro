@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  EARB_PURPOSE,
+  TRIAGE_TESTS,
+  ROUTES,
+  ASK_TYPES,
+  CRITERIA,
+  OUTCOMES,
+  INTEGRITY_RULES,
+  WAIVER,
+  HEALTH_METRICS,
+  ANTI_PATTERNS,
+  EARB_FAQ,
+} from '../../data/earb/model';
+
+const pageUrl = new URL('/earb/framework/', Astro.site).href;
+const appUrl = new URL('/earb/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to run an Enterprise Architecture Review Board',
+    description:
+      'A complete operating model for an architecture review board: entry criteria and triage, the DIA classification, submission readiness criteria, six decision outcomes, quorum and conflict rules, waivers, service levels and health metrics.',
+    url: pageUrl,
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    step: [
+      { name: 'Decide what the board is for', text: 'A stage gate that tests conformance against published standards — not a funding body and not a design authority.' },
+      { name: 'Triage before the agenda', text: 'Test reversibility, blast radius, novelty and materiality to route items to delegated, fast path or full board.' },
+      { name: 'Make the ask explicit', text: 'Every item declares whether it seeks a Decision, Consultation, Information or Awareness, with the question stated and a named owner.' },
+      { name: 'Test submission readiness', text: 'Score the paper against the published criteria — problem, options, estate impact, standards, non-functionals, cost over life, reversibility, risk owner and pre-read.' },
+      { name: 'Record one of six outcomes', text: 'Approved, approved with conditions, returned for rework, deferred, rejected or noted — each with conditions, owners, dates and an expiry.' },
+      { name: 'Measure the board itself', text: 'Track decision cycle time, first-time approval rate, condition closure, waiver ageing, bypass rate and agenda mix.' },
+    ].map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.name, text: s.text })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: EARB_FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'EARB', item: appUrl },
+      { '@type': 'ListItem', position: 2, name: 'The operating model', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="The EARB operating model"
+  description="A complete, published operating model for an Enterprise Architecture Review Board — triage and entry criteria, DIA classification, readiness criteria, six decision outcomes, quorum and conflicts, waivers, service levels, health metrics and anti-patterns."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <nav class="text-xs text-mist">
+      <a href="/earb/" class="transition hover:text-white">EARB</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">The operating model</span>
+    </nav>
+
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">The operating model</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      How to run an <span class="gradient-text">architecture review board</span>
+    </h1>
+    <p class="mt-5 text-base leading-relaxed text-mist">
+      Most architecture review boards fail in one of two directions: they approve everything, or they become a queue
+      that delivery teams learn to route around. Both failures come from the same root cause — no published rules about
+      what comes to the board, what makes a submission reviewable, and what the board is allowed to decide.
+    </p>
+    <p class="mt-4 text-base leading-relaxed text-mist">
+      This is a complete operating model, published in full so it can be adopted, adapted or argued with.
+    </p>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">What the board is for</h2>
+      <div class="mt-5 grid gap-4 sm:grid-cols-2">
+        <div class="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-emerald-300">It is</p>
+          <ul class="mt-3 space-y-2.5">{EARB_PURPOSE.is.map((x) => <li class="text-sm leading-relaxed text-mist">{x}</li>)}</ul>
+        </div>
+        <div class="rounded-2xl border border-rose-400/20 bg-rose-400/[0.04] p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-rose-300">It is not</p>
+          <ul class="mt-3 space-y-2.5">{EARB_PURPOSE.isNot.map((x) => <li class="text-sm leading-relaxed text-mist">{x}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Triage — what reaches the board at all</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        The most common cause of a failing board is that everything arrives. Four tests, applied at submission, decide
+        where an item is decided. Governance effort should be proportionate to the size of the bet.
+      </p>
+      {TRIAGE_TESTS.map((t) => (
+        <div class="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <h3 class="font-display text-lg font-semibold text-white">{t.name}</h3>
+          <p class="mt-1.5 text-sm text-mist">{t.question}</p>
+          <p class="mt-2 text-xs leading-relaxed text-mist/70">{t.why}</p>
+        </div>
+      ))}
+
+      <h3 class="mt-8 text-xs font-semibold uppercase tracking-wide text-cyan-400">The three routes</h3>
+      <dl class="mt-3 space-y-3">
+        {ROUTES.map((r) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold" style={`color:${r.color}`}>{r.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{r.meaning}</dd>
+            <dd class="mt-1.5 text-xs text-mist/70"><strong class="text-white">Service level —</strong> {r.sla}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">DIA — and the mode that's usually missing</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Decision, Information and Awareness is the classic classification, and stating it at submission is the cheapest
+        possible fix for an overloaded agenda. The fourth mode — <strong class="text-white">Consultation</strong> — is
+        the one most boards lack, and its absence is why teams arrive having already committed.
+      </p>
+      {ASK_TYPES.map((a) => (
+        <div class="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <div class="flex items-center gap-3">
+            <span class="flex h-8 w-8 items-center justify-center rounded-xl font-mono text-sm font-bold" style={`background:${a.color}33;color:${a.color}`}>{a.code}</span>
+            <h3 class="font-display text-lg font-semibold text-white">{a.label}</h3>
+          </div>
+          <p class="mt-3 text-sm leading-relaxed text-mist">{a.meaning}</p>
+          <p class="mt-3 text-xs font-semibold uppercase tracking-wide text-cyan-400">The paper must carry</p>
+          <ul class="mt-1.5 space-y-1">{a.requires.map((r) => <li class="text-sm text-mist">— {r}</li>)}</ul>
+        </div>
+      ))}
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">What makes a submission reviewable</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        {CRITERIA.length} criteria, weighted. Not every one applies to every kind of ask — an awareness item needs none
+        of them, a decision item needs all of them.
+      </p>
+      {CRITERIA.map((c) => (
+        <div class="mt-6 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 class="font-display text-lg font-semibold text-white">{c.name}</h3>
+            <span class="font-mono text-xs text-mist">weight ×{c.weight}</span>
+          </div>
+          <p class="mt-2 text-sm text-mist">{c.test}</p>
+          <p class="mt-2 text-xs leading-relaxed text-mist/70">{c.why}</p>
+          <p class="mt-3 border-l-2 border-amber-400/40 pl-3 text-sm italic text-mist">“{c.challenge}”</p>
+        </div>
+      ))}
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The six outcomes</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Approval is not binary. A board with only “yes” and “no” forces itself into yes.
+      </p>
+      <dl class="mt-5 space-y-4">
+        {OUTCOMES.map((o) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-lg font-semibold" style={`color:${o.color}`}>{o.label}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{o.meaning}</dd>
+            <dd class="mt-2 text-xs leading-relaxed text-mist/70"><strong class="text-white">What follows —</strong> {o.next}</dd>
+            <dd class="mt-1 text-xs leading-relaxed text-mist/70"><strong class="text-white">Expiry —</strong> {o.expiry}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Integrity rules</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        These are the rules that decide whether federated architects keep turning up. Lose them and the board becomes
+        the central team talking to itself.
+      </p>
+      <dl class="mt-5 space-y-5">
+        {INTEGRITY_RULES.map((r) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{r.name}</dt>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist">{r.rule}</dd>
+            <dd class="mt-1 text-xs leading-relaxed text-mist/70">{r.why}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">{WAIVER.name}</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">{WAIVER.summary}</p>
+      <ul class="mt-4 space-y-1.5">{WAIVER.requirements.map((r) => <li class="text-sm text-mist">— {r}</li>)}</ul>
+      <p class="mt-4 rounded-2xl border border-amber-400/30 bg-amber-400/5 p-4 text-sm leading-relaxed text-mist">{WAIVER.warning}</p>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Measuring the board itself</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        A governance function that does not measure itself cannot defend its existence when budgets tighten — and
+        governance is cut early.
+      </p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full min-w-[560px] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+              <th class="py-2.5 pr-3">Metric</th>
+              <th class="py-2.5 pr-3">Measure</th>
+              <th class="py-2.5">Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            {HEALTH_METRICS.map((m) => (
+              <tr class="border-b border-white/5">
+                <td class="py-2.5 pr-3 font-semibold text-white">{m.name}</td>
+                <td class="py-2.5 pr-3 text-mist">{m.measure}</td>
+                <td class="py-2.5 font-mono text-white">{m.target}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <dl class="mt-5 space-y-2">
+        {HEALTH_METRICS.map((m) => (
+          <div class="text-xs leading-relaxed text-mist/70"><dt class="inline font-semibold text-white">{m.name} — </dt><dd class="inline">{m.signal}</dd></div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Anti-patterns</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        If you recognise your board in more than two of these, the problem is the operating model, not the people.
+      </p>
+      <dl class="mt-5 space-y-5">
+        {ANTI_PATTERNS.map((p) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold text-rose-300">{p.name}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist"><strong class="text-white">Looks like —</strong> {p.looks}</dd>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist"><strong class="text-white">Costs you —</strong> {p.costs}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+      <dl class="mt-5 space-y-6">
+        {EARB_FAQ.map((f) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-14 flex flex-wrap items-center gap-4">
+      <a href="/earb/" class="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-ink transition hover:opacity-90">
+        Check a submission
+      </a>
+      {/* Served as application/json so crawlers read it inline; the attribute makes a click save it. */}
+      <a href="/earb/data.json" download="earb-operating-model.json" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        Download the model (JSON)
+      </a>
+      <a href="/practice/" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        See the other instruments
+      </a>
+    </div>
+
+    <p class="mt-10 text-xs leading-relaxed text-mist/60">
+      Free to adopt, adapt and cite with attribution to Shailesh Kumar (vantessence.com). Independent, with no
+      affiliation to any employer, vendor or framework body.
+    </p>
+  </article>
+</BaseLayout>
