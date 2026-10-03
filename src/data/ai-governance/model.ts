@@ -122,7 +122,7 @@ export const CONTROL_THEMES: ControlTheme[] = [
       'Safe failure behaviour — degrade or refuse rather than guess',
       'Adversarial and stress testing proportionate to consequence',
     ],
-    anchors: ['NIST AI RMF — Measure 2', 'ISO/IEC 42001 — A.6 AI system life cycle', 'EU AI Act — accuracy and robustness obligations for high-risk systems', 'OECD — Robustness, security and safety'],
+    anchors: ['NIST AI RMF — Measure 2', 'ISO/IEC 42001 — A.6 AI system life cycle', 'ISO/IEC 23894 — AI risk management', 'ISO/IEC 5338 — AI lifecycle processes', 'EU AI Act — accuracy and robustness obligations for high-risk systems', 'OECD — Robustness, security and safety'],
   },
   {
     id: 'safety',
@@ -136,7 +136,7 @@ export const CONTROL_THEMES: ControlTheme[] = [
       'Red teaming where the consequence of failure justifies it',
       'Supply-chain assurance for models, weights, datasets and components',
     ],
-    anchors: ['NIST AI 600-1 — Information Security', 'EU AI Act — cybersecurity obligations for high-risk systems', 'ISO/IEC 42001 — A.6', 'OECD — Robustness, security and safety'],
+    anchors: ['NIST AI 600-1 — Information Security', 'OWASP Top 10 for LLM Applications', 'MITRE ATLAS', 'EU AI Act — cybersecurity obligations for high-risk systems', 'ISO/IEC 27001', 'OECD — Robustness, security and safety'],
   },
   {
     id: 'fairness',

@@ -19,6 +19,7 @@ import {
   ANTI_PATTERNS,
 } from '../../data/ai-governance/model';
 import { DIMENSIONS, LANES, TRIAGE_RULES, MODULES, OBLIGATIONS, SCOPE_NOTE, AI_FAQ } from '../../data/ai-governance/triage';
+import { STANDARDS, STANDARDS_NOTE, LANDSCAPE_INSIGHT, STANDARDS_FAQ } from '../../data/ai-governance/standards';
 
 export const GET: APIRoute = ({ site }) => {
   const base = site?.href.replace(/\/$/, '') ?? 'https://vantessence.com';
@@ -98,6 +99,24 @@ export const GET: APIRoute = ({ site }) => {
     },
 
     shadowAi: SHADOW_AI,
+
+    standardsLandscape: {
+      note: STANDARDS_NOTE,
+      insights: LANDSCAPE_INSIGHT,
+      regions: [...new Set(STANDARDS.map((s) => s.region))],
+      natures: [...new Set(STANDARDS.map((s) => s.nature))],
+      instruments: STANDARDS.map((s) => ({
+        id: s.id,
+        name: s.name,
+        body: s.body,
+        region: s.region,
+        nature: s.nature,
+        covers: s.covers,
+        soWhat: s.soWhat,
+        supportsControlThemes: s.themes,
+      })),
+      faq: STANDARDS_FAQ.map((f) => ({ question: f.q, answer: f.a })),
+    },
     maturityModel: MATURITY,
     metrics: METRICS,
     antiPatterns: ANTI_PATTERNS.map((p) => ({ name: p.name, looksLike: p.looks, costs: p.costs })),
