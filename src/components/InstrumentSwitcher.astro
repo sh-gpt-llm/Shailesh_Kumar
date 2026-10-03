@@ -1,41 +1,79 @@
 ---
-// Lets someone move directly between the instruments. Without it, hopping from
-// the Radar to NEXA means going up to Practice and back down.
+// Lets someone move directly between the instruments, and shows that they are
+// three stages of one pipeline rather than three unrelated tools.
 interface Props {
   currentPath: string;
 }
 const { currentPath } = Astro.props;
 
 const instruments = [
-  { href: '/radar/', label: 'Radar', hint: 'Scout' },
-  { href: '/nexa/', label: 'NEXA', hint: 'Decide' },
-  { href: '/earb/', label: 'EARB', hint: 'Govern' },
+  { href: '/radar/', label: 'Radar', stage: 'Scout' },
+  { href: '/nexa/', label: 'NEXA', stage: 'Decide' },
+  { href: '/earb/', label: 'EARB', stage: 'Govern' },
 ];
 
 const isCurrent = (href: string) => currentPath.startsWith(href.replace(/\/$/, ''));
 const onHub = currentPath === '/practice' || currentPath === '/practice/';
 ---
-<nav aria-label="Instruments" class="no-print border-b border-white/5 bg-ink/50 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-2 gap-y-1.5 px-6 py-2.5">
+<nav aria-label="Instruments" class="no-print relative border-b border-white/5 bg-ink/60 backdrop-blur-xl">
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div class="absolute left-[18%] top-1/2 h-24 w-72 -translate-y-1/2 rounded-full bg-violet-600/10 blur-3xl"></div>
+    <div class="absolute left-[42%] top-1/2 h-24 w-72 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto flex max-w-6xl items-center gap-4 overflow-x-auto px-6 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
     <a
       href="/practice/"
       aria-current={onHub ? 'page' : undefined}
-      class={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${onHub ? 'bg-white/10 text-white' : 'text-mist hover:text-white'}`}
+      class={`group flex shrink-0 items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] transition ${
+        onHub ? 'text-amber-400' : 'text-mist/60 hover:text-amber-400'
+      }`}
     >
-      Practice
+      <span class={`h-1 w-1 rotate-45 transition ${onHub ? 'bg-amber-400' : 'bg-mist/40 group-hover:bg-amber-400'}`}></span>
+      <span class="hidden sm:inline">Practice</span>
     </a>
-    <span class="text-mist/30" aria-hidden="true">/</span>
-    {instruments.map((i) => (
-      <a
-        href={i.href}
-        aria-current={isCurrent(i.href) ? 'page' : undefined}
-        class={`group flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
-          isCurrent(i.href) ? 'bg-white text-ink' : 'text-mist hover:bg-white/10 hover:text-white'
-        }`}
-      >
-        {i.label}
-        <span class={`text-[10px] font-normal ${isCurrent(i.href) ? 'text-ink/60' : 'text-mist/50'}`}>{i.hint}</span>
-      </a>
-    ))}
+
+    <span class="h-5 w-px shrink-0 bg-white/10" aria-hidden="true"></span>
+
+    <ol class="flex shrink-0 items-center">
+      {instruments.map((i, idx) => {
+        const active = isCurrent(i.href);
+        return (
+          <li class="flex items-center">
+            <a
+              href={i.href}
+              aria-current={active ? 'page' : undefined}
+              class={`group relative flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 transition ${
+                active ? 'bg-white/[0.07] ring-1 ring-white/10' : 'hover:bg-white/[0.04]'
+              }`}
+            >
+              <span
+                class={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg font-mono text-[10px] font-bold transition ${
+                  active
+                    ? 'bg-gradient-to-br from-violet-500 to-cyan-400 text-ink shadow-lg shadow-violet-500/25'
+                    : 'border border-white/15 text-mist/70 group-hover:border-white/35 group-hover:text-white'
+                }`}
+              >
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <span class="flex flex-col items-start leading-none">
+                <span class={`font-display text-[13px] font-semibold ${active ? 'gradient-text' : 'text-mist transition group-hover:text-white'}`}>
+                  {i.label}
+                </span>
+                <span class={`mt-1 hidden text-[9px] uppercase tracking-[0.22em] sm:block ${active ? 'text-mist' : 'text-mist/40'}`}>
+                  {i.stage}
+                </span>
+              </span>
+            </a>
+            {idx < instruments.length - 1 && (
+              <span class="mx-0.5 h-px w-3 shrink-0 bg-gradient-to-r from-white/20 to-white/5 sm:mx-1 sm:w-6" aria-hidden="true"></span>
+            )}
+          </li>
+        );
+      })}
+    </ol>
   </div>
+
+  {/* The rail scrolls on narrow screens; this is the only hint that it does. */}
+  <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-ink to-transparent sm:hidden" aria-hidden="true"></div>
 </nav>
