@@ -143,7 +143,7 @@ export function initNexaApp() {
                 <button ${i <= current ? `data-action="goto-step" data-step="${s.id}"` : 'disabled'}
                   class="flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition ${
                     now
-                      ? 'border-transparent bg-white text-ink'
+                      ? 'border-transparent bg-gradient-to-r from-violet-500 to-cyan-400 text-ink shadow-lg shadow-violet-500/20'
                       : done
                         ? 'border-white/20 text-white hover:bg-white/10'
                         : 'border-white/10 text-mist/50'
@@ -384,9 +384,9 @@ export function initNexaApp() {
                       (an) => `
                     <button data-action="set-score" data-dim="${d.id}" data-score="${an.score}"
                       class="flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left text-xs transition ${
-                        a.scores[d.id] === an.score ? 'bg-white text-ink font-semibold' : 'text-mist hover:bg-white/10'
+                        a.scores[d.id] === an.score ? 'bg-white/[0.07] text-white font-semibold ring-1 ring-white/15' : 'text-mist hover:bg-white/10'
                       }">
-                      <span class="font-mono ${a.scores[d.id] === an.score ? 'text-ink/60' : 'text-mist/50'}">${an.score}</span>
+                      <span class="font-mono ${a.scores[d.id] === an.score ? 'text-cyan-300' : 'text-mist/50'}">${an.score}</span>
                       <span>${esc(an.label)}</span>
                     </button>`
                     )
@@ -404,10 +404,10 @@ export function initNexaApp() {
                   (k) => `
                   <button data-action="set-ask" data-ask="${k.id}"
                     class="rounded-xl border px-4 py-3 text-left transition ${
-                      a.ask === k.id ? 'border-transparent bg-white text-ink' : 'border-white/10 text-mist hover:bg-white/10'
+                      a.ask === k.id ? 'border-transparent bg-white/[0.07] text-white ring-1 ring-white/20' : 'border-white/10 text-mist hover:bg-white/10'
                     }">
                     <span class="block text-sm font-semibold">${esc(k.label)} <span class="font-mono text-xs opacity-60">bar ${k.bar}</span></span>
-                    <span class="block text-xs ${a.ask === k.id ? 'text-ink/70' : 'text-mist/70'}">${esc(k.detail)}</span>
+                    <span class="block text-xs ${a.ask === k.id ? 'text-mist' : 'text-mist/70'}">${esc(k.detail)}</span>
                   </button>`
                 ).join('')}
               </div>

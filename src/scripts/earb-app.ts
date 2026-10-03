@@ -123,7 +123,7 @@ export function initEarbApp() {
               <button ${i <= current ? `data-action="goto" data-step="${x.id}"` : 'disabled'}
                 class="flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition ${
                   i === current
-                    ? 'border-transparent bg-white text-ink'
+                    ? 'border-transparent bg-gradient-to-r from-violet-500 to-cyan-400 text-ink shadow-lg shadow-violet-500/20'
                     : i < current
                       ? 'border-white/20 text-white hover:bg-white/10'
                       : 'border-white/10 text-mist/50'
@@ -170,14 +170,15 @@ export function initEarbApp() {
             ${ASK_TYPES.map(
               (a) => `
               <button data-action="set-ask" data-ask="${a.id}"
+                style="${s.ask === a.id ? `background:${a.color}1f;border-color:${a.color}77` : ''}"
                 class="rounded-2xl border p-4 text-left transition ${
-                  s.ask === a.id ? 'border-transparent bg-white text-ink' : 'border-white/10 text-mist hover:bg-white/10'
+                  s.ask === a.id ? 'text-white' : 'border-white/10 text-mist hover:bg-white/10'
                 }">
                 <span class="flex items-center gap-2">
-                  <span class="flex h-6 w-6 items-center justify-center rounded-lg font-mono text-xs font-bold" style="background:${a.color}33;color:${s.ask === a.id ? '#0b0d12' : a.color}">${a.code}</span>
+                  <span class="flex h-6 w-6 items-center justify-center rounded-lg font-mono text-xs font-bold" style="background:${a.color}33;color:${a.color}">${a.code}</span>
                   <span class="font-display text-sm font-semibold">${esc(a.label)}</span>
                 </span>
-                <span class="mt-2 block text-xs leading-relaxed ${s.ask === a.id ? 'text-ink/70' : 'text-mist/80'}">${esc(a.meaning)}</span>
+                <span class="mt-2 block text-xs leading-relaxed ${s.ask === a.id ? 'text-mist' : 'text-mist/80'}">${esc(a.meaning)}</span>
               </button>`
             ).join('')}
           </div>
@@ -251,8 +252,8 @@ export function initEarbApp() {
                       (opt, i) => `
                     <button data-action="set-triage" data-key="${scale.id}" data-value="${i}"
                       class="flex w-full items-start gap-3 rounded-lg px-3 py-2 text-left text-xs transition ${
-                        s.triage[scale.id as TriageKey] === i ? 'bg-white font-semibold text-ink' : 'text-mist hover:bg-white/10'
-                      }"><span class="font-mono ${s.triage[scale.id as TriageKey] === i ? 'text-ink/60' : 'text-mist/50'}">${i}</span><span>${esc(opt)}</span></button>`
+                        s.triage[scale.id as TriageKey] === i ? 'bg-white/[0.07] font-semibold text-white ring-1 ring-white/15' : 'text-mist hover:bg-white/10'
+                      }"><span class="font-mono ${s.triage[scale.id as TriageKey] === i ? 'text-cyan-300' : 'text-mist/50'}">${i}</span><span>${esc(opt)}</span></button>`
                     )
                     .join('')}
                 </div>
@@ -309,7 +310,7 @@ export function initEarbApp() {
                         (a) => `
                       <button data-action="set-answer" data-id="${c.id}" data-answer="${a.id}"
                         class="rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                          (s.answers[c.id] ?? 'no') === a.id ? 'bg-white text-ink' : 'text-mist hover:text-white'
+                          (s.answers[c.id] ?? 'no') === a.id ? 'bg-gradient-to-r from-violet-500 to-cyan-400 text-ink' : 'text-mist hover:text-white'
                         }">${a.label}</button>`
                       )
                       .join('')}

@@ -247,7 +247,7 @@ export function initRadarApp() {
             ${TABS.map(
               (t) => `
               <button data-action="tab" data-tab="${t.id}" title="${esc(t.hint)}" class="rounded-lg px-3.5 py-2 text-sm font-semibold transition ${
-                state.tab === t.id ? 'bg-white text-ink' : 'text-mist hover:text-white'
+                state.tab === t.id ? 'bg-gradient-to-r from-violet-500 to-cyan-400 text-ink shadow-lg shadow-violet-500/20' : 'text-mist hover:text-white'
               }">${t.label}</button>`
             ).join('')}
           </div>
@@ -721,7 +721,7 @@ export function initRadarApp() {
               .map(
                 (c) => `
               <button data-action="geo-cat" data-cat="${esc(c)}" class="rounded-full border px-4 py-1.5 text-sm font-medium transition ${
-                cat === c ? 'border-transparent bg-white text-ink' : 'border-white/10 text-mist hover:text-white'
+                cat === c ? 'border-transparent bg-gradient-to-r from-violet-500 to-cyan-400 text-ink' : 'border-white/10 text-mist hover:text-white'
               }">${esc(c)}</button>`
               )
               .join('')}
@@ -731,7 +731,7 @@ export function initRadarApp() {
               .map(
                 (v) => `
               <button data-action="geo-view" data-view="${v}" class="rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition ${
-                geoView === v ? 'bg-white text-ink' : 'text-mist hover:text-white'
+                geoView === v ? 'bg-gradient-to-r from-violet-500 to-cyan-400 text-ink' : 'text-mist hover:text-white'
               }">${v}</button>`
               )
               .join('')}
@@ -866,7 +866,7 @@ export function initRadarApp() {
               (r) => `
               <button data-action="role" data-role="${r.id}" class="rounded-full border px-4 py-2 text-sm font-medium transition ${
                 state.role === r.id
-                  ? 'border-transparent bg-white text-ink'
+                  ? 'border-transparent bg-gradient-to-r from-violet-500 to-cyan-400 text-ink shadow-lg shadow-violet-500/20'
                   : 'border-white/10 text-mist hover:border-white/30 hover:text-white'
               }">${esc(r.label)}</button>`
             ).join('')}
