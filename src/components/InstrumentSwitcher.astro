@@ -1,0 +1,41 @@
+---
+// Lets someone move directly between the instruments. Without it, hopping from
+// the Radar to NEXA means going up to Practice and back down.
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+
+const instruments = [
+  { href: '/radar/', label: 'Radar', hint: 'Scout' },
+  { href: '/nexa/', label: 'NEXA', hint: 'Decide' },
+  { href: '/earb/', label: 'EARB', hint: 'Govern' },
+];
+
+const isCurrent = (href: string) => currentPath.startsWith(href.replace(/\/$/, ''));
+const onHub = currentPath === '/practice' || currentPath === '/practice/';
+---
+<nav aria-label="Instruments" class="no-print border-b border-white/5 bg-ink/50 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-2 gap-y-1.5 px-6 py-2.5">
+    <a
+      href="/practice/"
+      aria-current={onHub ? 'page' : undefined}
+      class={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${onHub ? 'bg-white/10 text-white' : 'text-mist hover:text-white'}`}
+    >
+      Practice
+    </a>
+    <span class="text-mist/30" aria-hidden="true">/</span>
+    {instruments.map((i) => (
+      <a
+        href={i.href}
+        aria-current={isCurrent(i.href) ? 'page' : undefined}
+        class={`group flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
+          isCurrent(i.href) ? 'bg-white text-ink' : 'text-mist hover:bg-white/10 hover:text-white'
+        }`}
+      >
+        {i.label}
+        <span class={`text-[10px] font-normal ${isCurrent(i.href) ? 'text-ink/60' : 'text-mist/50'}`}>{i.hint}</span>
+      </a>
+    ))}
+  </div>
+</nav>

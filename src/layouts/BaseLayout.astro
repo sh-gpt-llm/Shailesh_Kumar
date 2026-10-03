@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Analytics from '../components/Analytics.astro';
+import InstrumentSwitcher from '../components/InstrumentSwitcher.astro';
 import site from '../data/site.json';
 
 interface Props {
@@ -23,6 +24,12 @@ const isActive = (href: string) =>
   href === '/practice'
     ? PRACTICE_PATHS.some((p) => currentPath === p || currentPath.startsWith(`${p}/`))
     : currentPath === href || (href !== '/' && currentPath.startsWith(href));
+const inPractice = PRACTICE_PATHS.some((p) => currentPath === p || currentPath.startsWith(`${p}/`));
+const instruments = [
+  { href: '/radar/', label: 'Radar' },
+  { href: '/nexa/', label: 'NEXA' },
+  { href: '/earb/', label: 'EARB' },
+];
 const verification = (site as { verification?: { google?: string; bing?: string } }).verification;
 ---
 <!doctype html>
@@ -86,12 +93,22 @@ const verification = (site as { verification?: { google?: string; bing?: string 
       <div id="mobile-menu" class="hidden border-t border-white/5 md:hidden">
         <ul class="flex flex-col gap-1 px-6 py-4 text-sm font-medium text-mist">
           {nav.map((item) => (
-            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} class={`block rounded-lg px-3 py-2 transition hover:bg-white/5 hover:text-white ${isActive(item.href) ? 'bg-white/5 text-white' : ''}`}>{item.label}</a></li>
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} class={`block rounded-lg px-3 py-2 transition hover:bg-white/5 hover:text-white ${isActive(item.href) ? 'bg-white/5 text-white' : ''}`}>{item.label}</a>
+              {item.href === '/practice' && (
+                <ul class="mb-1 ml-3 border-l border-white/10 pl-3">
+                  {instruments.map((i) => (
+                    <li><a href={i.href} class={`block rounded-lg px-3 py-1.5 text-xs transition hover:bg-white/5 hover:text-white ${currentPath.startsWith(i.href.replace(/\/$/, '')) ? 'text-white' : ''}`}>{i.label}</a></li>
+                  ))}
+                </ul>
+              )}
+            </li>
           ))}
           <li><a href="/writing" class="mt-2 block rounded-lg bg-white/10 px-3 py-2 text-center font-semibold text-white">Read the Writing →</a></li>
         </ul>
       </div>
     </header>
+
+    {inPractice && <InstrumentSwitcher currentPath={currentPath} />}
 
     <main>
       <slot />
@@ -104,7 +121,9 @@ const verification = (site as { verification?: { google?: string; bing?: string 
             <p class="font-display text-white">Shailesh Kumar</p>
             <p class="mt-1">Enterprise Architecture · AI Strategy · Digital Transformation</p>
           </div>
-          <div class="flex gap-6">
+          <div class="flex flex-wrap gap-6">
+            <a href="/practice" class="hover:text-white">Practice</a>
+            {instruments.map((i) => <a href={i.href} class="hover:text-white">{i.label}</a>)}
             <a href="https://www.linkedin.com/in/shailesh-18-kr-2561281069" target="_blank" rel="noopener" class="hover:text-white">LinkedIn</a>
             <a href={`mailto:${site.contact.email}`} class="hover:text-white">Email</a>
             <a href="/writing" class="hover:text-white">Writing</a>
