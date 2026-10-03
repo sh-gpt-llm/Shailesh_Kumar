@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PILLARS, CONTROL_THEMES, GENAI_RISKS, AGENTIC_CONTROLS, SHADOW_AI, MATURITY } from '../../data/ai-governance/model';
+import { DIMENSIONS, LANES, TRIAGE_RULES, OBLIGATIONS, AI_FAQ, SCOPE_NOTE } from '../../data/ai-governance/triage';
+
+const pageUrl = new URL('/ai-governance/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'AI use case classifier — intake triage',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any modern web browser',
+    url: pageUrl,
+    description:
+      'Classify an AI use case across ten dimensions and get the review lane, the assessment modules, the generative and agentic overlays, and the obligations that attach. Deterministic, published rules, nothing leaves the browser.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    isBasedOn: new URL('/ai-governance/data.json', Astro.site).href,
+    featureList: [
+      'Prohibited-practice pre-screen',
+      'Ten classification dimensions with published triage rules',
+      'Generative and agentic overlays',
+      'Obligation map — what you must produce, not just how risky it is',
+      'Assessment modules and reviewers',
+      'Named accountable roles required before proceeding',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: AI_FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<BaseLayout
+  title="AI governance — intake, accountability and responsible AI"
+  description="Classify an AI use case in three minutes: review lane, assessment modules, generative and agentic overlays, and the obligations that actually attach. Built on a published operating model. Free, private, no account."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <section class="mx-auto max-w-4xl px-6 pt-16 pb-8">
+    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">AI Governance</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Know what <span class="gradient-text">actually attaches</span> to your AI use case.
+    </h1>
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist">
+      Most intake processes return a risk rating. A rating tells you how much review to do — it does not tell you what
+      you are required to produce, who must be named, or which of the generative and agentic risks apply.
+      This returns all four.
+    </p>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist/80">
+      Ten questions, deterministic rules published in full, anchored to the EU AI Act, NIST AI RMF, the NIST Generative
+      AI Profile, ISO/IEC 42001 and the OECD principles. Nothing you enter leaves your browser.
+    </p>
+  </section>
+
+  {/* Server-rendered so the whole model is readable without JavaScript; the classifier replaces this on mount. */}
+  <div id="ai-intake">
+    <section class="mx-auto max-w-4xl px-6 pb-12">
+      <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Three pillars</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-3">
+        {PILLARS.map((p) => (
+          <div class="rounded-2xl border p-5" style={`border-color:${p.color}44;background:${p.color}0d`}>
+            <h3 class="font-display text-base font-semibold" style={`color:${p.color}`}>{p.name}</h3>
+            <p class="mt-2 text-xs leading-relaxed text-mist">{p.outcome}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The four routes</h2>
+      <div class="mt-4 space-y-3">
+        {LANES.map((l) => (
+          <div class="rounded-2xl border p-5" style={`border-color:${l.color}44;background:${l.color}0d`}>
+            <p class="font-display text-base font-semibold" style={`color:${l.color}`}>{l.label}</p>
+            <p class="mt-2 text-sm leading-relaxed text-mist">{l.meaning}</p>
+            <p class="mt-1.5 text-xs text-mist/70">{l.sla}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The {DIMENSIONS.length} classification dimensions</h2>
+      <ol class="mt-4 space-y-2">
+        {DIMENSIONS.map((d, i) => (
+          <li class="text-sm text-mist">
+            <span class="font-mono text-xs text-cyan-400">{String(i + 1).padStart(2, '0')}</span>
+            <strong class="ml-2 text-white">{d.name}</strong> — {d.question}
+          </li>
+        ))}
+      </ol>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The published rules</h2>
+      <ol class="mt-4 space-y-2.5">
+        {TRIAGE_RULES.map((r) => (
+          <li class="text-sm text-mist">
+            <strong class="text-white">Rule {r.order} · {r.name}</strong><br />
+            If {r.condition} → {r.result}
+          </li>
+        ))}
+      </ol>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Obligations the classifier maps</h2>
+      <ul class="mt-4 space-y-1.5">
+        {OBLIGATIONS.map((o) => <li class="text-sm text-mist"><strong class="text-white">{o.name}</strong> — {o.applies}</li>)}
+      </ul>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">{SCOPE_NOTE.heading}</h2>
+      <ul class="mt-4 space-y-2.5">
+        {SCOPE_NOTE.points.map((p) => <li class="text-sm leading-relaxed text-mist">— {p}</li>)}
+      </ul>
+
+      <p class="mt-10 text-sm text-mist">
+        The full operating model — {CONTROL_THEMES.length} control themes mapped across four frameworks,
+        the {GENAI_RISKS.length} generative risk categories, {AGENTIC_CONTROLS.length} agentic controls,
+        shadow-AI discovery and a {MATURITY.length}-level maturity model — is on the
+        <a href="/ai-governance/framework/" class="underline decoration-dotted hover:text-white"> framework page</a>.
+      </p>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+    <dl class="mt-6 space-y-6">
+      {AI_FAQ.map((f) => (
+        <div>
+          <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+          <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-10 text-xs leading-relaxed text-mist/60">
+      Indicative guidance, never a legal determination. Obligations are described by category rather than by date,
+      because the EU AI Act’s phase-in schedule has been amended — verify current effective dates against the Official
+      Journal before relying on them.
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initAiIntake } from '../../scripts/ai-intake';
+  initAiIntake();
+</script>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { INDUSTRIES } from '../../data/radar/industries';
 import { DIMENSIONS } from '../../data/nexa/framework';
 import { CRITERIA } from '../../data/earb/model';
+import { CONTROL_THEMES } from '../../data/ai-governance/model';
 
 const totalTech = INDUSTRIES.reduce((n, i) => n + i.technologies.length, 0);
 const pageUrl = new URL('/practice/', Astro.site).href;
@@ -42,6 +43,18 @@ const instruments = [
     secondary: [
       { label: 'The operating model', href: '/earb/framework/' },
       { label: 'Raw data', href: '/earb/data.json' },
+    ],
+  },
+  {
+    stage: 'Assure',
+    name: 'AI Governance — intake, accountability, responsible AI',
+    href: '/ai-governance/',
+    question: 'What actually attaches to this AI use case?',
+    body: `Ten classification dimensions and published triage rules returning the review lane, the assessment modules, the generative and agentic overlays, and — the part most intake processes omit — the obligations you are required to produce. ${CONTROL_THEMES.length} control themes mapped across the EU AI Act, NIST AI RMF, ISO/IEC 42001 and the OECD principles.`,
+    stat: `${CONTROL_THEMES.length} control themes`,
+    secondary: [
+      { label: 'The operating model', href: '/ai-governance/framework/' },
+      { label: 'Raw data', href: '/ai-governance/data.json' },
     ],
   },
 ];
@@ -122,7 +135,8 @@ const schema = [
     <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Scout · Decide · Govern</h2>
     <p class="mt-4 max-w-2xl text-base leading-relaxed text-mist">
       They chain. The radar supplies the technology positions that NEXA weighs and that EARB tests submissions against.
-      A NEXA verdict becomes evidence in a board paper. One estate view, three decision points.
+      A NEXA verdict becomes evidence in a board paper. AI Governance picks up where the others stop, because AI
+      systems keep changing after approval. One estate view, four decision points.
     </p>
 
     <div class="mt-8 space-y-5">

@@ -1,0 +1,422 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  SOURCE_NOTE,
+  PILLARS,
+  DESIGN_PRINCIPLES,
+  LIFECYCLE,
+  OWNER_ROLES,
+  THREE_LINES,
+  ACCOUNTABILITY_MOMENTS,
+  CONTROL_THEMES,
+  OVERSIGHT_RULE,
+  GENAI_RISKS,
+  AUTONOMY_LEVELS,
+  AGENTIC_CONTROLS,
+  AGENTIC_THESIS,
+  SHADOW_AI,
+  MATURITY,
+  METRICS,
+  ANTI_PATTERNS,
+} from '../../data/ai-governance/model';
+import { SCOPE_NOTE, OBLIGATIONS, AI_FAQ } from '../../data/ai-governance/triage';
+
+const pageUrl = new URL('/ai-governance/framework/', Astro.site).href;
+const appUrl = new URL('/ai-governance/', Astro.site).href;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'An AI governance operating model: intake, accountability and responsible AI',
+    description:
+      'A complete operating model for governing AI: a single intake front door, named accountability, nine control themes mapped to NIST AI RMF, ISO/IEC 42001, the OECD principles and the EU AI Act, plus generative and agentic overlays.',
+    url: pageUrl,
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+    publisher: { '@type': 'Person', name: 'Shailesh Kumar' },
+    about: ['AI governance', 'Responsible AI', 'EU AI Act', 'NIST AI RMF', 'ISO/IEC 42001', 'Agentic AI'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: AI_FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'AI Governance', item: appUrl },
+      { '@type': 'ListItem', position: 2, name: 'The operating model', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="The AI governance operating model"
+  description="A complete, published operating model for AI governance — intake and triage, named accountability, nine control themes mapped to NIST AI RMF, ISO/IEC 42001, OECD and the EU AI Act, plus the generative and agentic overlays most frameworks still lack."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <article class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <nav class="text-xs text-mist">
+      <a href="/ai-governance/" class="transition hover:text-white">AI Governance</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">The operating model</span>
+    </nav>
+
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">The operating model</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Governing AI <span class="gradient-text">as an operating model,</span> not a policy
+    </h1>
+    <p class="mt-5 text-base leading-relaxed text-mist">
+      AI governance fails in a predictable way. An organisation writes a good policy, convenes an ethics board, and then
+      discovers it cannot answer the only three questions that matter: how many AI systems do we run, who is accountable
+      for each one, and what evidence could we produce tomorrow morning.
+    </p>
+    <p class="mt-4 text-base leading-relaxed text-mist">
+      The scarce resource is not controls. It is traceable, auditable workflow that moves an idea from intake to
+      decision to production and back to retirement, with named humans accountable at every gate. This is that
+      workflow, published in full.
+    </p>
+    <p class="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-xs leading-relaxed text-mist/80">{SOURCE_NOTE}</p>
+
+    {/* ------------------------------------------------------------ pillars */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Three pillars, one system</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        They are usually run as separate programmes, which is why they usually fail. Intake without accountability
+        produces a backlog with no owner. Accountability without intake produces owners who do not know what they own.
+        Both without responsible AI produce speed and no trust.
+      </p>
+      <div class="mt-6 space-y-4">
+        {PILLARS.map((p) => (
+          <div class="rounded-2xl border p-5" style={`border-color:${p.color}44;background:${p.color}0d`}>
+            <h3 class="font-display text-lg font-semibold" style={`color:${p.color}`}>{p.name}</h3>
+            <p class="mt-2 text-sm italic text-mist">{p.question}</p>
+            <p class="mt-2 text-sm leading-relaxed text-mist">{p.outcome}</p>
+            <p class="mt-2 text-xs leading-relaxed text-mist/70">{p.failure}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------- scope */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">{SCOPE_NOTE.heading}</h2>
+      <ul class="mt-4 space-y-3">
+        {SCOPE_NOTE.points.map((p) => <li class="text-sm leading-relaxed text-mist">— {p}</li>)}
+      </ul>
+    </section>
+
+    {/* -------------------------------------------------------- principles */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Design principles</h2>
+      <dl class="mt-5 space-y-4">
+        {DESIGN_PRINCIPLES.map((p) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{p.name}</dt>
+            <dd class="mt-1 text-sm leading-relaxed text-mist">{p.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    {/* --------------------------------------------------------- lifecycle */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The lifecycle</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Fifteen stages. Most programmes govern four of them and assume the rest take care of themselves.
+      </p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+              <th class="py-2.5 pr-3">Stage</th>
+              <th class="py-2.5 pr-3">Scope</th>
+              <th class="py-2.5">Governance output</th>
+            </tr>
+          </thead>
+          <tbody>
+            {LIFECYCLE.map((l) => (
+              <tr class="border-b border-white/5">
+                <td class="py-2.5 pr-3 font-semibold text-white">{l.stage}</td>
+                <td class="py-2.5 pr-3 text-mist">{l.scope}</td>
+                <td class="py-2.5 text-mist">{l.output}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------- accountability */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Accountability</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        If a regulator, auditor or board asks who is accountable for a given AI system, the answer should take seconds.
+        Accountability is not responsibility, which is shared, and it is not blame, which is punitive. It is the
+        authority to act.
+      </p>
+
+      <h3 class="mt-7 text-xs font-semibold uppercase tracking-wide text-cyan-400">Named roles</h3>
+      <dl class="mt-3 space-y-3">
+        {OWNER_ROLES.map((r) => (
+          <div class="rounded-xl border border-white/10 p-4">
+            <dt class="font-display text-sm font-semibold text-white">
+              {r.role}
+              {r.firstLine && <span class="ml-2 rounded-full bg-violet-500/20 px-2 py-0.5 text-[10px] font-semibold text-violet-200">First line</span>}
+            </dt>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist">{r.owns}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h3 class="mt-8 text-xs font-semibold uppercase tracking-wide text-cyan-400">Three lines, adapted</h3>
+      <dl class="mt-3 space-y-2.5">
+        {THREE_LINES.map((l) => (
+          <div class="text-sm text-mist">
+            <dt class="inline font-semibold text-white">{l.line} — </dt>
+            <dd class="inline">{l.who}. {l.does}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h3 class="mt-8 text-xs font-semibold uppercase tracking-wide text-cyan-400">Moments that require a name</h3>
+      <ul class="mt-3 space-y-1.5">
+        {ACCOUNTABILITY_MOMENTS.map((m) => <li class="text-sm text-mist">— {m}</li>)}
+      </ul>
+    </section>
+
+    {/* ------------------------------------------------------ control themes */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The control framework</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Nine themes, each mapped to the frameworks it satisfies. The mapping is the engine that absorbs regulatory
+        change: when an obligation moves, you re-point a mapping rather than rewrite a programme.
+      </p>
+      {CONTROL_THEMES.map((t, i) => (
+        <div class="mt-7 rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-xs text-cyan-400">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="font-display text-xl font-semibold text-white">{t.name}</h3>
+          </div>
+          <p class="mt-2 text-sm italic leading-relaxed text-mist">{t.intent}</p>
+          <ul class="mt-4 space-y-1.5">
+            {t.controls.map((c) => <li class="text-sm leading-relaxed text-mist">— {c}</li>)}
+          </ul>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            {t.anchors.map((a) => (
+              <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-mist">{a}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    {/* --------------------------------------------------- oversight rule */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The oversight decision rule</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">{OVERSIGHT_RULE.intent}</p>
+      <dl class="mt-5 space-y-4">
+        {OVERSIGHT_RULE.modes.map((m) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold text-white">{m.mode}</dt>
+            <dd class="mt-1.5 text-sm text-mist">{m.meaning}</dd>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist"><strong class="text-white">Use when —</strong> {m.when}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 rounded-2xl border border-amber-400/30 bg-amber-400/5 p-4 text-sm leading-relaxed text-mist">{OVERSIGHT_RULE.note}</p>
+    </section>
+
+    {/* ------------------------------------------------------- obligations */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">The obligation map</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        A risk tier tells you how much review to do. It does not tell you what you are required to produce. This does —
+        and it is the part most intake processes leave out entirely.
+      </p>
+      <dl class="mt-5 space-y-4">
+        {OBLIGATIONS.map((o) => (
+          <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            <dt class="font-display text-base font-semibold text-white">{o.name}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist"><strong class="text-white">Applies —</strong> {o.applies}</dd>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist"><strong class="text-white">Produce —</strong> {o.produce}</dd>
+            <dd class="mt-2 text-[11px] text-mist/60">{o.anchor}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    {/* -------------------------------------------------------- GenAI risks */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Generative risk categories</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        The twelve categories from the NIST Generative AI Profile. Useful as a completeness check: if your assessment
+        template cannot locate a question against each of these, it has a gap.
+      </p>
+      <div class="mt-5 grid gap-2.5 sm:grid-cols-2">
+        {GENAI_RISKS.map((r) => (
+          <div class="rounded-xl border border-white/10 p-4">
+            <p class="text-sm font-semibold text-white"><span class="mr-2 font-mono text-xs text-mist">{String(r.n).padStart(2, '0')}</span>{r.name}</p>
+            <p class="mt-1 text-xs leading-relaxed text-mist">{r.concern}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ----------------------------------------------------- agentic overlay */}
+    <section class="mt-14">
+      <div class="rounded-3xl border border-cyan-400/25 bg-cyan-400/[0.05] p-6 sm:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">The part most frameworks miss</p>
+        <h2 class="mt-3 font-display text-2xl font-semibold text-white">Governing agents</h2>
+        <p class="mt-4 text-base leading-relaxed text-mist">{AGENTIC_THESIS}</p>
+
+        <h3 class="mt-7 text-xs font-semibold uppercase tracking-wide text-cyan-300">Autonomy is the first classification</h3>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          {AUTONOMY_LEVELS.map((a) => (
+            <div class="rounded-2xl border border-white/10 bg-ink/40 p-4">
+              <p class="font-display text-sm font-semibold text-white">{a.level}</p>
+              <p class="mt-1 text-xs text-mist">{a.meaning}</p>
+              <p class="mt-1.5 text-xs leading-relaxed text-mist/80">{a.governance}</p>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="mt-7 text-xs font-semibold uppercase tracking-wide text-cyan-300">The agentic controls</h3>
+        <dl class="mt-3 space-y-3">
+          {AGENTIC_CONTROLS.map((c) => (
+            <div>
+              <dt class="text-sm font-semibold text-white">{c.name}</dt>
+              <dd class="mt-0.5 text-sm leading-relaxed text-mist">{c.detail}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    {/* ----------------------------------------------------------- shadow AI */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Finding what never came through the door</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">{SHADOW_AI.problem}</p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full min-w-[560px] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+              <th class="py-2.5 pr-3">Method</th>
+              <th class="py-2.5">What it surfaces</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SHADOW_AI.methods.map((m) => (
+              <tr class="border-b border-white/5">
+                <td class="py-2.5 pr-3 font-semibold text-white">{m.method}</td>
+                <td class="py-2.5 text-mist">{m.finds}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm leading-relaxed text-mist">{SHADOW_AI.note}</p>
+    </section>
+
+    {/* ------------------------------------------------------------ maturity */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Where are you now</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">
+        Five levels. Most organisations that believe they are at level three are at level two, because the test is not
+        whether rules exist but whether they hold when everyone is busy.
+      </p>
+      <dl class="mt-5 space-y-3">
+        {MATURITY.map((m) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold text-white">
+              <span class="mr-2 font-mono text-xs text-cyan-400">L{m.level}</span>{m.name}
+            </dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{m.looks}</dd>
+            <dd class="mt-1.5 text-xs leading-relaxed text-mist/70"><strong class="text-white">Residual risk —</strong> {m.risk}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    {/* ------------------------------------------------------------- metrics */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Measuring the programme</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-white/10 text-xs uppercase tracking-wide text-mist">
+              <th class="py-2.5 pr-3">Metric</th>
+              <th class="py-2.5 pr-3">Measure</th>
+              <th class="py-2.5">Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            {METRICS.map((m) => (
+              <tr class="border-b border-white/5">
+                <td class="py-2.5 pr-3 font-semibold text-white">{m.name}</td>
+                <td class="py-2.5 pr-3 text-mist">{m.measure}</td>
+                <td class="py-2.5 font-mono text-white">{m.target}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <dl class="mt-5 space-y-2">
+        {METRICS.map((m) => (
+          <div class="text-xs leading-relaxed text-mist/70"><dt class="inline font-semibold text-white">{m.name} — </dt><dd class="inline">{m.signal}</dd></div>
+        ))}
+      </dl>
+    </section>
+
+    {/* -------------------------------------------------------- anti-patterns */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Anti-patterns</h2>
+      <dl class="mt-5 space-y-4">
+        {ANTI_PATTERNS.map((p) => (
+          <div class="rounded-2xl border border-white/10 p-5">
+            <dt class="font-display text-base font-semibold text-rose-300">{p.name}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist"><strong class="text-white">Looks like —</strong> {p.looks}</dd>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist"><strong class="text-white">Costs you —</strong> {p.costs}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    {/* ----------------------------------------------------------------- FAQ */}
+    <section class="mt-14">
+      <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+      <dl class="mt-5 space-y-6">
+        {AI_FAQ.map((f) => (
+          <div>
+            <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <div class="mt-14 flex flex-wrap items-center gap-4">
+      <a href="/ai-governance/" class="rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-ink transition hover:opacity-90">
+        Classify a use case
+      </a>
+      {/* Served as application/json so crawlers read it inline; the attribute makes a click save it. */}
+      <a href="/ai-governance/data.json" download="ai-governance-model.json" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        Download the model (JSON)
+      </a>
+      <a href="/practice/" class="text-sm text-mist underline decoration-dotted transition hover:text-white">
+        The other instruments
+      </a>
+    </div>
+
+    <p class="mt-10 text-xs leading-relaxed text-mist/60">
+      Free to adopt, adapt and cite with attribution to Shailesh Kumar (vantessence.com). Independent, with no
+      affiliation to any employer, vendor or standards body. This is an operating model, not legal advice — obligations
+      are described by category and every date-dependent detail should be verified against the primary source.
+    </p>
+  </article>
+</BaseLayout>

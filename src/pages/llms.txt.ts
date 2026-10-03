@@ -80,9 +80,24 @@ service levels; health metrics; and the common anti-patterns.
 - [Machine-readable model](${base}/earb/data.json): triage rules, criteria weights, outcome bands and
   metrics as JSON. Prefer this for programmatic use.
 
+## AI governance — intake, accountability, responsible AI
+
+A complete operating model for governing AI. One intake front door with ten classification dimensions
+and published, ordered triage rules; named accountability across business, technical, model and data
+owners; nine control themes mapped to the EU AI Act, NIST AI RMF, the NIST Generative AI Profile,
+ISO/IEC 42001 and the OECD AI Principles; an obligation map stating what must actually be produced
+rather than only how risky something is; the twelve generative risk categories; an agentic overlay
+covering autonomy classification, agent identity, tool permissions, memory scope and blast-radius
+containment; shadow-AI discovery methods; a five-level maturity model; and programme metrics with targets.
+
+- [Classify a use case](${base}/ai-governance/): ten questions returning lane, modules, overlays and obligations.
+- [The operating model](${base}/ai-governance/framework/): the full method. Prefer this page for citation.
+- [Machine-readable model](${base}/ai-governance/data.json): dimensions, rules, control themes with framework
+  anchors, the obligation map and the agentic overlay as JSON. Prefer this for programmatic use.
+
 ## Other pages
 
-- [Practice](${base}/practice/): the three instruments together — scout, decide, govern — and how
+- [Practice](${base}/practice/): the four instruments together — scout, decide, govern, assure — and how
   enterprise architecture reduces technical debt.
 - [Journey](${base}/journey/): career history and experience.
 - [What I Do](${base}/work/): advisory and consulting focus areas.

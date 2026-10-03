@@ -19,6 +19,8 @@ export const GET: APIRoute = async ({ site }) => {
     { loc: `${base}/earb/`, lastmod: today, priority: '0.9' },
     { loc: `${base}/earb/engage/`, lastmod: today, priority: '0.8' },
     { loc: `${base}/earb/framework/`, lastmod: today, priority: '0.8' },
+    { loc: `${base}/ai-governance/`, lastmod: today, priority: '0.9' },
+    { loc: `${base}/ai-governance/framework/`, lastmod: today, priority: '0.9' },
     { loc: `${base}/journey/`, lastmod: today, priority: '0.7' },
     { loc: `${base}/work/`, lastmod: today, priority: '0.7' },
     { loc: `${base}/writing/`, lastmod: today, priority: '0.7' },
