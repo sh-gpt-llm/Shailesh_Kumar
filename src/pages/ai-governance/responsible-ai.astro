@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CONTROL_THEMES, OVERSIGHT_RULE, GENAI_RISKS, AGENTIC_THESIS } from '../../data/ai-governance/model';
+import { RAI_LEVELS, RAI_BANDS } from '../../data/ai-governance/assessments';
+
+const pageUrl = new URL('/ai-governance/responsible-ai/', Astro.site).href;
+
+const faq = [
+  {
+    q: 'What is responsible AI in practice?',
+    a: 'The operational expression of several overlapping frameworks, reduced to nine control themes: validity and robustness, safety and security, fairness, transparency, explainability, privacy, human oversight, accountability and audit trail, and the generative and agentic surfaces. Each theme carries specific controls and maps to the frameworks it satisfies, so an obligation that moves can be re-pointed rather than triggering a new programme.',
+  },
+  {
+    q: 'How do you measure responsible AI maturity?',
+    a: 'Score each control theme as it genuinely operates rather than as policy describes it: not started, ad hoc, defined, operating, or measured. The composite maps to five maturity levels from ad hoc to adaptive. Most organisations that believe they are at level three are at level two, because the test is not whether rules exist but whether they hold when everyone is busy.',
+  },
+  {
+    q: 'Which responsible AI framework should we use?',
+    a: 'They are complementary rather than competing. NIST AI RMF gives you the functional structure of govern, map, measure and manage. ISO/IEC 42001 gives you a certifiable management system. The OECD principles give you the values. The EU AI Act turns a subset into legal obligation. Map controls to all of them at once — the mapping is what absorbs regulatory change.',
+  },
+  {
+    q: 'What does responsible AI miss when it is copied from a 2023 framework?',
+    a: 'The generative and agentic surfaces. Prompt and system-prompt governance, grounding and retrieval scope, confabulation thresholds, prompt-injection defence, provenance, vendor model change, and for agents: autonomy classification, agent identity, tool permissions, memory scope, transaction limits and blast-radius containment. A framework that governs only the model will miss where modern systems actually fail.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Responsible AI control assessment',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any modern web browser',
+    url: pageUrl,
+    description:
+      'Score nine responsible AI control themes as they actually operate, get a maturity level, and see the specific controls that close your three weakest themes.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'AI Governance', item: new URL('/ai-governance/', Astro.site).href },
+      { '@type': 'ListItem', position: 2, name: 'Responsible AI', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Responsible AI — control assessment"
+  description="Score nine responsible AI control themes as they actually operate, get a maturity level from ad hoc to adaptive, and see the specific controls that close your weakest three. Mapped to the EU AI Act, NIST AI RMF, ISO/IEC 42001 and the OECD principles."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <section class="mx-auto max-w-4xl px-6 pt-16 pb-8">
+    <nav class="text-xs text-mist">
+      <a href="/ai-governance/" class="transition hover:text-white">AI Governance</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">Responsible AI</span>
+    </nav>
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">Pillar three · Responsible AI</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Where your controls <span class="gradient-text">actually are</span>
+    </h1>
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist">
+      Nine control themes, scored as they genuinely operate rather than as the policy describes them. You get a
+      maturity level, your three weakest themes, and the specific controls that close them.
+    </p>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist/80">
+      Most organisations that believe they are at level three are at level two, because the test is not whether rules
+      exist but whether they hold when everyone is busy.
+    </p>
+  </section>
+
+  {/* Server-rendered so the themes are readable without JavaScript; the assessment replaces this on mount. */}
+  <div id="ai-responsible">
+    <section class="mx-auto max-w-4xl px-6 pb-10">
+      <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The nine themes</h2>
+      <div class="mt-4 space-y-4">
+        {CONTROL_THEMES.map((t, i) => (
+          <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+            <h3 class="font-display text-base font-semibold text-white">
+              <span class="mr-2 font-mono text-xs text-cyan-400">{String(i + 1).padStart(2, '0')}</span>{t.name}
+            </h3>
+            <p class="mt-1.5 text-sm italic leading-relaxed text-mist">{t.intent}</p>
+            <ul class="mt-3 space-y-1">
+              {t.controls.map((c) => <li class="text-xs leading-relaxed text-mist">— {c}</li>)}
+            </ul>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              {t.anchors.map((a) => <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] text-mist">{a}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Scoring scale</h2>
+      <dl class="mt-4 space-y-2">
+        {RAI_LEVELS.map((l) => (
+          <div class="text-sm text-mist"><dt class="inline font-semibold text-white">{l.value} · {l.label} — </dt><dd class="inline">{l.meaning}</dd></div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Maturity bands</h2>
+      <dl class="mt-4 space-y-2.5">
+        {RAI_BANDS.map((b) => (
+          <div>
+            <dt class="font-display text-sm font-semibold" style={`color:${b.color}`}>Level {b.level} · {b.label} <span class="font-mono text-xs text-mist">{b.min}%+</span></dt>
+            <dd class="mt-0.5 text-sm leading-relaxed text-mist">{b.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The oversight decision rule</h2>
+      <p class="mt-3 text-sm leading-relaxed text-mist">{OVERSIGHT_RULE.intent}</p>
+      <dl class="mt-4 space-y-2.5">
+        {OVERSIGHT_RULE.modes.map((m) => (
+          <div class="text-sm text-mist">
+            <dt class="font-semibold text-white">{m.mode} — {m.meaning}</dt>
+            <dd class="mt-0.5">Use when {m.when.charAt(0).toLowerCase() + m.when.slice(1)}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 text-sm leading-relaxed text-mist">{OVERSIGHT_RULE.note}</p>
+
+      <p class="mt-10 text-sm text-mist">
+        {AGENTIC_THESIS} The {GENAI_RISKS.length} generative risk categories and the full agentic overlay are on the
+        <a href="/ai-governance/framework/" class="underline decoration-dotted hover:text-white"> framework page</a>.
+      </p>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+    <dl class="mt-6 space-y-6">
+      {faq.map((f) => (
+        <div>
+          <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+          <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initAiResponsible } from '../../scripts/ai-responsible';
+  initAiResponsible();
+</script>

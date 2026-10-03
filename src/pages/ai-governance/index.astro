@@ -59,6 +59,28 @@ const schema = [
     </p>
   </section>
 
+  <section class="no-print mx-auto max-w-4xl px-6 pb-10">
+    <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Three pillars, three instruments</h2>
+    <div class="mt-4 grid gap-4 sm:grid-cols-3">
+      {[
+        { href: '#ai-intake', name: 'AI Intake', n: '01', body: 'Classify a use case. Lane, modules, overlays and the obligations that attach.', cta: 'Below on this page', color: '#a78bfa' },
+        { href: '/ai-governance/accountability/', name: 'AI Accountability', n: '02', body: 'Could you name the four owners in sixty seconds? Eleven weighted checks.', cta: 'Run the check →', color: '#22d3ee' },
+        { href: '/ai-governance/responsible-ai/', name: 'Responsible AI', n: '03', body: 'Score nine control themes, get a maturity level and the controls that close your weakest three.', cta: 'Assess controls →', color: '#f59e0b' },
+      ].map((i) => (
+        <a href={i.href} class="glass glow-border group rounded-2xl p-5 transition hover:bg-white/[0.06]">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-6 w-6 items-center justify-center rounded-lg font-mono text-[10px] font-bold" style={`background:${i.color}33;color:${i.color}`}>{i.n}</span>
+            <h3 class="font-display text-base font-semibold text-white">{i.name}</h3>
+          </div>
+          <p class="mt-2.5 text-xs leading-relaxed text-mist">{i.body}</p>
+          <span class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-white">
+            {i.cta}
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
   {/* Server-rendered so the whole model is readable without JavaScript; the classifier replaces this on mount. */}
   <div id="ai-intake">
     <section class="mx-auto max-w-4xl px-6 pb-12">

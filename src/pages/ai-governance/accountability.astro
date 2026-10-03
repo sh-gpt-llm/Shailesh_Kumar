@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { OWNER_ROLES, THREE_LINES, ACCOUNTABILITY_MOMENTS } from '../../data/ai-governance/model';
+import { ACCOUNTABILITY_CHECKS, ACCOUNTABILITY_BANDS, SIXTY_SECOND_TEST } from '../../data/ai-governance/assessments';
+
+const pageUrl = new URL('/ai-governance/accountability/', Astro.site).href;
+
+const faq = [
+  {
+    q: 'Who should be accountable for an AI system?',
+    a: 'Four named individuals, not teams. A business owner accountable for value, intended use and the continue-change-retire decision. A technical owner accountable for operational integrity, incidents and change control, holding standing authority to pause without convening anyone. A model or agent owner accountable for model selection, evaluation, prompts, tool permissions and memory scope. A data owner accountable for provenance, licensing, consent and right to use.',
+  },
+  {
+    q: 'What is the difference between accountability and responsibility for AI?',
+    a: 'Responsibility is shared and can be distributed across a team. Accountability sits with one person and cannot be divided without disappearing. It is also distinct from blame, which is punitive and retrospective — accountability is the authority to act. Risk accepted by a committee is risk accepted by nobody.',
+  },
+  {
+    q: 'Who is accountable for a third-party AI system we did not build?',
+    a: 'Accountability must still terminate inside your organisation. The provider carries obligations for the system they place on the market; as the deployer you remain accountable for how it is used, the data you put into it, the oversight around it and the outcomes it produces. That split should be documented in the contract rather than assumed — and putting your own name on someone else’s system can make you the provider.',
+  },
+  {
+    q: 'How do you prove AI accountability to an auditor?',
+    a: 'Named individuals recorded against each role with the date they accepted it; decisions, approvals, conditions and overrides held as immutable records rather than email; attestations that are in date; standing pause authority documented before an incident rather than during one; and evidence that a human has actually overridden the system at least once. Oversight that leaves no trace of disagreement is decorative.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'AI accountability check',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any modern web browser',
+    url: pageUrl,
+    description:
+      'Eleven weighted checks across named owners, authority, evidence and third parties — returning an accountability score, the sixty-second owner test, and the gaps ranked by consequence.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+    author: { '@type': 'Person', name: 'Shailesh Kumar', url: 'https://vantessence.com/' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'AI Governance', item: new URL('/ai-governance/', Astro.site).href },
+      { '@type': 'ListItem', position: 2, name: 'Accountability', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="AI accountability — who is answerable for this system?"
+  description="Check whether accountability for an AI system would survive an auditor, an incident or a resignation. Eleven weighted checks across named owners, authority, evidence and third parties."
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={pageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </Fragment>
+
+  <section class="mx-auto max-w-4xl px-6 pt-16 pb-8">
+    <nav class="text-xs text-mist">
+      <a href="/ai-governance/" class="transition hover:text-white">AI Governance</a>
+      <span class="mx-2 text-mist/50">/</span>
+      <span class="text-white">Accountability</span>
+    </nav>
+    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400">Pillar two · Accountability</p>
+    <h1 class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">
+      Who is <span class="gradient-text">answerable</span> for this system?
+    </h1>
+    <p class="mt-5 max-w-2xl text-base leading-relaxed text-mist">{SIXTY_SECOND_TEST}</p>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-mist/80">
+      {ACCOUNTABILITY_CHECKS.length} weighted checks. Nothing you enter leaves your browser.
+    </p>
+  </section>
+
+  {/* Server-rendered so the model is readable without JavaScript; the check replaces this on mount. */}
+  <div id="ai-accountability">
+    <section class="mx-auto max-w-4xl px-6 pb-10">
+      <h2 class="font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The named roles</h2>
+      <dl class="mt-4 space-y-3">
+        {OWNER_ROLES.map((r) => (
+          <div class="rounded-xl border border-white/10 p-4">
+            <dt class="font-display text-sm font-semibold text-white">
+              {r.role}
+              {r.firstLine && <span class="ml-2 rounded-full bg-violet-500/20 px-2 py-0.5 text-[10px] font-semibold text-violet-200">First line</span>}
+            </dt>
+            <dd class="mt-1.5 text-sm leading-relaxed text-mist">{r.owns}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">The checks</h2>
+      <ol class="mt-4 space-y-2">
+        {ACCOUNTABILITY_CHECKS.map((c) => (
+          <li class="text-sm text-mist"><strong class="text-white">{c.group}</strong> — {c.question}</li>
+        ))}
+      </ol>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Bands</h2>
+      <dl class="mt-4 space-y-2.5">
+        {ACCOUNTABILITY_BANDS.map((b) => (
+          <div>
+            <dt class="font-display text-sm font-semibold" style={`color:${b.color}`}>{b.label} <span class="font-mono text-xs text-mist">{b.min}%+</span></dt>
+            <dd class="mt-0.5 text-sm leading-relaxed text-mist">{b.meaning}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Three lines</h2>
+      <dl class="mt-4 space-y-2">
+        {THREE_LINES.map((l) => (
+          <div class="text-sm text-mist"><dt class="inline font-semibold text-white">{l.line} — </dt><dd class="inline">{l.who}. {l.does}</dd></div>
+        ))}
+      </dl>
+
+      <h2 class="mt-12 font-display text-sm font-semibold uppercase tracking-[0.3em] text-mist">Moments that require a name</h2>
+      <ul class="mt-4 space-y-1.5">
+        {ACCOUNTABILITY_MOMENTS.map((m) => <li class="text-sm text-mist">— {m}</li>)}
+      </ul>
+    </section>
+  </div>
+
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h2 class="font-display text-2xl font-semibold text-white">Common questions</h2>
+    <dl class="mt-6 space-y-6">
+      {faq.map((f) => (
+        <div>
+          <dt class="font-display text-base font-semibold text-white">{f.q}</dt>
+          <dd class="mt-2 text-sm leading-relaxed text-mist">{f.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initAiAccountability } from '../../scripts/ai-accountability';
+  initAiAccountability();
+</script>

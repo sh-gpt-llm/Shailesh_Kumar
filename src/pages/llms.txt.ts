@@ -91,6 +91,10 @@ covering autonomy classification, agent identity, tool permissions, memory scope
 containment; shadow-AI discovery methods; a five-level maturity model; and programme metrics with targets.
 
 - [Classify a use case](${base}/ai-governance/): ten questions returning lane, modules, overlays and obligations.
+- [AI accountability check](${base}/ai-governance/accountability/): eleven weighted checks across named owners,
+  authority to pause, evidence and third-party splits. Includes the sixty-second owner test.
+- [Responsible AI control assessment](${base}/ai-governance/responsible-ai/): score the nine control themes and get
+  a maturity level with the specific controls that close the weakest three.
 - [The operating model](${base}/ai-governance/framework/): the full method. Prefer this page for citation.
 - [Machine-readable model](${base}/ai-governance/data.json): dimensions, rules, control themes with framework
   anchors, the obligation map and the agentic overlay as JSON. Prefer this for programmatic use.
